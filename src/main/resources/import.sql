@@ -1,0 +1,41 @@
+INSERT INTO author(id, firstname, lastname) VALUES (1, 'John', 'Irving');
+INSERT INTO author(id, firstname, lastname) VALUES (2, 'Paul', 'Auster');
+ALTER SEQUENCE author_seq RESTART WITH 3;
+
+INSERT INTO tipoequipo(id, nombre) VALUES (1, 'split');
+INSERT INTO tipoequipo(id, nombre) VALUES (2, 'mini-split');
+INSERT INTO tipoequipo(id, nombre) VALUES (3, 'paquete');
+ALTER SEQUENCE tipoequipo_seq RESTART WITH 4;
+
+INSERT INTO area(id, nombre) VALUES (1, '3marias');
+ALTER SEQUENCE area_seq RESTART WITH 2;
+
+INSERT INTO desperfecto(id, nombre) VALUES (1, 'roto');
+ALTER SEQUENCE desperfecto_seq RESTART WITH 2;
+
+INSERT INTO tipomantenimiento(id, nombre) VALUES (1, 'preventico');
+INSERT INTO tipomantenimiento(id, nombre) VALUES (2, 'programado');
+INSERT INTO tipomantenimiento(id, nombre) VALUES (3, 'correctivo');
+ALTER SEQUENCE tipomantenimiento_seq RESTART WITH 4;
+
+INSERT INTO material(id, nombre,cantidad,tipoRefrigerante) VALUES (1, 'material1','3','tipoRefrigerante1');
+ALTER SEQUENCE material_seq RESTART WITH 2;
+
+INSERT INTO equipo(id,capacidad,capacidadMotor,capacitor,marca,modelo,nombre,numeroEquipo,tipoMotor,voltaje,hp,amperaje,area_id,tipoEquipo_id) VALUES (1,'capacidad','capacidadMotor','capacitor','marca','modelo','nombre','numeroEquipo','tipoMotor','voltaje','hp','12',1,1);
+ALTER SEQUENCE equipo_seq RESTART WITH 2;
+
+
+INSERT INTO book(id, title, author_id) VALUES (1, 'The World According to Garp', 1);
+INSERT INTO book(id, title, author_id) VALUES (2, 'The Hotel New Hampshire', 1);
+INSERT INTO book(id, title, author_id) VALUES (3, 'The Cider House Rules', 1);
+INSERT INTO book(id, title, author_id) VALUES (4, 'A Prayer for Owen Meany', 1);
+INSERT INTO book(id, title, author_id) VALUES (5, 'Last Night in Twisted River', 1);
+INSERT INTO book(id, title, author_id) VALUES (6, 'In One Person', 1);
+INSERT INTO book(id, title, author_id) VALUES (7, 'Avenue of Mysteries', 1);
+INSERT INTO book(id, title, author_id) VALUES (8, 'The New York Trilogy', 2);
+INSERT INTO book(id, title, author_id) VALUES (9, 'Mr. Vertigo', 2);
+INSERT INTO book(id, title, author_id) VALUES (10, 'The Brooklyn Follies', 2);
+INSERT INTO book(id, title, author_id) VALUES (11, 'Invisible', 2);
+INSERT INTO book(id, title, author_id) VALUES (12, 'Sunset Park', 2);
+INSERT INTO book(id, title, author_id) VALUES (13, '4 3 2 1', 2);
+ALTER SEQUENCE book_seq RESTART WITH 14;
