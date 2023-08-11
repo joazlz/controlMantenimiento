@@ -24,6 +24,9 @@ ALTER SEQUENCE material_seq RESTART WITH 2;
 INSERT INTO equipo(id,capacidad,capacidadMotor,capacitor,marca,modelo,nombre,numeroEquipo,tipoMotor,voltaje,hp,amperaje,area_id,tipoEquipo_id) VALUES (1,'capacidad','capacidadMotor','capacitor','marca','modelo','nombre','numeroEquipo','tipoMotor','voltaje','hp','12',1,1);
 ALTER SEQUENCE equipo_seq RESTART WITH 2;
 
+INSERT INTO revisado(id, duracion,ordenTrabajo,desperfecto_id,equipo_id) VALUES (1, '12','OT1234',1,1   );
+ALTER SEQUENCE revisado_seq RESTART WITH 2;
+
 
 INSERT INTO book(id, title, author_id) VALUES (1, 'The World According to Garp', 1);
 INSERT INTO book(id, title, author_id) VALUES (2, 'The Hotel New Hampshire', 1);

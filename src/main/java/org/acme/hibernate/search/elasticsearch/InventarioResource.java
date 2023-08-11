@@ -18,6 +18,7 @@ import org.acme.hibernate.search.elasticsearch.model.Area;
 import org.acme.hibernate.search.elasticsearch.model.Desperfecto;
 import org.acme.hibernate.search.elasticsearch.model.Equipo;
 import org.acme.hibernate.search.elasticsearch.model.Material;
+import org.acme.hibernate.search.elasticsearch.model.Revisado;
 import org.acme.hibernate.search.elasticsearch.model.TipoEquipo;
 import org.acme.hibernate.search.elasticsearch.model.TipoMantenimiento;
 import org.hibernate.search.mapper.orm.session.SearchSession;
@@ -266,6 +267,19 @@ public class InventarioResource {
                         : f.simpleQueryString()
                                 .fields("nombre").matching(pattern))
                 .sort(f -> f.field("nombre_sort"))
+                .fetchHits(size.orElse(20));
+    }
+
+    @GET
+    @Path("revisado/search")
+    @Transactional
+    public List<Revisado> searchRevisados(@RestQuery String pattern,
+            @RestQuery Optional<Integer> size) {
+        return searchSession.search(Revisado.class)
+                .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
+                        : f.simpleQueryString()
+                                .fields("nombre").matching(pattern))
+                .sort(f -> f.field("ordenTrabajo_sort"))
                 .fetchHits(size.orElse(20));
     }
 

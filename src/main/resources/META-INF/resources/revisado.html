@@ -39,21 +39,21 @@
       app.controller("InventarioManagementController", ['$scope', '$http', '$httpParamSerializerJQLike', function ($scope, $http, $httpParamSerializerJQLike) {
 
         // initialize page with default data which is blank in this example
-        $scope.equipos = [];
-        $scope.areas = [];
-        $scope.tipoEquipos = [];
-        $scope.revisado = [];
+        // $scope.equipos = [];
+        // $scope.areas = [];
+        // $scope.tipoEquipos = [];
+        $scope.revisados = [];
         $scope.pattern = '';
-        $scope.form = {};
+        // $scope.form = {};
 
         // initializes the data from the REST endpoint
         _refreshPageData();
         $('.revisado').show();
-        _clearForm();
+        // _clearForm();
 
-        $scope.refresh = function () {
-            _refreshPageData();
-        }
+        // $scope.refresh = function () {
+        //     _refreshPageData();
+        // }
 
         // $scope.remove = function (type, element) {
         //     $http({
@@ -62,10 +62,10 @@
         //     }).then(_success, _error);
         // };
 
-        $scope.showAddEquipoModal = function () {
-            $scope.revisadoModalTitle = "Add revisado";
-            $('#modal-revisado').modal('show');
-        }
+        // $scope.showAddEquipoModal = function () {
+        //     $scope.revisadoModalTitle = "Add revisado";
+        //     $('#modal-revisado').modal('show');
+        // }
 
         // $scope.showEditEquipoModal = function (equipo) {
         //     $scope.equipoModalTitle = "Edit equipo " + equipo.firstName + ' ' + equipo.lastName;
@@ -73,51 +73,51 @@
         //     $('#modal-equipo').modal('show');
         // }
 
-        $scope.addOrEditRevisado = function () {
-            data = {};
-            if ($scope.form.revisado.id == -1) {
-                method = 'PUT';
-                url = '/inventario/revisado';
-                data.duracion = $scope.form.revisado.duracion;
-                data.ordentrabajo = $scope.form.revisado.ordentrabajo;
-                //data.modelo = $scope.form.equipo.modelo;
-                //data.voltaje = $scope.form.equipo.voltaje;
-                //data.capacidad = $scope.form.equipo.capacidad;
-                //data.capacitor = $scope.form.equipo.capacitor;
-                //data.tipoMotor = $scope.form.equipo.tipoMotor;
-                //data.capacidadMotor = $scope.form.equipo.capacidadMotor;
-                //data.numeroEquipo = $scope.form.equipo.numeroEquipo;
-                //data.hp = $scope.form.equipo.hp;
-                //data.amperaje = $scope.form.equipo.amperaje;
-                //data.areaId = $scope.form.equipo.areaId;
-                //data.tipoEquipoId = $scope.form.equipo.tipoEquipoId;
-            } else {
-                method = 'POST';
-                url = '/inventario/revisado/' + $scope.form.revisado.id;
-                data.id = $scope.form.revisado.id;
-                data.duracion = $scope.form.equipo.duracion;
-                data.ordentrabajo = $scope.form.equipo.ordentrabajo;
-                //data.modelo = $scope.form.equipo.modelo;
-                ////data.voltaje = $scope.form.equipo.voltaje;
-                //data.capacidad = $scope.form.equipo.capacidad;
-                //data.capacitor = $scope.form.equipo.capacitor;
-                //data.tipoMotor = $scope.form.equipo.tipoMotor;
-               // data.capacidadMotor = $scope.form.equipo.capacidadMotor;
-                //data.numeroEquipo = $scope.form.equipo.numeroEquipo;
-                //data.hp = $scope.form.equipo.hp;
-                //data.amperaje = $scope.form.equipo.amperaje;
-                //data.areaId = $scope.form.equipo.areaId;
-                //data.tipoEquipoId = $scope.form.equipo.tipoEquipoId;
-            }
-            $http({
-                method: method,
-                url: url,
-                data: $httpParamSerializerJQLike(data),
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            }).then(_success, _error);
-        }
+        // $scope.addOrEditRevisado = function () {
+        //     data = {};
+        //     if ($scope.form.revisado.id == -1) {
+        //         method = 'PUT';
+        //         url = '/inventario/revisado';
+        //         data.duracion = $scope.form.revisado.duracion;
+        //         data.ordentrabajo = $scope.form.revisado.ordentrabajo;
+        //         //data.modelo = $scope.form.equipo.modelo;
+        //         //data.voltaje = $scope.form.equipo.voltaje;
+        //         //data.capacidad = $scope.form.equipo.capacidad;
+        //         //data.capacitor = $scope.form.equipo.capacitor;
+        //         //data.tipoMotor = $scope.form.equipo.tipoMotor;
+        //         //data.capacidadMotor = $scope.form.equipo.capacidadMotor;
+        //         //data.numeroEquipo = $scope.form.equipo.numeroEquipo;
+        //         //data.hp = $scope.form.equipo.hp;
+        //         //data.amperaje = $scope.form.equipo.amperaje;
+        //         //data.areaId = $scope.form.equipo.areaId;
+        //         //data.tipoEquipoId = $scope.form.equipo.tipoEquipoId;
+        //     } else {
+        //         method = 'POST';
+        //         url = '/inventario/revisado/' + $scope.form.revisado.id;
+        //         data.id = $scope.form.revisado.id;
+        //         data.duracion = $scope.form.equipo.duracion;
+        //         data.ordentrabajo = $scope.form.equipo.ordentrabajo;
+        //         //data.modelo = $scope.form.equipo.modelo;
+        //         ////data.voltaje = $scope.form.equipo.voltaje;
+        //         //data.capacidad = $scope.form.equipo.capacidad;
+        //         //data.capacitor = $scope.form.equipo.capacitor;
+        //         //data.tipoMotor = $scope.form.equipo.tipoMotor;
+        //        // data.capacidadMotor = $scope.form.equipo.capacidadMotor;
+        //         //data.numeroEquipo = $scope.form.equipo.numeroEquipo;
+        //         //data.hp = $scope.form.equipo.hp;
+        //         //data.amperaje = $scope.form.equipo.amperaje;
+        //         //data.areaId = $scope.form.equipo.areaId;
+        //         //data.tipoEquipoId = $scope.form.equipo.tipoEquipoId;
+        //     }
+        //     $http({
+        //         method: method,
+        //         url: url,
+        //         data: $httpParamSerializerJQLike(data),
+        //         headers: {
+        //             'Content-Type': 'application/x-www-form-urlencoded'
+        //         }
+        //     }).then(_success, _error);
+        // }
 
         // $scope.showBookModal = function (author) {
         //     $scope.form.book.authorId = author.id;
@@ -148,47 +148,48 @@
             }, function errorCallback(response) {
                 console.log(response.statusText);
             });
-            _refreshPageDataArea()
-            _refreshPageDataTipoEquipo()
-            _refreshPageData()
+            // _refreshPageDataArea()
+            // _refreshPageDataTipoEquipo()
+            // _refreshPageData()
         }
 
-        function _refreshPageDataArea() {
-            $http({
-                method: 'GET',
-                url: '/inventario/area/search?pattern=' + $scope.pattern
-            }).then(function successCallback(response) {
-                $scope.areas = response.data;
-            }, function errorCallback(response) {
-                console.log(response.statusText);
-            });
-        }
-        function _refreshPageDataTipoEquipo() {
-            $http({
-                method: 'GET',
-                url: '/inventario/tipoequipo/search?pattern=' + $scope.pattern
-            }).then(function successCallback(response) {
-                $scope.tipoEquipos = response.data;
-            }, function errorCallback(response) {
-                console.log(response.statusText);
-            });
-        }
-        function _refreshPageDataRevisado() {
-            $http({
-                method: 'GET',
-                url: '/inventario/revisado/search?pattern=' + $scope.pattern
-            }).then(function successCallback(response) {
-                $scope.revisado = response.data;
-            }, function errorCallback(response) {
-                console.log(response.statusText);
-            });
-        }
+        // function _refreshPageDataArea() {
+        //     $http({
+        //         method: 'GET',
+        //         url: '/inventario/area/search?pattern=' + $scope.pattern
+        //     }).then(function successCallback(response) {
+        //         $scope.areas = response.data;
+        //     }, function errorCallback(response) {
+        //         console.log(response.statusText);
+        //     });
+        // }
+        // function _refreshPageDataTipoEquipo() {
+        //     $http({
+        //         method: 'GET',
+        //         url: '/inventario/tipoequipo/search?pattern=' + $scope.pattern
+        //     }).then(function successCallback(response) {
+        //         $scope.tipoEquipos = response.data;
+        //     }, function errorCallback(response) {
+        //         console.log(response.statusText);
+        //     });
+        // }
+        // function _refreshPageDataRevisado() {
+        //     $http({
+        //         method: 'GET',
+        //         url: '/inventario/revisado/search?pattern=' + $scope.pattern
+        //     }).then(function successCallback(response) {
+        //         $scope.revisado = response.data;
+        //     }, function errorCallback(response) {
+        //         console.log(response.statusText);
+        //     });
+        // }
 
         function _success(response) {
             $scope.pattern = '';
             _refreshPageData();
             _clearForm();
         }
+
         function _clearForm() {
             $scope.form.revisado = {
                 id: -1,
@@ -203,11 +204,13 @@
                 //numeroEquipo: ''
             };
         }
+
         function _error(response) {
             alert(response.data.message || response.statusText);
             _clearForm();
         }
-      }]);
+      
+        }]);
     </script>
 </head>
 <body ng-app="InventarioManagement" ng-controller="InventarioManagementController">
@@ -275,9 +278,7 @@
             </div>
         </div>
     </div>
-    <div id="menu">
-
-    </div>
+    
     <div class="ui container search">
         <form class="ui form" ng-submit="refresh()">
             <div class="fluid big left ui action input">
@@ -291,8 +292,8 @@
             <div class="card" ng-repeat="revisado in revisados">
                 <div class="content">
                     <!--div class="header">{{ equipo.nombre }}</div!-->
-                    <div class="content">duracion {{revisado.duracion }}</div>
-                    <div class="content">ordentrabajo {{revisado.ordentrabajo }}</div>
+                    <div class="content">duracion:   {{revisado.duracion }}</div>
+                    <div class="content">ordentrabajo: {{revisado.ordenTrabajo }}</div>
                     <!--div class="content">capacitor: {{equipo.capacitor }}</div>
                     <div class="content">marca: {{equipo.marca }}</div>
                     <div class="content">modelo: {{equipo.modelo }}</div>
@@ -418,7 +419,7 @@
         </div>
     </div>
     
-    <!-- <div class="ui modal" id="modal-book">
+    <div class="ui modal" id="modal-book">
         <i class="close icon"></i>
         <div class="header">
             Add book
@@ -440,6 +441,6 @@
                 Submit
             </button>
         </div>
-    </div> -->
+    </div>
 </body>
 </html>
