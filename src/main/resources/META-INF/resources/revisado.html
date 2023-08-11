@@ -42,13 +42,13 @@
         $scope.equipos = [];
         $scope.areas = [];
         $scope.tipoEquipos = [];
-        
+        $scope.revisado = [];
         $scope.pattern = '';
         $scope.form = {};
 
         // initializes the data from the REST endpoint
         _refreshPageData();
-        $('.equipos').show();
+        $('.revisado').show();
         _clearForm();
 
         $scope.refresh = function () {
@@ -63,8 +63,8 @@
         // };
 
         $scope.showAddEquipoModal = function () {
-            $scope.equipoModalTitle = "Add equipo";
-            $('#modal-equipo').modal('show');
+            $scope.revisadoModalTitle = "Add revisado";
+            $('#modal-revisado').modal('show');
         }
 
         // $scope.showEditEquipoModal = function (equipo) {
@@ -73,41 +73,41 @@
         //     $('#modal-equipo').modal('show');
         // }
 
-        $scope.addOrEditEquipo = function () {
+        $scope.addOrEditRevisado = function () {
             data = {};
-            if ($scope.form.equipo.id == -1) {
+            if ($scope.form.revisado.id == -1) {
                 method = 'PUT';
-                url = '/inventario/equipo';
-                data.nombre = $scope.form.equipo.nombre;
-                data.marca = $scope.form.equipo.marca;
-                data.modelo = $scope.form.equipo.modelo;
-                data.voltaje = $scope.form.equipo.voltaje;
-                data.capacidad = $scope.form.equipo.capacidad;
-                data.capacitor = $scope.form.equipo.capacitor;
-                data.tipoMotor = $scope.form.equipo.tipoMotor;
-                data.capacidadMotor = $scope.form.equipo.capacidadMotor;
-                data.numeroEquipo = $scope.form.equipo.numeroEquipo;
-                data.hp = $scope.form.equipo.hp;
-                data.amperaje = $scope.form.equipo.amperaje;
-                data.areaId = $scope.form.equipo.areaId;
-                data.tipoEquipoId = $scope.form.equipo.tipoEquipoId;
+                url = '/inventario/revisado';
+                data.duracion = $scope.form.revisado.duracion;
+                data.ordentrabajo = $scope.form.revisado.ordentrabajo;
+                //data.modelo = $scope.form.equipo.modelo;
+                //data.voltaje = $scope.form.equipo.voltaje;
+                //data.capacidad = $scope.form.equipo.capacidad;
+                //data.capacitor = $scope.form.equipo.capacitor;
+                //data.tipoMotor = $scope.form.equipo.tipoMotor;
+                //data.capacidadMotor = $scope.form.equipo.capacidadMotor;
+                //data.numeroEquipo = $scope.form.equipo.numeroEquipo;
+                //data.hp = $scope.form.equipo.hp;
+                //data.amperaje = $scope.form.equipo.amperaje;
+                //data.areaId = $scope.form.equipo.areaId;
+                //data.tipoEquipoId = $scope.form.equipo.tipoEquipoId;
             } else {
                 method = 'POST';
-                url = '/inventario/equipo/' + $scope.form.equipo.id;
-                data.id = $scope.form.equipo.id;
-                data.nombre = $scope.form.equipo.nombre;
-                data.marca = $scope.form.equipo.marca;
-                data.modelo = $scope.form.equipo.modelo;
-                data.voltaje = $scope.form.equipo.voltaje;
-                data.capacidad = $scope.form.equipo.capacidad;
-                data.capacitor = $scope.form.equipo.capacitor;
-                data.tipoMotor = $scope.form.equipo.tipoMotor;
-                data.capacidadMotor = $scope.form.equipo.capacidadMotor;
-                data.numeroEquipo = $scope.form.equipo.numeroEquipo;
-                data.hp = $scope.form.equipo.hp;
-                data.amperaje = $scope.form.equipo.amperaje;
-                data.areaId = $scope.form.equipo.areaId;
-                data.tipoEquipoId = $scope.form.equipo.tipoEquipoId;
+                url = '/inventario/revisado/' + $scope.form.revisado.id;
+                data.id = $scope.form.revisado.id;
+                data.duracion = $scope.form.equipo.duracion;
+                data.ordentrabajo = $scope.form.equipo.ordentrabajo;
+                //data.modelo = $scope.form.equipo.modelo;
+                ////data.voltaje = $scope.form.equipo.voltaje;
+                //data.capacidad = $scope.form.equipo.capacidad;
+                //data.capacitor = $scope.form.equipo.capacitor;
+                //data.tipoMotor = $scope.form.equipo.tipoMotor;
+               // data.capacidadMotor = $scope.form.equipo.capacidadMotor;
+                //data.numeroEquipo = $scope.form.equipo.numeroEquipo;
+                //data.hp = $scope.form.equipo.hp;
+                //data.amperaje = $scope.form.equipo.amperaje;
+                //data.areaId = $scope.form.equipo.areaId;
+                //data.tipoEquipoId = $scope.form.equipo.tipoEquipoId;
             }
             $http({
                 method: method,
@@ -142,14 +142,15 @@
         function _refreshPageData() {
             $http({
                 method: 'GET',
-                url: '/inventario/equipo/search?pattern=' + $scope.pattern
+                url: '/inventario/revisado/search?pattern=' + $scope.pattern
             }).then(function successCallback(response) {
-                $scope.equipos = response.data;
+                $scope.revisados = response.data;
             }, function errorCallback(response) {
                 console.log(response.statusText);
             });
             _refreshPageDataArea()
             _refreshPageDataTipoEquipo()
+            _refreshPageData()
         }
 
         function _refreshPageDataArea() {
@@ -172,6 +173,16 @@
                 console.log(response.statusText);
             });
         }
+        function _refreshPageDataRevisado() {
+            $http({
+                method: 'GET',
+                url: '/inventario/revisado/search?pattern=' + $scope.pattern
+            }).then(function successCallback(response) {
+                $scope.revisado = response.data;
+            }, function errorCallback(response) {
+                console.log(response.statusText);
+            });
+        }
 
         function _success(response) {
             $scope.pattern = '';
@@ -179,17 +190,17 @@
             _clearForm();
         }
         function _clearForm() {
-            $scope.form.equipo = {
+            $scope.form.revisado = {
                 id: -1,
-                nombre: '',
-                marca: '',
-                modelo: '',
-                voltaje: '',
-                capacidad: '',
-                capacitor: '',
-                tipoMotor: '',
-                capacidadMotor: '',
-                numeroEquipo: ''
+                duracion: '',
+                ordentrabajo: '',
+                //modelo: '',
+                //voltaje: '',
+                //capacidad: '',
+                //capacitor: '',
+                //tipoMotor: '',
+                //capacidadMotor: '',
+                //numeroEquipo: ''
             };
         }
         function _error(response) {
@@ -200,8 +211,8 @@
     </script>
 </head>
 <body ng-app="InventarioManagement" ng-controller="InventarioManagementController">
-
-    <div class="ui fixed inverted menu">
+<!--aqui agrego siempre algo al menu -->
+    <div class="ui fixed inverted menu"> <!--!-->
         <div class="ui container">
             <a class="header item" href="https://quarkus.io/">
                 <img class="logo" src="https://quarkus.io/assets/images/quarkus_logo_horizontal_rgb_reverse.svg" alt="Quarkus logo" style="width:200px;">
@@ -275,14 +286,14 @@
             </div>
         </form>
     </div>
-    <div class="ui container equipos" style="display:none;">
+    <div class="ui container revisado" style="display:none;">
         <div class="ui cards">
-            <div class="card" ng-repeat="equipo in equipos">
+            <div class="card" ng-repeat="revisado in revisados">
                 <div class="content">
-                    <div class="header">{{ equipo.nombre }}</div>
-                    <div class="content">capacidad: {{equipo.capacidad }}</div>
-                    <div class="content">capacidadMotor: {{equipo.capacidadMotor }}</div>
-                    <div class="content">capacitor: {{equipo.capacitor }}</div>
+                    <!--div class="header">{{ equipo.nombre }}</div!-->
+                    <div class="content">duracion {{revisado.duracion }}</div>
+                    <div class="content">ordentrabajo {{revisado.ordentrabajo }}</div>
+                    <!--div class="content">capacitor: {{equipo.capacitor }}</div>
                     <div class="content">marca: {{equipo.marca }}</div>
                     <div class="content">modelo: {{equipo.modelo }}</div>
                     <div class="content">nombre: {{equipo.nombre }}</div>
@@ -314,31 +325,31 @@
             </div>
             <div class="card">
                 <div class="content">
-                    <button class="ui blue labeled icon button" ng-click="showAddEquipoModal()"><i class="plus circle icon"></i> Add equipo</button>
+                    <button class="ui blue labeled icon button" ng-click="showAddRevisadoModal()"><i class="plus circle icon"></i> Add revisado</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="ui modal" id="modal-equipo">
+    <div class="ui modal" id="modal-revisaso">
         <i class="close icon"></i>
         <div class="header">
-            {{ equipoModalTitle }}
+            {{ revisadoModalTitle }}
         </div>
         <div class="content">
             <div class="description">
-                <form class="ui form" id="equipo-form">
-                    <input type="hidden" name="equipoId" ng-model="form.equipo.id" />
+                <form class="ui form" id="revisado-form">
+                    <input type="hidden" name="revisadoId" ng-model="form.revisado.id" />
                     <div class="required field">
-                        <label>Nombre</label>
-                        <input type="text" name="nombre" placeholder="Nombre" ng-model="form.equipo.nombre" required>
+                        <label>Duracion</label>
+                        <input type="text" name="duracion" placeholder="Duracion" ng-model="form.revisado.duracion" required>
                     </div>
 
                     <div class="required field">
-                        <label>marca</label>
-                        <input type="text" name="marca" placeholder="marca" ng-model="form.equipo.marca" required>
+                        <label>ordentrabajo</label>
+                        <input type="text" name="ordentrabajo" placeholder="ordentrabajo" ng-model="form.revisado.ordentrabajo" required>
                     </div>
-                    <div class="required field">
+                    <!--div class="required field">
                         <label>modelo</label>
                         <input type="text" name="modelo" placeholder="modelo" ng-model="form.equipo.modelo" required>
                     </div>
@@ -373,20 +384,20 @@
                     <div class="required field">
                         <label>amperaje</label>
                         <input type="text" name="amperaje" placeholder="amperaje" ng-model="form.equipo.amperaje" required>
-                    </div>
+                    </div!-->
 
                     <div class="required field">
-                        <select class="field" ng-model="form.equipo.areaId" required>
-                            <option value="">Seleccione un área...</option>
-                            <option ng-repeat="area in areas" value="{{ area.id }}">{{ area.nombre }}</option>
+                        <select class="field" ng-model="form.revisado.EquipoId" required>
+                            <option value="">Seleccione un equipo...</option>
+                            <option ng-repeat="equipo in equipos" value="{{ equipo.id }}">{{ equipo.nombre }}</option>
                         </select>
                     </div>
                     
                     
                     <div class="required field">
-                        <select class="field" ng-model="form.equipo.tipoEquipoId" required>
-                            <option value="">Seleccione un tipo de equipo...</option>
-                            <option ng-repeat="tipoEquipo in tipoEquipos" value="{{ tipoEquipo.id }}">{{ tipoEquipo.nombre }}</option>
+                        <select class="field" ng-model="form.revisado.Desperfectoid" required>
+                            <option value="">Seleccione un desperfecto...</option>
+                            <option ng-repeat="Desperfecto in Despefectos" value="{{ Desperfecto.id }}">{{ Desperfecto.nombre }}</option>
                         </select>
                     </div>
                     
@@ -400,7 +411,7 @@
             </div>
         </div>
         <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="equipo-form" ng-click="addOrEditEquipo()">
+            <button type="submit" class="ui positive right labeled icon button" form="revisado-form" ng-click="addOrEditEquipo()">
                 <i class="checkmark icon"></i>
                 Submit
             </button>

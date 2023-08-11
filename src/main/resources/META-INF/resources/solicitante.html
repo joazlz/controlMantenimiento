@@ -42,13 +42,14 @@
         $scope.equipos = [];
         $scope.areas = [];
         $scope.tipoEquipos = [];
-        
+        $scope.revisado = [];
+        $scope.solicitante = [];
         $scope.pattern = '';
         $scope.form = {};
 
         // initializes the data from the REST endpoint
         _refreshPageData();
-        $('.equipos').show();
+        $('.solicitante').show();
         _clearForm();
 
         $scope.refresh = function () {
@@ -63,8 +64,8 @@
         // };
 
         $scope.showAddEquipoModal = function () {
-            $scope.equipoModalTitle = "Add equipo";
-            $('#modal-equipo').modal('show');
+            $scope.solicitanteModalTitle = "Add solicitante";
+            $('#modal-solicitante').modal('show');
         }
 
         // $scope.showEditEquipoModal = function (equipo) {
@@ -104,7 +105,7 @@
                 data.tipoMotor = $scope.form.equipo.tipoMotor;
                 data.capacidadMotor = $scope.form.equipo.capacidadMotor;
                 data.numeroEquipo = $scope.form.equipo.numeroEquipo;
-                data.hp = $scope.form.equipo.hp;
+                333333333data.hp = $scope.form.equipo.hp;
                 data.amperaje = $scope.form.equipo.amperaje;
                 data.areaId = $scope.form.equipo.areaId;
                 data.tipoEquipoId = $scope.form.equipo.tipoEquipoId;
@@ -142,9 +143,9 @@
         function _refreshPageData() {
             $http({
                 method: 'GET',
-                url: '/inventario/equipo/search?pattern=' + $scope.pattern
+                url: '/inventario/solicitante/search?pattern=' + $scope.pattern
             }).then(function successCallback(response) {
-                $scope.equipos = response.data;
+                $scope.revisados = response.data;
             }, function errorCallback(response) {
                 console.log(response.statusText);
             });
@@ -168,6 +169,16 @@
                 url: '/inventario/tipoequipo/search?pattern=' + $scope.pattern
             }).then(function successCallback(response) {
                 $scope.tipoEquipos = response.data;
+            }, function errorCallback(response) {
+                console.log(response.statusText);
+            });
+        }
+        function _refreshPageDataRevisado() {
+            $http({
+                method: 'GET',
+                url: '/inventario/tipoequipo/search?pattern=' + $scope.pattern
+            }).then(function successCallback(response) {
+                $scope.revisado = response.data;
             }, function errorCallback(response) {
                 console.log(response.statusText);
             });
