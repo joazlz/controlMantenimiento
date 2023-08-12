@@ -207,15 +207,16 @@
         </div>
     </div>
     
+        <!--BUSQUEDA-->
     <div class="ui container search">
         <form class="ui form" ng-submit="refresh()">
             <div class="fluid big left ui action input">
                 <input type="text" placeholder="Search for an author name or a book title. Try searching for aus*, owen or mystery." ng-model="pattern">
-                <button class="ui blue right labeled icon button" ng-click="refresh()"><i class="search icon"></i> Search</button>
+                <button class="ui blue right labeled icon button" ng-click="refresh()"><i class="search icon"></i> Buscar</button>
             </div>
         </form>
     </div>
-
+       <!--CONTENIDO -->
     <div class="ui container areas" style="display:none;">
         <div class="ui cards">
             <div class="card" ng-repeat="area in areas">
@@ -225,26 +226,21 @@
                         {{ area.equipos.length }}
                         <!-- <button class="ui basic blue icon button mini right floated" ng-click="showBookModal(area)"><i class="plus circle icon"></i> Add book</button> -->
                     </div>
-                    <!-- <div class="description">
-                        <div ng-repeat="book in author.books">
-                            <div>
-                                {{ book.title }}
-                                <a ng-click="remove('book', book)"><i class="trash alternate outline right floated icon"></i></a>
-                            </div>
-                            <div class="ui divider"></div>
-                        </div>
-                    </div> -->
+                    
                     <div class="extra content">
                         <div class="ui two buttons">
-                            <button class="ui basic green button" ng-click="showEditAreaModal(area)"><i class="pencil alternate icon"></i> Edit</button>
-                            <button class="ui basic red button" ng-click="remove('area', area)"><i class="trash alternate outline icon"></i> Delete</button>
+                            <button class="ui basic green button" ng-click="showEditAreaModal(area)"><i class="pencil alternate icon"></i> 
+                                Editar</button>
+                            <button class="ui basic red button" ng-click="remove('area', area)"><i class="trash alternate outline icon"></i>
+                                Eliminar</button>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="card">
                 <div class="content">
-                    <button class="ui blue labeled icon button" ng-click="showAddAreaModal()"><i class="plus circle icon"></i> Add area</button>
+                    <button class="ui blue labeled icon button" ng-click="showAddAreaModal()"><i class="plus circle icon"></i> 
+                        Agregar area</button>
                 </div>
             </div>
         </div>
@@ -269,12 +265,12 @@
         <div class="actions">
             <button type="submit" class="ui positive right labeled icon button" form="area-form" ng-click="addOrEditArea()">
                 <i class="checkmark icon"></i>
-                Submit
+                Guardar
             </button>
         </div>
     </div>
 
-    <div class="ui modal" id="modal-book">
+<!--    <div class="ui modal" id="modal-book">
         <i class="close icon"></i>
         <div class="header">
             Add book
@@ -296,7 +292,7 @@
                 Submit
             </button>
         </div>
-    </div>
+    </div>-->
 
 </body>
 </html>

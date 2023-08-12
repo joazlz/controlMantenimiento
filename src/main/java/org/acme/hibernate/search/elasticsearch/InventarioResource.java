@@ -181,6 +181,8 @@ public class InventarioResource {
     @RestForm String capacidad,
     @RestForm String capacitor,
     @RestForm String tipoMotor,
+    //@RestForm String tipoMotorcondensador,
+    //@RestForm String tipoMotorevaporador,
     @RestForm String capacidadMotor,
     @RestForm String numeroEquipo,
     @RestForm String hp,
@@ -205,6 +207,8 @@ public class InventarioResource {
         equipo.capacidad = capacidad;
         equipo.capacitor = capacitor;
         equipo.tipoMotor = tipoMotor;
+        //equipo.tipoMotorcondensador = tipoMotorcondensador;
+        //equipo.tipoMotorevaporador = tipoMotorevaporador;
         equipo.capacidadMotor = capacidadMotor;
         equipo.numeroEquipo = numeroEquipo;
         equipo.hp = hp;
@@ -291,6 +295,7 @@ public class InventarioResource {
                 .fetchHits(size.orElse(20));
     }
     
+    //REVISADO
     @PUT
     @Path("revisado")
     @Transactional
@@ -333,6 +338,40 @@ public class InventarioResource {
         equipo.persist();
 
     }
+    @POST
+    @Path("revisado/{id}")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void updateRevisado(Long id, @RestForm String nombre) {
+        Area revisado = Area.findById(id);
+        if (revisado == null) {
+            return;
+        }
+        revisado.nombre = nombre;
+        revisado.persist();
+    }
 
+    @DELETE
+    @Path("revisado/{id}")
+    @Transactional
+    public void deleteRevisado(Long id) {
+        Area revisado = Area.findById(id);
+        if (revisado != null) {
+            revisado.delete();
+        }
+    }
+
+//    @GET
+//    @Path("revisado/search")
+//    @Transactional
+//    public List<Revisado> searchRevisado(@RestQuery String pattern,
+//            @RestQuery Optional<Integer> size) {
+//        return searchSession.search(Revisado.class)
+//                .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
+//                        : f.simpleQueryString()
+//                                .fields("nombre", "equipos.nombre").matching(pattern))
+//                .sort(f -> f.field("nombre_sort"))
+//                .fetchHits(size.orElse(20));
+//    }
 
 }

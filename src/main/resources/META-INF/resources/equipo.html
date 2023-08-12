@@ -291,6 +291,15 @@
                     <div class="content">voltaje: {{equipo.voltaje }}</div>
                     <div class="content">hp: {{equipo.hp }}</div>
                     <div class="content">amperaje: {{equipo.amperaje }}</div>
+                    
+                    <div class="extra content">
+                        <div class="ui two buttons">
+                            <button class="ui basic green button" ng-click="showEditEquipoModal(area)"><i class="pencil alternate icon"></i> 
+                                Editar</button>
+                            <button class="ui basic red button" ng-click="remove('equipo', equipo)"><i class="trash alternate outline icon"></i>
+                                Eliminar</button>
+                        </div>
+                    </div>
                     <!-- <div class="content">{{ equipo. }}</div> -->
                     <!-- <div class="meta">
                         <button class="ui basic blue icon button mini right floated" ng-click="showEquipoModal(equipo)"><i class="plus circle icon"></i> Add equipo</button>

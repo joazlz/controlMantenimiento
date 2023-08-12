@@ -52,6 +52,7 @@
             // initializes the data from the REST endpoint
             _refreshPageData();
             $('.revisado').show();
+            
 
             $scope.showAddRevisadoModal = function () {
                 $scope.revisadoModalTitle = "Add revisado";
@@ -134,8 +135,8 @@
                     id: -1,
                     duracion: '',
                     ordentrabajo: '',
-                    //modelo: '',
-                    //voltaje: '',
+                    desperfectoId: '',
+                    equipoId: '',
                     //capacidad: '',
                     //capacitor: '',
                     //tipoMotor: '',
@@ -229,7 +230,7 @@
                     placeholder="Search for an author name or a book title. Try searching for aus*, owen or mystery."
                     ng-model="pattern">
                 <button class="ui blue right labeled icon button" ng-click="refresh()"><i class="search icon"></i>
-                    Search</button>
+                    Buscar</button>
             </div>
         </form>
     </div>
@@ -239,20 +240,33 @@
         <div class="ui cards">
             <div class="card" ng-repeat="revisado in revisados">
                 <div class="content">
-                    <!--div class="header">{{ equipo.nombre }}</div!-->
+                    <div class="header">{{ revisado.Id }}</div>
+                    <div class="meta">
+                        {{ revisado.equipos.length }}
+                        <!-- <button class="ui basic blue icon button mini right floated" ng-click="showBookModal(area)"><i class="plus circle icon"></i> Add book</button> -->
+                    </div>
                     <div class="content">duracion: {{revisado.duracion }}</div>
                     <div class="content">ordenTrabajo: {{revisado.ordenTrabajo }}</div>
                     <div class="content">desperfectoId: {{revisado.desperfectoId }}</div>
                     <div class="content">equipoId: {{revisado.equipoId }}</div>
 
                 </div>
-            </div>
-            <div class="card">
-                <div class="content">
-                    <button class="ui blue labeled icon button" ng-click="showAddRevisadoModal()"><i
-                            class="plus circle icon"></i> Add revisado</button>
+                <div class="extra content">
+                    <div class="ui two buttons">
+                    <button class="ui basic green button" ng-click="showEditRevisadoModal(revisado)"><i class="pencil alternate icon"></i> 
+                        Edit</button>
+                    <button class="ui basic red button" ng-click="remove('revisado', revisado)"><i class="trash alternate outline icon"></i>
+                        Delete</button>
+                    </div>
                 </div>
             </div>
+            
+                <div class="card">
+                    <div class="content">
+                    <button class="ui blue labeled icon button" ng-click="showAddRevisadoModal()"><i
+                            class="plus circle icon"></i> Agregar revisado</button>
+                    </div>
+                </div>
         </div>
     </div>
 
