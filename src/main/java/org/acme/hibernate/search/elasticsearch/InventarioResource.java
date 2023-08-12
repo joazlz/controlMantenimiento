@@ -1,4 +1,5 @@
 package org.acme.hibernate.search.elasticsearch;
+import org.jboss.logging.Logger;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +33,7 @@ public class InventarioResource {
 
     @Inject
     SearchSession searchSession;
-
+private static final Logger LOG = Logger.getLogger(InventarioResource.class);
     @Transactional
     void onStart(@Observes StartupEvent ev) throws InterruptedException {
         // only reindex if we imported some content
@@ -245,7 +246,7 @@ public class InventarioResource {
     }
 
     @GET
-    @Path("desperfecto/search")
+    @Path("desperfecto/search")  //este es el pat//
     @Transactional
     public List<Desperfecto> searchDesperfectos(@RestQuery String pattern,
             @RestQuery Optional<Integer> size) {
@@ -282,6 +283,41 @@ public class InventarioResource {
                 .sort(f -> f.field("ordenTrabajo_sort"))
                 .fetchHits(size.orElse(20));
     }
+    @PUT
+    @Path("revisado")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void addRevisado(@RestForm String duracion,
+    @RestForm String ordenTrabajo,
+    @RestForm Long desperfectoId,
+     @RestForm Long equipoId ) {
+            LOG.info("ordenTrabajo: "+ordenTrabajo);
+            LOG.info("duracion: "+duracion);  
+            LOG.info("desperfectoId: "+desperfectoId); 
+            LOG.info("equipoId: "+equipoId); 
+        Desperfecto desperfecto = Desperfecto.findById(desperfectoId);
+        if (desperfecto == null) {
+            return;
+        }
 
+        Equipo equipo = Equipo.findById(equipoId);
+        if (equipo == null) {
+            return;
+        }
+
+        Revisado revisado = new Revisado();
+        revisado.duracion=duracion;
+        revisado.ordenTrabajo=ordenTrabajo;
+        revisado.desperfecto=desperfecto;
+        revisado.equipo=equipo;
+        revisado.persist(); //Guarda la base de datos pesist//
+        
+        desperfecto.revisados.add(revisado);
+        desperfecto.persist();
+        
+        equipo.revisados.add(revisado);
+        equipo.persist();
+
+    }
 
 }

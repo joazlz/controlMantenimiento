@@ -32,189 +32,181 @@
     </style>
     <!-- Load AngularJS -->
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <!--JAVA SCRIPT-->
     <script type="text/javascript">
       var app = angular.module("InventarioManagement", []);
 
       //Controller Part
       app.controller("InventarioManagementController", ['$scope', '$http', '$httpParamSerializerJQLike', function ($scope, $http, $httpParamSerializerJQLike) {
 
-        // initialize page with default data which is blank in this example
-        // $scope.equipos = [];
-        // $scope.areas = [];
-        // $scope.tipoEquipos = [];
-        $scope.revisados = [];
-        $scope.pattern = '';
-        // $scope.form = {};
-
-        // initializes the data from the REST endpoint
-        _refreshPageData();
-        $('.revisado').show();
-        // _clearForm();
-
-        // $scope.refresh = function () {
-        //     _refreshPageData();
-        // }
-
-        // $scope.remove = function (type, element) {
-        //     $http({
-        //         method: 'DELETE',
-        //         url: '/inverario/' + type + '/' + element.id
-        //     }).then(_success, _error);
-        // };
-
-        // $scope.showAddEquipoModal = function () {
-        //     $scope.revisadoModalTitle = "Add revisado";
-        //     $('#modal-revisado').modal('show');
-        // }
-
-        // $scope.showEditEquipoModal = function (equipo) {
-        //     $scope.equipoModalTitle = "Edit equipo " + equipo.firstName + ' ' + equipo.lastName;
-        //     $scope.form.equipo = equipo;
-        //     $('#modal-equipo').modal('show');
-        // }
-
-        // $scope.addOrEditRevisado = function () {
-        //     data = {};
-        //     if ($scope.form.revisado.id == -1) {
-        //         method = 'PUT';
-        //         url = '/inventario/revisado';
-        //         data.duracion = $scope.form.revisado.duracion;
-        //         data.ordentrabajo = $scope.form.revisado.ordentrabajo;
-        //         //data.modelo = $scope.form.equipo.modelo;
-        //         //data.voltaje = $scope.form.equipo.voltaje;
-        //         //data.capacidad = $scope.form.equipo.capacidad;
-        //         //data.capacitor = $scope.form.equipo.capacitor;
-        //         //data.tipoMotor = $scope.form.equipo.tipoMotor;
-        //         //data.capacidadMotor = $scope.form.equipo.capacidadMotor;
-        //         //data.numeroEquipo = $scope.form.equipo.numeroEquipo;
-        //         //data.hp = $scope.form.equipo.hp;
-        //         //data.amperaje = $scope.form.equipo.amperaje;
-        //         //data.areaId = $scope.form.equipo.areaId;
-        //         //data.tipoEquipoId = $scope.form.equipo.tipoEquipoId;
-        //     } else {
-        //         method = 'POST';
-        //         url = '/inventario/revisado/' + $scope.form.revisado.id;
-        //         data.id = $scope.form.revisado.id;
-        //         data.duracion = $scope.form.equipo.duracion;
-        //         data.ordentrabajo = $scope.form.equipo.ordentrabajo;
-        //         //data.modelo = $scope.form.equipo.modelo;
-        //         ////data.voltaje = $scope.form.equipo.voltaje;
-        //         //data.capacidad = $scope.form.equipo.capacidad;
-        //         //data.capacitor = $scope.form.equipo.capacitor;
-        //         //data.tipoMotor = $scope.form.equipo.tipoMotor;
-        //        // data.capacidadMotor = $scope.form.equipo.capacidadMotor;
-        //         //data.numeroEquipo = $scope.form.equipo.numeroEquipo;
-        //         //data.hp = $scope.form.equipo.hp;
-        //         //data.amperaje = $scope.form.equipo.amperaje;
-        //         //data.areaId = $scope.form.equipo.areaId;
-        //         //data.tipoEquipoId = $scope.form.equipo.tipoEquipoId;
-        //     }
-        //     $http({
-        //         method: method,
-        //         url: url,
-        //         data: $httpParamSerializerJQLike(data),
-        //         headers: {
-        //             'Content-Type': 'application/x-www-form-urlencoded'
-        //         }
-        //     }).then(_success, _error);
-        // }
-
-        // $scope.showBookModal = function (author) {
-        //     $scope.form.book.authorId = author.id;
-        //     $('#modal-book').modal('show');
-        // }
-
-        // $scope.addBook = function () {
-        //     data = {
-        //         authorId: $scope.form.book.authorId,
-        //         title: $scope.form.book.title
-        //     };
-        //     $http({
-        //         method: 'PUT',
-        //         url: '/library/book/',
-        //         data: $httpParamSerializerJQLike(data),
-        //         headers: {
-        //             'Content-Type': 'application/x-www-form-urlencoded'
-        //         }
-        //     }).then(_success, _error);
-        // }
-
-        function _refreshPageData() {
-            $http({
-                method: 'GET',
-                url: '/inventario/revisado/search?pattern=' + $scope.pattern
-            }).then(function successCallback(response) {
-                $scope.revisados = response.data;
-            }, function errorCallback(response) {
-                console.log(response.statusText);
-            });
-            // _refreshPageDataArea()
-            // _refreshPageDataTipoEquipo()
-            // _refreshPageData()
-        }
-
-        // function _refreshPageDataArea() {
-        //     $http({
-        //         method: 'GET',
-        //         url: '/inventario/area/search?pattern=' + $scope.pattern
-        //     }).then(function successCallback(response) {
-        //         $scope.areas = response.data;
-        //     }, function errorCallback(response) {
-        //         console.log(response.statusText);
-        //     });
-        // }
-        // function _refreshPageDataTipoEquipo() {
-        //     $http({
-        //         method: 'GET',
-        //         url: '/inventario/tipoequipo/search?pattern=' + $scope.pattern
-        //     }).then(function successCallback(response) {
-        //         $scope.tipoEquipos = response.data;
-        //     }, function errorCallback(response) {
-        //         console.log(response.statusText);
-        //     });
-        // }
-        // function _refreshPageDataRevisado() {
-        //     $http({
-        //         method: 'GET',
-        //         url: '/inventario/revisado/search?pattern=' + $scope.pattern
-        //     }).then(function successCallback(response) {
-        //         $scope.revisado = response.data;
-        //     }, function errorCallback(response) {
-        //         console.log(response.statusText);
-        //     });
-        // }
-
-        function _success(response) {
+            // initialize page with default data which is blank in this example
+            // $scope.equipos = [];
+            // $scope.areas = [];
+            // $scope.tipoEquipos = [];
+            $scope.revisados = [];
+            $scope.desperfectos = [];
+            $scope.equipos= [];
             $scope.pattern = '';
+            // $scope.form = {};
+
+            // initializes the data from the REST endpoint
             _refreshPageData();
-            _clearForm();
-        }
+            _getDesperfectos();
+            _getEquipo();
+            $('.revisado').show();
+            // _clearForm();
 
-        function _clearForm() {
-            $scope.form.revisado = {
-                id: -1,
-                duracion: '',
-                ordentrabajo: '',
-                //modelo: '',
-                //voltaje: '',
-                //capacidad: '',
-                //capacitor: '',
-                //tipoMotor: '',
-                //capacidadMotor: '',
-                //numeroEquipo: ''
-            };
-        }
+            // $scope.refresh = function () {
+            //     _refreshPageData();
+            // }
 
-        function _error(response) {
-            alert(response.data.message || response.statusText);
-            _clearForm();
-        }
-      
+            // $scope.remove = function (type, element) {
+            //     $http({
+            //         method: 'DELETE',
+            //         url: '/inverario/' + type + '/' + element.id
+            //     }).then(_success, _error);
+            // };
+
+             $scope.showAddRevisadoModal = function () {
+                 $scope.revisadoModalTitle = "Add revisado";
+                 $('#modal-revisado').modal('show');
+             }
+
+            // $scope.showEditEquipoModal = function (equipo) {
+            //     $scope.equipoModalTitle = "Edit equipo " + equipo.firstName + ' ' + equipo.lastName;
+            //     $scope.form.equipo = equipo;
+            //     $('#modal-equipo').modal('show');
+            // }
+
+           $scope.agregarOeditarRevisado = function () {
+                 data = {};
+//                alert($scope.form.revisado.ordenTrabajo)
+//                alert($scope.form.revisado.duracion)
+//                alert($scope.form.revisado.desperfectoId)
+//                alert($scope.form.revisado.equipoId)
+                 if ($scope.form.revisado.id == -1) {
+                     method = 'PUT';
+                     url = '/inventario/revisado';
+                     data.duracion = $scope.form.revisado.duracion;
+                     data.ordenTrabajo = $scope.form.revisado.ordenTrabajo;
+                     data.desperfectoId = $scope.form.revisado.desperfectoId;
+                     data.equipoId = $scope.form.revisado.equipoId;
+
+                 } else {
+                     method = 'POST';
+                     url = '/inventario/revisado/' + $scope.form.revisado.id;
+                     data.id = $scope.form.revisado.id;
+                     data.duracion = $scope.form.revisado.duracion;
+                     data.ordenTrabajo = $scope.form.revisado.ordenTrabajo;
+                     data.desperfectoId = $scope.form.revisado.desperfectoId;
+                     data.equipoId = $scope.form.revisado.equipoId;
+
+                 }
+             }
+
+            function _getDesperfectos() {
+                $http({
+                    method: 'GET',
+                    url: '/inventario/desperfecto/search?pattern=' + $scope.pattern
+                }).then(function successCallback(response) {
+                    $scope.desperfectos = response.data;
+                }, function errorCallback(response) {
+                    console.log(response.statusText);
+                });
+                // _refreshPageDataArea()
+                // _refreshPageDataTipoEquipo()
+                // _refreshPageData()
+                }
+            function _getEquipo() {
+                $http({
+                    method: 'GET',
+                    url: '/inventario/equipo/search?pattern=' + $scope.pattern
+                }).then(function successCallback(response) {
+                    $scope.equipos = response.data;
+                }, function errorCallback(response) {
+                    console.log(response.statusText);
+                });
+                // _refreshPageDataArea()
+                // _refreshPageDataTipoEquipo()
+                // _refreshPageData()
+            }
+
+            function _refreshPageData() {
+                $http({
+                    method: 'GET',
+                    url: '/inventario/revisado/search?pattern=' + $scope.pattern
+                }).then(function successCallback(response) {
+                    $scope.revisados = response.data;
+                }, function errorCallback(response) {
+                    console.log(response.statusText);
+                });
+                // _refreshPageDataArea()
+                // _refreshPageDataTipoEquipo()
+                // _refreshPageData()
+            }
+
+            // function _refreshPageDataArea() {
+            //     $http({
+            //         method: 'GET',
+            //         url: '/inventario/area/search?pattern=' + $scope.pattern
+            //     }).then(function successCallback(response) {
+            //         $scope.areas = response.data;
+            //     }, function errorCallback(response) {
+            //         console.log(response.statusText);
+            //     });
+            // }
+            // function _refreshPageDataTipoEquipo() {
+            //     $http({
+            //         method: 'GET',
+            //         url: '/inventario/tipoequipo/search?pattern=' + $scope.pattern
+            //     }).then(function successCallback(response) {
+            //         $scope.tipoEquipos = response.data;
+            //     }, function errorCallback(response) {
+            //         console.log(response.statusText);
+            //     });
+            // }
+            // function _refreshPageDataRevisado() {
+            //     $http({
+            //         method: 'GET',
+            //         url: '/inventario/revisado/search?pattern=' + $scope.pattern
+            //     }).then(function successCallback(response) {
+            //         $scope.revisado = response.data;
+            //     }, function errorCallback(response) {
+            //         console.log(response.statusText);
+            //     });
+            // }
+
+            function _success(response) {
+                $scope.pattern = '';
+                _refreshPageData();
+                _clearForm();
+            }
+
+            function _clearForm() {
+                $scope.form.revisado = {
+                    id: -1,
+                    duracion: '',
+                    ordentrabajo: '',
+                    //modelo: '',
+                    //voltaje: '',
+                    //capacidad: '',
+                    //capacitor: '',
+                    //tipoMotor: '',
+                    //capacidadMotor: '',
+                    //numeroEquipo: ''
+                };
+            }
+
+            function _error(response) {
+                alert(response.data.message || response.statusText);
+                _clearForm();
+            }
+
         }]);
     </script>
 </head>
 <body ng-app="InventarioManagement" ng-controller="InventarioManagementController">
-<!--aqui agrego siempre algo al menu -->
+    <!--MENU -->
     <div class="ui fixed inverted menu"> <!--!-->
         <div class="ui container">
             <a class="header item" href="https://quarkus.io/">
@@ -248,7 +240,7 @@
         </div>
     </div>
 
-
+    <!--PRESENTACION-->
     <div class="presentation">
         <div class="ui main container">
             <p>This Quarkus application demonstrates how to implement a CRUD endpoint to manage a library using Hibernate ORM with Panache and Hibernate Search.</p>
@@ -279,6 +271,7 @@
         </div>
     </div>
     
+    <!--BUSQUEDA-->
     <div class="ui container search">
         <form class="ui form" ng-submit="refresh()">
             <div class="fluid big left ui action input">
@@ -287,41 +280,18 @@
             </div>
         </form>
     </div>
+    
+    <!--CONTENIDO-->
     <div class="ui container revisado" style="display:none;">
         <div class="ui cards">
             <div class="card" ng-repeat="revisado in revisados">
                 <div class="content">
                     <!--div class="header">{{ equipo.nombre }}</div!-->
                     <div class="content">duracion:   {{revisado.duracion }}</div>
-                    <div class="content">ordentrabajo: {{revisado.ordenTrabajo }}</div>
-                    <!--div class="content">capacitor: {{equipo.capacitor }}</div>
-                    <div class="content">marca: {{equipo.marca }}</div>
-                    <div class="content">modelo: {{equipo.modelo }}</div>
-                    <div class="content">nombre: {{equipo.nombre }}</div>
-                    <div class="content">numeroEquipo: {{equipo.numeroEquipo }}</div>
-                    <div class="content">tipoMotor: {{equipo.tipoMotor }}</div>
-                    <div class="content">voltaje: {{equipo.voltaje }}</div>
-                    <div class="content">hp: {{equipo.hp }}</div>
-                    <div class="content">amperaje: {{equipo.amperaje }}</div>
-                    <!-- <div class="content">{{ equipo. }}</div> -->
-                    <!-- <div class="meta">
-                        <button class="ui basic blue icon button mini right floated" ng-click="showEquipoModal(equipo)"><i class="plus circle icon"></i> Add equipo</button>
-                    </div> -->
-                    <!-- <div class="description">
-                        <div ng-repeat="book in author.books">
-                            <div>
-                                {{ book.title }}
-                                <a ng-click="remove('book', book)"><i class="trash alternate outline right floated icon"></i></a>
-                            </div>
-                            <div class="ui divider"></div>
-                        </div>
-                    </div>
-                    <div class="extra content">
-                        <div class="ui two buttons">
-                            <button class="ui basic green button" ng-click="showEditAuthorModal(author)"><i class="pencil alternate icon"></i> Edit</button>
-                            <button class="ui basic red button" ng-click="remove('author', author)"><i class="trash alternate outline icon"></i> Delete</button>
-                        </div>
-                    </div> -->
+                    <div class="content">ordenTrabajo: {{revisado.ordenTrabajo }}</div>
+                    <div class="content">desperfectoId {{revisado.desperfectoId }}</div>
+                    <div class="content">equipoId {{revisado.equipoId }}</div>
+                   
                 </div>
             </div>
             <div class="card">
@@ -331,8 +301,9 @@
             </div>
         </div>
     </div>
+    
 
-    <div class="ui modal" id="modal-revisaso">
+    <div class="ui modal" id="modal-revisado">
         <i class="close icon"></i>
         <div class="header">
             {{ revisadoModalTitle }}
@@ -347,58 +318,21 @@
                     </div>
 
                     <div class="required field">
-                        <label>ordentrabajo</label>
-                        <input type="text" name="ordentrabajo" placeholder="ordentrabajo" ng-model="form.revisado.ordentrabajo" required>
+                        <label>ordenTrabajo</label>
+                        <input type="text" name="ordenTrabajo" placeholder="ordenTrabajo" ng-model="form.revisado.ordenTrabajo" required>
                     </div>
-                    <!--div class="required field">
-                        <label>modelo</label>
-                        <input type="text" name="modelo" placeholder="modelo" ng-model="form.equipo.modelo" required>
-                    </div>
+        
                     <div class="required field">
-                        <label>voltaje</label>
-                        <input type="text" name="voltaje" placeholder="voltaje" ng-model="form.equipo.voltaje" required>
-                    </div>
-                    <div class="required field">
-                        <label>capacidad</label>
-                        <input type="text" name="capacidad" placeholder="capacidad" ng-model="form.equipo.capacidad" required>
-                    </div>
-                    <div class="required field">
-                        <label>capacitor</label>
-                        <input type="text" name="capacitor" placeholder="capacitor" ng-model="form.equipo.capacitor" required>
-                    </div>
-                    <div class="required field">
-                        <label>tipoMotor</label>
-                        <input type="text" name="tipoMotor" placeholder="tipoMotor" ng-model="form.equipo.tipoMotor" required>
-                    </div>
-                    <div class="required field">
-                        <label>capacidadMotor</label>
-                        <input type="text" name="capacidadMotor" placeholder="capacidadMotor" ng-model="form.equipo.capacidadMotor" required>
-                    </div>
-                    <div class="required field">
-                        <label>numeroEquipo</label>
-                        <input type="text" name="numeroEquipo" placeholder="numeroEquipo" ng-model="form.equipo.numeroEquipo" required>
-                    </div>
-                    <div class="required field">
-                        <label>hp</label>
-                        <input type="text" name="hp" placeholder="hp" ng-model="form.equipo.hp" required>
-                    </div>
-                    <div class="required field">
-                        <label>amperaje</label>
-                        <input type="text" name="amperaje" placeholder="amperaje" ng-model="form.equipo.amperaje" required>
-                    </div!-->
-
-                    <div class="required field">
-                        <select class="field" ng-model="form.revisado.EquipoId" required>
-                            <option value="">Seleccione un equipo...</option>
-                            <option ng-repeat="equipo in equipos" value="{{ equipo.id }}">{{ equipo.nombre }}</option>
+                        <select class="field" ng-model="form.revisado.desperfectoId" required>
+                            <option value="">Seleccione un desperfecto...</option>
+                            <option ng-repeat="desperfecto in desperfectos" value="{{ desperfecto.id }}">{{ desperfecto.nombre }}</option>
                         </select>
                     </div>
                     
-                    
                     <div class="required field">
-                        <select class="field" ng-model="form.revisado.Desperfectoid" required>
-                            <option value="">Seleccione un desperfecto...</option>
-                            <option ng-repeat="Desperfecto in Despefectos" value="{{ Desperfecto.id }}">{{ Desperfecto.nombre }}</option>
+                        <select class="field" ng-model="form.revisado.equipoId" required>
+                            <option value="">Seleccione un equipo...</option>
+                            <option ng-repeat="equipo in equipos" value="{{ equipo.id }}">{{ equipo.nombre }}</option>
                         </select>
                     </div>
                     
@@ -412,33 +346,9 @@
             </div>
         </div>
         <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="revisado-form" ng-click="addOrEditEquipo()">
+            <button type="submit" class="ui positive right labeled icon button" form="revisado-form" ng-click="agregarOeditarRevisado()">
                 <i class="checkmark icon"></i>
-                Submit
-            </button>
-        </div>
-    </div>
-    
-    <div class="ui modal" id="modal-book">
-        <i class="close icon"></i>
-        <div class="header">
-            Add book
-        </div>
-        <div class="content">
-            <div class="description">
-                <form class="ui form" id="book-form">
-                    <input type="hidden" name="authorId" ng-model="form.book.authorId" />
-                    <div class="required field">
-                        <label>Title</label>
-                        <input type="text" name="title" placeholder="Title" ng-model="form.book.title" required>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="book-form" ng-click="addBook()">
-                <i class="checkmark icon"></i>
-                Submit
+                Guardar
             </button>
         </div>
     </div>
