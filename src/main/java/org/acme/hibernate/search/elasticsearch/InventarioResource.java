@@ -33,7 +33,8 @@ public class InventarioResource {
 
     @Inject
     SearchSession searchSession;
-private static final Logger LOG = Logger.getLogger(InventarioResource.class);
+    private static final Logger LOG = Logger.getLogger(InventarioResource.class);
+
     @Transactional
     void onStart(@Observes StartupEvent ev) throws InterruptedException {
         // only reindex if we imported some content
@@ -168,20 +169,7 @@ private static final Logger LOG = Logger.getLogger(InventarioResource.class);
                 .fetchHits(size.orElse(20));
     }
 
-
-    @GET
-    @Path("equipo/search")
-    @Transactional
-    public List<Equipo> searchEquipos(@RestQuery String pattern,
-            @RestQuery Optional<Integer> size) {
-        return searchSession.search(Equipo.class)
-                .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
-                        : f.simpleQueryString()
-                                .fields("nombre").matching(pattern))
-                .sort(f -> f.field("equipoNombre_sort").then().field("numeroEquipo_sort"))
-                .fetchHits(size.orElse(20));
-    }
-
+    // EQUIPO
     @PUT
     @Path("equipo")
     @Transactional
@@ -233,6 +221,21 @@ private static final Logger LOG = Logger.getLogger(InventarioResource.class);
     }
 
     @GET
+    @Path("equipo/search")
+    @Transactional
+    public List<Equipo> searchEquipos(@RestQuery String pattern,
+            @RestQuery Optional<Integer> size) {
+        return searchSession.search(Equipo.class)
+                .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
+                        : f.simpleQueryString()
+                                .fields("nombre").matching(pattern))
+                .sort(f -> f.field("equipoNombre_sort").then().field("numeroEquipo_sort"))
+                .fetchHits(size.orElse(20));
+    }
+
+    
+    // MATERIAL
+    @GET
     @Path("material/search")
     @Transactional
     public List<Material> searchMateriales(@RestQuery String pattern,
@@ -245,6 +248,7 @@ private static final Logger LOG = Logger.getLogger(InventarioResource.class);
                 .fetchHits(size.orElse(20));
     }
 
+    // DESPERFECTO
     @GET
     @Path("desperfecto/search")  //este es el pat//
     @Transactional
@@ -258,6 +262,7 @@ private static final Logger LOG = Logger.getLogger(InventarioResource.class);
                 .fetchHits(size.orElse(20));
     }
 
+    // TIPOMANTENIMIENTO
     @GET
     @Path("tipomantenimiento/search")
     @Transactional
@@ -271,6 +276,8 @@ private static final Logger LOG = Logger.getLogger(InventarioResource.class);
                 .fetchHits(size.orElse(20));
     }
 
+    
+    // REVISADO
     @GET
     @Path("revisado/search")
     @Transactional
@@ -283,19 +290,26 @@ private static final Logger LOG = Logger.getLogger(InventarioResource.class);
                 .sort(f -> f.field("ordenTrabajo_sort"))
                 .fetchHits(size.orElse(20));
     }
+    
     @PUT
     @Path("revisado")
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void addRevisado(@RestForm String duracion,
-    @RestForm String ordenTrabajo,
-    @RestForm Long desperfectoId,
-     @RestForm Long equipoId ) {
-            LOG.info("ordenTrabajo: "+ordenTrabajo);
-            LOG.info("duracion: "+duracion);  
-            LOG.info("desperfectoId: "+desperfectoId); 
-            LOG.info("equipoId: "+equipoId); 
+    public void addRevisado(
+        @RestForm String duracion,
+        @RestForm String ordenTrabajo,
+        @RestForm Long desperfectoId,
+        @RestForm Long equipoId 
+        ) {
+        
+        // LOG.info("ordenTrabajo: "+ordenTrabajo);
+        // LOG.info("duracion: "+duracion);
+        // LOG.info("desperfectoId: "+desperfectoId); 
+        // LOG.info("equipoId: "+equipoId); 
+        
         Desperfecto desperfecto = Desperfecto.findById(desperfectoId);
+        
+        
         if (desperfecto == null) {
             return;
         }
@@ -319,5 +333,6 @@ private static final Logger LOG = Logger.getLogger(InventarioResource.class);
         equipo.persist();
 
     }
+
 
 }
