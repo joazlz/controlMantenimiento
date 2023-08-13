@@ -1,326 +1,345 @@
 <!doctype html>
 <html>
 
-    <head>
-        <meta charset="utf-8" />
-        <title>Hibernate Search + Elasticsearch quickstart - Quarkus</title>
-        <!-- Semantic UI -->
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
-        <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
-        <style type="text/css">
-            .ui.menu .item {
-                font-size: 20px;
+<head>
+    <meta charset="utf-8" />
+    <title>Hibernate Search + Elasticsearch quickstart - Quarkus</title>
+    <!-- Semantic UI -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
+    <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+    <style type="text/css">
+        .ui.menu .item {
+            font-size: 20px;
+        }
+
+        .presentation {
+            margin-top: 5em;
+            background-color: #F0F0F0;
+            border-bottom: 1px solid #CCC;
+            border-top: 1px solid #CCC;
+            padding-top: 1em;
+            padding-bottom: 1em;
+        }
+
+        .search {
+            margin-top: 2em;
+        }
+
+        .authors {
+            margin-top: 2em;
+        }
+
+        .authors .meta {
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+    </style>
+    <!-- Load AngularJS -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <!--JAVA SCRIPT-->
+    <script type="text/javascript">
+        var app = angular.module("InventarioManagement", []);
+
+        //Controller Part
+        app.controller("InventarioManagementController", ['$scope', '$http', '$httpParamSerializerJQLike', function ($scope, $http, $httpParamSerializerJQLike) {
+
+            $scope.revisados = [];
+            $scope.form = []
+            $scope.desperfectos = [{ id: 0, nombre: 'Seleccionar opción' }];
+            $scope.equipos = [];
+            $scope.pattern = '';
+            $scope.desperfectoId = 0;
+
+            // initializes the data from the REST endpoint
+            _refreshPageData();
+            $('.revisado').show();
+
+            $scope.remove = function (type, element) {
+                $http({
+                    method: 'DELETE',
+                    url: '/inventario/' + type + '/' + element.id
+                }).then(_success, _error);
+            };
+            $scope.showAddRevisadoModal = function () {
+                $scope.revisadoModalTitle = "Add revisado";
+                $('#modal-revisado').modal('show');
             }
 
-            .presentation {
-                margin-top: 5em;
-                background-color: #F0F0F0;
-                border-bottom: 1px solid #CCC;
-                border-top: 1px solid #CCC;
-                padding-top: 1em;
-                padding-bottom: 1em;
+            $scope.showEditRevisadoModal = function (revisado) {
+                _getDesperfectoId(revisado)
+                $scope.revisadoModalTitle = "Editar Revisado " + revisado.nombre
+                $scope.form.revisado = revisado;
+                $('#modal-revisado').modal('show');
             }
 
-            .search {
-                margin-top: 2em;
+            $scope.agregarOEditarRevisado = function () {
+                data = {};
+                if ($scope.form.revisado.id == -1 || typeof $scope.form.revisado.id === 'undefined') {
+                    method = 'PUT';
+                    url = '/inventario/revisado/';
+                    data.duracion = $scope.form.revisado.duracion;
+                    data.ordenTrabajo = $scope.form.revisado.ordenTrabajo;
+                    data.desperfectoId = $scope.form.revisado.desperfectoId;
+                    data.equipoId = $scope.form.revisado.equipoId;
+                } else {
+                    method = 'POST';
+                    url = '/inventario/revisado/' + $scope.form.revisado.id;
+                    data.id = $scope.form.revisado.id;
+                    data.duracion = $scope.form.revisado.duracion;
+                    data.ordenTrabajo = $scope.form.revisado.ordenTrabajo;
+                    data.desperfectoId = $scope.form.revisado.desperfectoId;
+                    data.equipoId = $scope.form.revisado.equipoId;
+                }
+                $http({
+                    method: method,
+                    url: url,
+                    data: $httpParamSerializerJQLike(data),
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                }).then(_success, _error);
             }
 
-            .authors {
-                margin-top: 2em;
+
+            function _getDesperfectos() {
+                $http({
+                    method: 'GET',
+                    url: '/inventario/desperfecto/search?pattern=' + $scope.pattern
+                }).then(function successCallback(response) {
+                    $scope.desperfectos = response.data;
+                }, function errorCallback(response) {
+                    console.log(response.statusText);
+                });
             }
 
-            .authors .meta {
-                margin-top: 5px;
-                margin-bottom: 15px;
+            function _getEquipo() {
+                $http({
+                    method: 'GET',
+                    url: '/inventario/equipo/search?pattern=' + $scope.pattern
+                }).then(function successCallback(response) {
+                    $scope.equipos = response.data;
+                }, function errorCallback(response) {
+                    console.log(response.statusText);
+                });
             }
-        </style>
-        <!-- Load AngularJS -->
-        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-        <!--JAVA SCRIPT-->
-        <script type="text/javascript">
-            var app = angular.module("InventarioManagement", []);
 
-            //Controller Part
-            app.controller("InventarioManagementController", ['$scope', '$http', '$httpParamSerializerJQLike', function ($scope, $http, $httpParamSerializerJQLike) {
+            function _getDesperfectoId(revisado) {
+            // $scope._getDesperfectoId = function (revisado) {
+                $http({
+                    method: 'GET',
+                    url: '/inventario/desperfecto/search/id?id=' + revisado.id
+                }).then(function successCallback(response) {
+                    $scope.desperfectoId = response.data[0].id;
+                }, function errorCallback(response) {
+                    return -1;
+                });
+            }
 
-                    $scope.revisados = [];
-                    $scope.desperfectos = [];
-                    $scope.equipos = [];
-                    $scope.pattern = '';
+            function _refreshPageData() {
+                $http({
+                    method: 'GET',
+                    url: '/inventario/revisado/search?pattern=' + $scope.pattern
+                }).then(function successCallback(response) {
+                    $scope.revisados = response.data;
+                }, function errorCallback(response) {
+                    console.log(response.statusText);
+                });
+                _getDesperfectos();
+                _getEquipo();
+            }
 
-                    // initializes the data from the REST endpoint
-                    _refreshPageData();
-                    $('.revisado').show();
+            function _success(response) {
+                $scope.pattern = '';
+                _refreshPageData();
+                _clearForm();
+            }
 
-                    $scope.remove = function (type, element) {
-                        $http({
-                            method: 'DELETE',
-                            url: '/inventario/' + type + '/' + element.id
-                        }).then(_success, _error);
-                    };
-                    $scope.showAddRevisadoModal = function () {
-                        $scope.revisadoModalTitle = "Add revisado";
-                        $('#modal-revisado').modal('show');
-                    }
+            function _clearForm() {
+                $scope.form.revisado = {
+                    id: -1,
+                    duracion: '',
+                    ordenTrabajo: '',
+                };
+            }
 
-                    $scope.agregarOEditarRevisado = function () {
-                        data = {};
-                        if ($scope.form.revisado.id == -1 || typeof $scope.form.revisado.id === 'undefined') {
-                            method = 'PUT';
-                            url = '/inventario/revisado/';
-                            data.duracion = $scope.form.revisado.duracion;
-                            data.ordenTrabajo = $scope.form.revisado.ordenTrabajo;
-                            data.desperfectoId = $scope.form.revisado.desperfectoId;
-                            data.equipoId = $scope.form.revisado.equipoId;
-                        } else {
-                            method = 'POST';
-                            url = '/inventario/revisado/' + $scope.form.revisado.id;
-                            data.id = $scope.form.revisado.id;
-                            data.duracion = $scope.form.revisado.duracion;
-                            data.ordenTrabajo = $scope.form.revisado.ordenTrabajo;
-                            data.desperfectoId = $scope.form.revisado.desperfectoId;
-                            data.equipoId = $scope.form.revisado.equipoId;
-                        }
-                        $http({
-                            method: method,
-                            url: url,
-                            data: $httpParamSerializerJQLike(data),
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded'
-                            }
-                        }).then(_success, _error);
-                    }
+            function _error(response) {
+                alert(response.data.message || response.statusText);
+                _clearForm();
+            }
 
+        }]);
+    </script>
+</head>
 
-                    function _getDesperfectos() {
-                        $http({
-                            method: 'GET',
-                            url: '/inventario/desperfecto/search?pattern=' + $scope.pattern
-                        }).then(function successCallback(response) {
-                            $scope.desperfectos = response.data;
-                        }, function errorCallback(response) {
-                            console.log(response.statusText);
-                        });
-                    }
-
-                    function _getEquipo() {
-                        $http({
-                            method: 'GET',
-                            url: '/inventario/equipo/search?pattern=' + $scope.pattern
-                        }).then(function successCallback(response) {
-                            $scope.equipos = response.data;
-                        }, function errorCallback(response) {
-                            console.log(response.statusText);
-                        });
-                    }
-
-                    function _refreshPageData() {
-                        $http({
-                            method: 'GET',
-                            url: '/inventario/revisado/search?pattern=' + $scope.pattern
-                        }).then(function successCallback(response) {
-                            $scope.revisados = response.data;
-                        }, function errorCallback(response) {
-                            console.log(response.statusText);
-                        });
-                        _getDesperfectos();
-                        _getEquipo();
-                    }
-
-                    function _success(response) {
-                        $scope.pattern = '';
-                        _refreshPageData();
-                        _clearForm();
-                    }
-
-                    function _clearForm() {
-                        $scope.form.revisado = {
-                            id: -1,
-                            duracion: '',
-                            ordenTrabajo: '',
-                        };
-                    }
-
-                    function _error(response) {
-                        alert(response.data.message || response.statusText);
-                        _clearForm();
-                    }
-
-                }]);
-        </script>
-    </head>
-
-    <body ng-app="InventarioManagement" ng-controller="InventarioManagementController">
-        <!--MENU -->
-        <div class="ui fixed inverted menu"> <!--!-->
-            <div class="ui container">
-                <a class="header item" href="https://quarkus.io/">
-                    <img class="logo" src="https://quarkus.io/assets/images/quarkus_logo_horizontal_rgb_reverse.svg"
-                         alt="Quarkus logo" style="width:200px;">
-                </a>
-                <a href="/index.html">
-                    <span class="header item">
-                        Inicio
-                    </span>
-                </a>
-                <a href="/area.html">
-                    <span class="header item">
-                        Area
-                    </span>
-                </a>
-                <a href="/equipo.html">
-                    <span class="header item">
-                        Equipo
-                    </span>
-                </a>
-                <a href="/revisado.html">
-                    <span class="header item">
-                        revisado
-                    </span>
-                </a>
-                <a href="/solicitante.html">
-                    <span class="header item">
-                        solicitante
-                    </span>
-                </a>
-            </div>
+<body ng-app="InventarioManagement" ng-controller="InventarioManagementController">
+    <!--MENU -->
+    <div class="ui fixed inverted menu"> <!--!-->
+        <div class="ui container">
+            <a class="header item" href="https://quarkus.io/">
+                <img class="logo" src="https://quarkus.io/assets/images/quarkus_logo_horizontal_rgb_reverse.svg"
+                    alt="Quarkus logo" style="width:200px;">
+            </a>
+            <a href="/index.html">
+                <span class="header item">
+                    Inicio
+                </span>
+            </a>
+            <a href="/area.html">
+                <span class="header item">
+                    Area
+                </span>
+            </a>
+            <a href="/equipo.html">
+                <span class="header item">
+                    Equipo
+                </span>
+            </a>
+            <a href="/revisado.html">
+                <span class="header item">
+                    revisado
+                </span>
+            </a>
+            <a href="/solicitante.html">
+                <span class="header item">
+                    solicitante
+                </span>
+            </a>
         </div>
+    </div>
 
-        <!--PRESENTACION-->
-        <div class="presentation">
-            <div class="ui main container">
-                <p>This Quarkus application demonstrates how to implement a CRUD endpoint to manage a library using
-                    Hibernate ORM with Panache and Hibernate Search.</p>
-                <p>Entities are automatically indexed in an Elasticsearch cluster.</p>
-                <div class="ui tablet stackable three steps">
-                    <div class="step">
-                        <i class="list icon"></i>
-                        <div class="content">
-                            <div class="title">RESTEasy</div>
-                            <div class="description">JAX-RS endpoints</div>
-                        </div>
-                    </div>
-                    <div class="step">
-                        <i class="random icon"></i>
-                        <div class="content">
-                            <div class="title">Hibernate ORM<br />Hibernate Search</div>
-                            <div class="description">Store in the database and index automatically</div>
-                        </div>
-                    </div>
-                    <div class="step">
-                        <i class="database icon"></i>
-                        <div class="content">
-                            <div class="title">PostgreSQL<br />Elasticsearch</div>
-                            <div class="description">Relational mapping and full text search</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!--BUSQUEDA-->
-        <div class="ui container search">
-            <form class="ui form" ng-submit="refresh()">
-                <div class="fluid big left ui action input">
-                    <input type="text"
-                           placeholder="Search for an author name or a book title. Try searching for aus*, owen or mystery."
-                           ng-model="pattern">
-                    <button class="ui blue right labeled icon button" ng-click="refresh()"><i class="search icon"></i>
-                        Buscar</button>
-                </div>
-            </form>
-        </div>
-
-        <!--CONTENIDO-->
-        <div class="ui container revisado" style="display:none;">
-            <div class="ui cards">
-                <div class="card" ng-repeat="revisado in revisados">
+    <!--PRESENTACION-->
+    <div class="presentation">
+        <div class="ui main container">
+            <p>This Quarkus application demonstrates how to implement a CRUD endpoint to manage a library using
+                Hibernate ORM with Panache and Hibernate Search.</p>
+            <p>Entities are automatically indexed in an Elasticsearch cluster.</p>
+            <div class="ui tablet stackable three steps">
+                <div class="step">
+                    <i class="list icon"></i>
                     <div class="content">
-                        <div class="header">{{ revisado.Id}}</div>
-                        <div class="meta">
-                            {{ revisado.equipos.length}}
-                            <!-- <button class="ui basic blue icon button mini right floated" ng-click="showBookModal(area)"><i class="plus circle icon"></i> Add book</button> -->
-                        </div>
-                        <div class="content">duracion: {{revisado.duracion}}</div>
-                        <div class="content">ordenTrabajo: {{revisado.ordenTrabajo}}</div>
-                        <div class="content">desperfectoId: {{revisado.desperfectoId}}</div>
-                        <div class="content">equipoId: {{revisado.equipoId}}</div>
-
-                    </div>
-                    <div class="extra content">
-                        <div class="ui two buttons">
-                            <button class="ui basic green button" ng-click="showEditRevisadoModal(revisado)"><i class="pencil alternate icon"></i> 
-                                Edit</button>
-                            <button class="ui basic red button" ng-click="remove('revisado', revisado)"><i class="trash alternate outline icon"></i>
-                                Delete</button>
-                        </div>
+                        <div class="title">RESTEasy</div>
+                        <div class="description">JAX-RS endpoints</div>
                     </div>
                 </div>
-
-                <div class="card">
+                <div class="step">
+                    <i class="random icon"></i>
                     <div class="content">
-                        <button class="ui blue labeled icon button" ng-click="showAddRevisadoModal()"><i
-                                class="plus circle icon"></i> Agregar revisado</button>
+                        <div class="title">Hibernate ORM<br />Hibernate Search</div>
+                        <div class="description">Store in the database and index automatically</div>
+                    </div>
+                </div>
+                <div class="step">
+                    <i class="database icon"></i>
+                    <div class="content">
+                        <div class="title">PostgreSQL<br />Elasticsearch</div>
+                        <div class="description">Relational mapping and full text search</div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-
-        <div class="ui modal" id="modal-revisado">
-            <i class="close icon"></i>
-            <div class="header">
-                {{ revisadoModalTitle}}
+    <!--BUSQUEDA-->
+    <div class="ui container search">
+        <form class="ui form" ng-submit="refresh()">
+            <div class="fluid big left ui action input">
+                <input type="text"
+                    placeholder="Search for an author name or a book title. Try searching for aus*, owen or mystery."
+                    ng-model="pattern">
+                <button class="ui blue right labeled icon button" ng-click="refresh()"><i class="search icon"></i>
+                    Buscar</button>
             </div>
-            <div class="content">
-                <div class="description">
-                    <form class="ui form" id="revisado-form">
-                        <input type="hidden" name="revisadoId" ng-model="form.revisado.id" />
-                        <div class="required field">
-                            <label>Duracion</label>
-                            <input type="text" name="duracion" placeholder="Duracion" ng-model="form.revisado.duracion"
-                                   required>
-                        </div>
+        </form>
+    </div>
 
-                        <div class="required field">
-                            <label>ordenTrabajo</label>
-                            <input type="text" name="ordenTrabajo" placeholder="ordenTrabajo"
-                                   ng-model="form.revisado.ordenTrabajo" required>
-                        </div>
+    <!--CONTENIDO-->
+    <div class="ui container revisado" style="display:none;">
+        <div class="ui cards">
+            <div class="card" ng-repeat="revisado in revisados">
+                <div class="content">
+                    <div class="header">{{ revisado.Id}}</div>
+                    <div class="meta">
+                        {{ revisado.equipos.length}}
+                        <!-- <button class="ui basic blue icon button mini right floated" ng-click="showBookModal(area)"><i class="plus circle icon"></i> Add book</button> -->
+                    </div>
+                    <div class="content">duracion: {{revisado.duracion}}</div>
+                    <div class="content">ordenTrabajo: {{revisado.ordenTrabajo}}</div>
+                    
 
-                        <div class="required field">
-                            <select class="field" ng-model="form.revisado.desperfectoId" required>
-                                <option value="">Seleccione un desperfecto...</option>
-                                <option ng-repeat="desperfecto in desperfectos" value="{{ desperfecto.id}}">{{
-                                                desperfecto.nombre}}</option>
-                            </select>
-                        </div>
-
-                        <div class="required field">
-                            <select class="field" ng-model="form.revisado.equipoId" required>
-                                <option value="">Seleccione un equipo...</option>
-                                <option ng-repeat="equipo in equipos" value="{{ equipo.id}}">{{ equipo.nombre}}</option>
-                            </select>
-                        </div>
-
-
-
-                        <!-- <div class="required field">
-                            <label>Last name</label>
-                            <input type="text" name="lastName" placeholder="Last name" ng-model="form.author.lastName" required>
-                        </div> -->
-                    </form>
+                </div>
+                <div class="extra content">
+                    <div class="ui two buttons">
+                        <button class="ui basic green button" ng-click="showEditRevisadoModal(revisado)"><i
+                                class="pencil alternate icon"></i>
+                            Edit</button>
+                        <button class="ui basic red button" ng-click="remove('revisado', revisado)"><i
+                                class="trash alternate outline icon"></i>
+                            Delete</button>
+                    </div>
                 </div>
             </div>
-            <div class="actions">
-                <button type="submit" class="ui positive right labeled icon button" form="revisado-form"
-                        ng-click="agregarOEditarRevisado()">
-                    <i class="checkmark icon"></i>
-                    Guardar
-                </button>
+
+            <div class="card">
+                <div class="content">
+                    <button class="ui blue labeled icon button" ng-click="showAddRevisadoModal()"><i
+                            class="plus circle icon"></i> Agregar revisado</button>
+                </div>
             </div>
         </div>
-    </body>
+    </div>
+
+
+    <div class="ui modal" id="modal-revisado">
+        <i class="close icon"></i>
+        <div class="header">
+            {{ revisadoModalTitle}}
+        </div>
+        <div class="content">
+            <div class="description">
+                <form class="ui form" id="revisado-form">
+                    <input type="hidden" name="revisadoId" ng-model="form.revisado.id" />
+                    <div class="required field">
+                        <label>Duracion</label>
+                        <input type="text" name="duracion" placeholder="Duracion" ng-model="form.revisado.duracion"
+                            required>
+                    </div>
+
+                    <div class="required field">
+                        <label>ordenTrabajo</label>
+                        <input type="text" name="ordenTrabajo" placeholder="ordenTrabajo"
+                            ng-model="form.revisado.ordenTrabajo" required>
+                    </div>
+
+                    <div class="required field">
+                        <!-- <select class="field" ng-model="form.revisado.desperfectoId" required>
+                            <option ng-value="desperfectoId === 0 ? form.revisado.desperfectoId : desperfectoId" ng-repeat="desperfecto in desperfectos" value="{{ desperfecto.id}}">{{
+                                desperfecto.nombre}}</option>
+                        </select> -->
+
+                        <select class="field" ng-model="form.revisado.desperfectoId" required>
+                            <option ng-repeat="option in desperfectos" ng-value="option.id" ng-selected="form.revisado.desperfectoId === option.value">{{ option.nombre }}</option>
+                        </select>
+
+                    </div>
+
+                    <div class="required field">
+                        <select class="field" ng-model="form.revisado.equipoId" required>
+                            <option value="">Seleccione un equipo...</option>
+                            <option ng-repeat="equipo in equipos" value="{{ equipo.id}}">{{ equipo.nombre}}</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="actions">
+            <button type="submit" class="ui positive right labeled icon button" form="revisado-form"
+                ng-click="agregarOEditarRevisado()">
+                <i class="checkmark icon"></i>
+                Guardar
+            </button>
+        </div>
+    </div>
+</body>
 
 </html>

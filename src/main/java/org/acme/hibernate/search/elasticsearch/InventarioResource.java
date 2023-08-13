@@ -27,6 +27,8 @@ import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.jboss.resteasy.reactive.RestForm;
 import org.jboss.resteasy.reactive.RestQuery;
 
+import com.arjuna.ats.internal.jdbc.drivers.modifiers.list;
+
 import io.quarkus.runtime.StartupEvent;
 
 @Path("/inventario")
@@ -299,8 +301,21 @@ public class InventarioResource {
         return searchSession.search(Revisado.class)
                 .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
                 : f.simpleQueryString()
-                        .fields("nombre").matching(pattern))
+                        .fields("nombre","id").matching(pattern))
                 .sort(f -> f.field("ordenTrabajo_sort"))
+                .fetchHits(size.orElse(20));
+    }
+
+    // REVISADO
+    @GET
+    @Path("desperfecto/search/id")
+    @Transactional
+    public List<Desperfecto> searchRevisados(@RestQuery Long id,
+            @RestQuery Optional<Integer> size) {
+        return searchSession.search(Desperfecto.class)
+                .where(f -> id == null || id>0 ? f.matchAll()
+                : f.simpleQueryString()
+                        .fields("id").matching(id.toString()))
                 .fetchHits(size.orElse(20));
     }
 
@@ -315,13 +330,7 @@ public class InventarioResource {
             @RestForm Long desperfectoId,
             @RestForm Long equipoId
     ) {
-
-        // LOG.info("ordenTrabajo: "+ordenTrabajo);
-        // LOG.info("duracion: "+duracion);
-        // LOG.info("desperfectoId: "+desperfectoId); 
-        // LOG.info("equipoId: "+equipoId); 
         Desperfecto desperfecto = Desperfecto.findById(desperfectoId);
-
         if (desperfecto == null) {
             return;
         }
@@ -350,24 +359,34 @@ public class InventarioResource {
     @Path("revisado/{id}")
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void updateRevisado(Long id, @RestForm String nombre) {
+    public void updateRevisado(
+            @RestForm Long id,
+            @RestForm String duracion,
+            @RestForm String ordenTrabajo,
+            @RestForm Long desperfectoId,
+            @RestForm Long equipoId
+    ) {
+        Desperfecto desperfecto = Desperfecto.findById(desperfectoId);
+        if (desperfecto == null) {
+            return;
+        }
+        Equipo equipo = Equipo.findById(equipoId);
+        if (equipo == null) {
+            return;
+        }
         Revisado revisado = Revisado.findById(id);
         if (revisado == null) {
             return;
         }
+
         revisado.id = id;
+        revisado.duracion = duracion;
+        revisado.ordenTrabajo = ordenTrabajo;
+        revisado.desperfecto = desperfecto;
+        revisado.equipo = equipo;
         revisado.persist();
     }
 
-//    @DELETE
-//    @Path("revisado/{id}")
-//    @Transactional
-//    public void deleteRevisado(Long id) {
-//        Revisado revisado = Revisado.findById(id);
-//        if (revisado != null) {
-//            revisado.delete();
-//        }
-//    }
     @DELETE
     @Path("revisado/{id}")
     @Transactional

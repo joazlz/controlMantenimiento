@@ -11,7 +11,9 @@ INSERT INTO area(id, nombre) VALUES (1, '3marias');
 ALTER SEQUENCE area_seq RESTART WITH 2;
 
 INSERT INTO desperfecto(id, nombre) VALUES (1, 'roto');
-ALTER SEQUENCE desperfecto_seq RESTART WITH 2;
+INSERT INTO desperfecto(id, nombre) VALUES (2, 'no enfria');
+INSERT INTO desperfecto(id, nombre) VALUES (3, 'esta sexi');
+ALTER SEQUENCE desperfecto_seq RESTART WITH 4;
 
 INSERT INTO tipomantenimiento(id, nombre) VALUES (1, 'preventico');
 INSERT INTO tipomantenimiento(id, nombre) VALUES (2, 'programado');
