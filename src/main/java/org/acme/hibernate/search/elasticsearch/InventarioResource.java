@@ -1,4 +1,5 @@
 package org.acme.hibernate.search.elasticsearch;
+
 import org.jboss.logging.Logger;
 
 import java.util.List;
@@ -53,16 +54,13 @@ public class InventarioResource {
     //     if (area == null) {
     //         return;
     //     }
-
     //     Equipo equipo = new Equipo();
     //     equipo.nombre = nombre;
     //     equipo.area = area;
     //     equipo.persist();
-
     //     area.equipos.add(equipo);
     //     area.persist();
     // }
-
     // @DELETE
     // @Path("book/{id}")
     // @Transactional
@@ -73,7 +71,6 @@ public class InventarioResource {
     //         book.delete();
     //     }
     // }
-
     // AREA
     @PUT
     @Path("area")
@@ -115,12 +112,11 @@ public class InventarioResource {
             @RestQuery Optional<Integer> size) {
         return searchSession.search(Area.class)
                 .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
-                        : f.simpleQueryString()
-                                .fields("nombre", "equipos.nombre").matching(pattern))
+                : f.simpleQueryString()
+                        .fields("nombre", "equipos.nombre").matching(pattern))
                 .sort(f -> f.field("nombre_sort"))
                 .fetchHits(size.orElse(20));
     }
-
 
     //TIPO EQUIPO
     @PUT
@@ -163,8 +159,8 @@ public class InventarioResource {
             @RestQuery Optional<Integer> size) {
         return searchSession.search(TipoEquipo.class)
                 .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
-                        : f.simpleQueryString()
-                                .fields("nombre", "equipos.nombre").matching(pattern))
+                : f.simpleQueryString()
+                        .fields("nombre", "equipos.nombre").matching(pattern))
                 .sort(f -> f.field("nombre_sort"))
                 .fetchHits(size.orElse(20));
     }
@@ -175,20 +171,20 @@ public class InventarioResource {
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public void addEquipo(@RestForm String nombre,
-    @RestForm String marca,
-    @RestForm String modelo,
-    @RestForm String voltaje,
-    @RestForm String capacidad,
-    @RestForm String capacitor,
-    @RestForm String tipoMotor,
-    //@RestForm String tipoMotorcondensador,
-    //@RestForm String tipoMotorevaporador,
-    @RestForm String capacidadMotor,
-    @RestForm String numeroEquipo,
-    @RestForm String hp,
-    @RestForm String amperaje,
-    @RestForm Long areaId,
-     @RestForm Long tipoEquipoId ) {
+            @RestForm String marca,
+            @RestForm String modelo,
+            @RestForm String voltaje,
+            @RestForm String capacidad,
+            @RestForm String capacitor,
+            @RestForm String tipoMotor,
+            //@RestForm String tipoMotorcondensador,
+            //@RestForm String tipoMotorevaporador,
+            @RestForm String capacidadMotor,
+            @RestForm String numeroEquipo,
+            @RestForm String hp,
+            @RestForm String amperaje,
+            @RestForm Long areaId,
+            @RestForm Long tipoEquipoId) {
         Area area = Area.findById(areaId);
         if (area == null) {
             return;
@@ -231,13 +227,49 @@ public class InventarioResource {
             @RestQuery Optional<Integer> size) {
         return searchSession.search(Equipo.class)
                 .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
-                        : f.simpleQueryString()
-                                .fields("nombre").matching(pattern))
+                : f.simpleQueryString()
+                        .fields("nombre").matching(pattern))
                 .sort(f -> f.field("equipoNombre_sort").then().field("numeroEquipo_sort"))
                 .fetchHits(size.orElse(20));
     }
 
-    
+//    @DELETE
+//    @Path("equipo/{id}")
+//    @Transactional
+//    public void deleteEquipo(Long id) {
+//        Equipo equipo = Equipo.findById(id);
+////        LOG.info("equipo: "+ equipo.marca );
+//
+//        if (equipo != null) {
+//            equipo.area.equipos.remove(equipo);
+//        LOG.info("equipo: " + equipo.area.nombre);
+//            equipo.tipoEquipo.equipos.remove(equipo);
+//        LOG.info("equipo: " + equipo.tipoEquipo.nombre);
+//
+////equipo.revisados.remove(equipo.revisados[0]);
+//
+//            equipo.delete();
+//        }
+//    }
+    @DELETE
+    @Path("equipo/{id}")
+    @Transactional
+    public void deleteEquipo(Long id) {
+        Equipo equipo = Equipo.findById(id);
+        if (equipo != null) {
+            equipo.area.equipos.remove(equipo);
+            //LOG.info("equipo: "+ equipo.area );
+            equipo.tipoEquipo.equipos.remove(equipo);
+            if (equipo.revisados != null) {
+                equipo.revisados.forEach(revisado -> revisado.delete());
+            }
+            // equipo.revisados.removeAll(equipo.revisados);
+
+            //LOG.info("equipo: "+ equipo.tipoEquipo );
+            equipo.delete();
+        }
+    }
+
     // MATERIAL
     @GET
     @Path("material/search")
@@ -246,8 +278,8 @@ public class InventarioResource {
             @RestQuery Optional<Integer> size) {
         return searchSession.search(Material.class)
                 .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
-                        : f.simpleQueryString()
-                                .fields("nombre").matching(pattern))
+                : f.simpleQueryString()
+                        .fields("nombre").matching(pattern))
                 .sort(f -> f.field("nombre_sort"))
                 .fetchHits(size.orElse(20));
     }
@@ -260,8 +292,8 @@ public class InventarioResource {
             @RestQuery Optional<Integer> size) {
         return searchSession.search(Desperfecto.class)
                 .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
-                        : f.simpleQueryString()
-                                .fields("nombre").matching(pattern))
+                : f.simpleQueryString()
+                        .fields("nombre").matching(pattern))
                 .sort(f -> f.field("nombre_sort"))
                 .fetchHits(size.orElse(20));
     }
@@ -274,13 +306,12 @@ public class InventarioResource {
             @RestQuery Optional<Integer> size) {
         return searchSession.search(TipoMantenimiento.class)
                 .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
-                        : f.simpleQueryString()
-                                .fields("nombre").matching(pattern))
+                : f.simpleQueryString()
+                        .fields("nombre").matching(pattern))
                 .sort(f -> f.field("nombre_sort"))
                 .fetchHits(size.orElse(20));
     }
 
-    
     // REVISADO
     @GET
     @Path("revisado/search")
@@ -289,32 +320,30 @@ public class InventarioResource {
             @RestQuery Optional<Integer> size) {
         return searchSession.search(Revisado.class)
                 .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
-                        : f.simpleQueryString()
-                                .fields("nombre").matching(pattern))
+                : f.simpleQueryString()
+                        .fields("nombre").matching(pattern))
                 .sort(f -> f.field("ordenTrabajo_sort"))
                 .fetchHits(size.orElse(20));
     }
-    
+
     //REVISADO
     @PUT
     @Path("revisado")
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public void addRevisado(
-        @RestForm String duracion,
-        @RestForm String ordenTrabajo,
-        @RestForm Long desperfectoId,
-        @RestForm Long equipoId 
-        ) {
-        
+            @RestForm String duracion,
+            @RestForm String ordenTrabajo,
+            @RestForm Long desperfectoId,
+            @RestForm Long equipoId
+    ) {
+
         // LOG.info("ordenTrabajo: "+ordenTrabajo);
         // LOG.info("duracion: "+duracion);
         // LOG.info("desperfectoId: "+desperfectoId); 
         // LOG.info("equipoId: "+equipoId); 
-        
         Desperfecto desperfecto = Desperfecto.findById(desperfectoId);
-        
-        
+
         if (desperfecto == null) {
             return;
         }
@@ -325,38 +354,50 @@ public class InventarioResource {
         }
 
         Revisado revisado = new Revisado();
-        revisado.duracion=duracion;
-        revisado.ordenTrabajo=ordenTrabajo;
-        revisado.desperfecto=desperfecto;
-        revisado.equipo=equipo;
+        revisado.duracion = duracion;
+        revisado.ordenTrabajo = ordenTrabajo;
+        revisado.desperfecto = desperfecto;
+        revisado.equipo = equipo;
         revisado.persist(); //Guarda la base de datos pesist//
-        
+
         desperfecto.revisados.add(revisado);
         desperfecto.persist();
-        
+
         equipo.revisados.add(revisado);
         equipo.persist();
 
     }
+
     @POST
     @Path("revisado/{id}")
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public void updateRevisado(Long id, @RestForm String nombre) {
-        Area revisado = Area.findById(id);
+        Revisado revisado = Revisado.findById(id);
         if (revisado == null) {
             return;
         }
-        revisado.nombre = nombre;
+        revisado.id = id;
         revisado.persist();
     }
 
+//    @DELETE
+//    @Path("revisado/{id}")
+//    @Transactional
+//    public void deleteRevisado(Long id) {
+//        Revisado revisado = Revisado.findById(id);
+//        if (revisado != null) {
+//            revisado.delete();
+//        }
+//    }
     @DELETE
     @Path("revisado/{id}")
     @Transactional
     public void deleteRevisado(Long id) {
-        Area revisado = Area.findById(id);
+        Revisado revisado = Revisado.findById(id);
         if (revisado != null) {
+            revisado.desperfecto.revisados.remove(revisado);
+            revisado.equipo.revisados.remove(revisado);
             revisado.delete();
         }
     }
@@ -373,5 +414,4 @@ public class InventarioResource {
 //                .sort(f -> f.field("nombre_sort"))
 //                .fetchHits(size.orElse(20));
 //    }
-
 }
