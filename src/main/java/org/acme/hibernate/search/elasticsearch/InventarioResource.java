@@ -233,39 +233,17 @@ public class InventarioResource {
                 .fetchHits(size.orElse(20));
     }
 
-//    @DELETE
-//    @Path("equipo/{id}")
-//    @Transactional
-//    public void deleteEquipo(Long id) {
-//        Equipo equipo = Equipo.findById(id);
-////        LOG.info("equipo: "+ equipo.marca );
-//
-//        if (equipo != null) {
-//            equipo.area.equipos.remove(equipo);
-//        LOG.info("equipo: " + equipo.area.nombre);
-//            equipo.tipoEquipo.equipos.remove(equipo);
-//        LOG.info("equipo: " + equipo.tipoEquipo.nombre);
-//
-////equipo.revisados.remove(equipo.revisados[0]);
-//
-//            equipo.delete();
-//        }
-//    }
     @DELETE
     @Path("equipo/{id}")
     @Transactional
     public void deleteEquipo(Long id) {
         Equipo equipo = Equipo.findById(id);
         if (equipo != null) {
-            equipo.area.equipos.remove(equipo);
-            //LOG.info("equipo: "+ equipo.area );
-            equipo.tipoEquipo.equipos.remove(equipo);
-            if (equipo.revisados != null) {
-                equipo.revisados.forEach(revisado -> revisado.delete());
+            for (int i = 0; i < equipo.revisados.size(); i++) {
+                deleteRevisado(equipo.revisados.get(i).id);
             }
-            // equipo.revisados.removeAll(equipo.revisados);
-
-            //LOG.info("equipo: "+ equipo.tipoEquipo );
+            equipo.tipoEquipo.equipos.remove(equipo);
+            equipo.area.equipos.remove(equipo);
             equipo.delete();
         }
     }
