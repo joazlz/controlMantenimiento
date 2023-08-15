@@ -23,39 +23,38 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 @Indexed
 public class Equipo extends PanacheEntity {
 
-    @FullTextField(analyzer = "english")
-    @KeywordField(name = "equipoNombre_sort", sortable = Sortable.YES, normalizer = "sort")
+    @FullTextField(analyzer = "ingles")
+    @KeywordField(name = "equipoNombre_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String nombre;
-
-    @FullTextField(analyzer = "english")
-    @KeywordField(name = "marca_sort", sortable = Sortable.YES, normalizer = "sort")
+    @FullTextField(analyzer = "ingles")
+    @KeywordField(name = "marca_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String marca;
-    @FullTextField(analyzer = "english")
-    @KeywordField(name = "modelo_sort", sortable = Sortable.YES, normalizer = "sort")
+    @FullTextField(analyzer = "ingles")
+    @KeywordField(name = "modelo_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String modelo;
-    @FullTextField(analyzer = "english")
-    @KeywordField(name = "voltaje_sort", sortable = Sortable.YES, normalizer = "sort")
+    @FullTextField(analyzer = "ingles")
+    @KeywordField(name = "voltaje_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String voltaje;
-    @FullTextField(analyzer = "english")
-    @KeywordField(name = "capacidad_sort", sortable = Sortable.YES, normalizer = "sort")
+    @FullTextField(analyzer = "ingles")
+    @KeywordField(name = "capacidad_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String capacidad;
-    @FullTextField(analyzer = "english")
-    @KeywordField(name = "capacitor_sort", sortable = Sortable.YES, normalizer = "sort")
+    @FullTextField(analyzer = "ingles")
+    @KeywordField(name = "capacitor_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String capacitor;
-    @FullTextField(analyzer = "english")
-    @KeywordField(name = "tipoMotor_sort", sortable = Sortable.YES, normalizer = "sort")
+    @FullTextField(analyzer = "ingles")
+    @KeywordField(name = "tipoMotor_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String tipoMotor;
-    @FullTextField(analyzer = "english")
-    @KeywordField(name = "capacidadMotor_sort", sortable = Sortable.YES, normalizer = "sort")
+    @FullTextField(analyzer = "ingles")
+    @KeywordField(name = "capacidadMotor_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String capacidadMotor;
-    @FullTextField(analyzer = "english")
-    @KeywordField(name = "numeroEquipo_sort", sortable = Sortable.YES, normalizer = "sort")
+    @FullTextField(analyzer = "ingles")
+    @KeywordField(name = "numeroEquipo_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String numeroEquipo;
-    @FullTextField(analyzer = "english")
-    @KeywordField(name = "hp_sort", sortable = Sortable.YES, normalizer = "sort")
+    @FullTextField(analyzer = "ingles")
+    @KeywordField(name = "hp_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String hp;
-    @FullTextField(analyzer = "english")
-    @KeywordField(name = "amperaje_sort", sortable = Sortable.YES, normalizer = "sort")
+    @FullTextField(analyzer = "ingles")
+    @KeywordField(name = "amperaje_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String amperaje;
 
     @ManyToOne

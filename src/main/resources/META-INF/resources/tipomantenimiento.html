@@ -39,43 +39,44 @@
       app.controller("InventarioManagementController", ['$scope', '$http', '$httpParamSerializerJQLike', function ($scope, $http, $httpParamSerializerJQLike) {
 
         // initialize page with default data which is blank in this example
-        $scope.areas = [];
+        $scope.tiposMantenimiento = [];
         $scope.pattern = '';
         $scope.formulario = {};
 
         // initializes the data from the REST endpoint
         _actualizarDatos();
-        $('.areas').show();
+        $('.tipoMantenimiento').show();
         
 
-        $scope.AreaModal = function (accion,area) {
+        $scope.tipoMantenimientoModal = function (accion,tipoMantenimiento) {
             switch (accion) {
                 case "agregar":
-                    $scope.areaModalTitle = "Agregar area";
+                    _limpiarFormulario()
+                    $scope.tipoMantenimientoModalTitle = "Agregar tipoMantenimiento";
                     break;
             
                 case "editar":
-                    $scope.areaModalTitle = "Editar area "
-                    $scope.formulario.area = area;
+                    $scope.tipoMantenimientoModalTitle = "Editar Tipo de Equipo"
+                    $scope.formulario.tipoMantenimiento = tipoMantenimiento;
                     break;
 
                 default:
                     break;
             }       
-            $('#modal-area').modal('show');
+            $('#modal-tipoMantenimiento').modal('show');
         }
 
         //Guardar Editar
-        $scope.agregarEditarArea = function () {
+        $scope.agregarEditarTipoMantenimiento = function () {
             data = {};
-            if ($scope.formulario.area.id == -1 ||$scope.formulario.area.id === undefined ) {
+            if ($scope.formulario.tipoMantenimiento.id == -1 ||$scope.formulario.tipoMantenimiento.id === undefined ) {
                 method = 'PUT';
-                url = '/inventario/area';
-                data.nombre = $scope.formulario.area.nombre;
+                url = '/inventario/tipomantenimiento';
+                data.nombre = $scope.formulario.tipoMantenimiento.nombre;
             } else {
                 method = 'POST';
-                url = '/inventario/area/' + $scope.formulario.area.id;
-                data.nombre = $scope.formulario.area.nombre;
+                url = '/inventario/tipomantenimiento/' + $scope.formulario.tipoMantenimiento.id;
+                data.nombre = $scope.formulario.tipoMantenimiento.nombre;
             }
             $http({
                 method: method,
@@ -99,9 +100,9 @@
         function _actualizarDatos() {
             $http({
                 method: 'GET',
-                url: '/inventario/area/buscar?pattern=' + $scope.pattern
+                url: '/inventario/tipomantenimiento/buscar?pattern=' + $scope.pattern
             }).then(function successCallback(response) {
-                $scope.areas = response.data;
+                $scope.tiposMantenimiento = response.data;
             }, function errorCallback(response) {
                 console.log(response.statusText);
             });
@@ -109,10 +110,11 @@
 
         $scope.actualizar = function () {
             _actualizarDatos();
+            _limpiarFormulario()
         }
 
         function _limpiarFormulario() {
-            $scope.formulario.area = {
+            $scope.formulario.tipoMantenimiento = {
                 id: -1,
                 nombre: '',
             };
@@ -171,7 +173,7 @@
                     Revisado
                 </span>
             </a>
-            <a href="/tipoequipo.html">
+            <a href="/tipoMantenimiento.html">
                 <span class="header item">
                     Tipos de Equipo
                 </span>
@@ -221,27 +223,27 @@
     <div class="ui container search">
         <form class="ui form" ng-submit="actualizar()">
             <div class="fluid big left ui action input">
-                <input type="text" placeholder="Busca el nombre de una area o el título de un libro. Intenta buscar con un * al final" ng-model="pattern">
+                <input type="text" placeholder="Busca el nombre de un tipo de Mantenimiento. Intenta buscar con un * al final" ng-model="pattern">
                 <button class="ui blue right labeled icon button" ng-click="actualizar()"><i class="search icon"></i> Buscar</button>
             </div>
         </form>
     </div>
        <!--CONTENIDO -->
-    <div class="ui container areas">
+    <div class="ui container tiposMantenimiento">
         <div class="ui cards">
-            <div class="card" ng-repeat="area in areas">
+            <div class="card" ng-repeat="tipoMantenimiento in tiposMantenimiento">
                 <div class="content">
-                    <div class="header">{{ area.nombre }}</div>
+                    <div class="header">{{ tipoMantenimiento.nombre }}</div>
                     <div class="meta">
-                        {{ area.equipos.length }}
+                        {{ tipoMantenimiento.equipos.length }}
                         <!-- <button class="ui basic blue icon button mini right floated" ng-click="showBookModal(area)"><i class="plus circle icon"></i> Add book</button> -->
                     </div>
                     
                     <div class="extra content">
                         <div class="ui two buttons">
-                            <button class="ui basic green button" ng-click="AreaModal('editar',area)"><i class="pencil alternate icon"></i> 
+                            <button class="ui basic green button" ng-click="tipoMantenimientoModal('editar',tipoMantenimiento)"><i class="pencil alternate icon"></i> 
                                 Editar</button>
-                            <button class="ui basic red button" ng-click="eliminar('area', area)"><i class="trash alternate outline icon"></i>
+                            <button class="ui basic red button" ng-click="eliminar('tipomantenimiento', tipoMantenimiento)"><i class="trash alternate outline icon"></i>
                                 Eliminar</button>
                         </div>
                     </div>
@@ -249,60 +251,35 @@
             </div>
             <div class="card">
                 <div class="content">
-                    <button class="ui blue labeled icon button" ng-click="AreaModal('agregar')"><i class="plus circle icon"></i> 
-                        Agregar area</button>
+                    <button class="ui blue labeled icon button" ng-click="tipoMantenimientoModal('agregar')"><i class="plus circle icon"></i> 
+                        Agregar Tipo de Equipo</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="ui modal" id="modal-area">
+    <div class="ui modal" id="modal-tipoMantenimiento">
         <i class="close icon"></i>
         <div class="header">
-            {{ areaModalTitle }}
+            {{ tipoMantenimientoModalTitle }}
         </div>
         <div class="content">
             <div class="description">
-                <form class="ui form" id="area-formulario">
-                    <input type="hidden" name="areaId" ng-model="formulario.area.id" />
+                <form class="ui form" id="tipoMantenimiento-formulario">
+                    <input type="hidden" name="tipoMantenimientoId" ng-model="formulario.tipoMantenimiento.id" />
                     <div class="required field">
                         <label>Nombre</label>
-                        <input type="text" name="nombre" placeholder="nombre" ng-model="formulario.area.nombre" required>
+                        <input type="text" name="nombre" placeholder="nombre" ng-model="formulario.tipoMantenimiento.nombre" required>
                     </div>
                 </form>
             </div>
         </div>
         <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="area-formulario" ng-click="agregarEditarArea()">
+            <button type="submit" class="ui positive right labeled icon button" form="tipoMantenimiento-formulario" ng-click="agregarEditarTipoMantenimiento()">
                 <i class="checkmark icon"></i>
                 Guardar
             </button>
         </div>
     </div>
-
-<!--    <div class="ui modal" id="modal-book">
-        <i class="close icon"></i>
-        <div class="header">
-            Add book
-        </div>
-        <div class="content">
-            <div class="description">
-                <form class="ui form" id="book-form">
-                    <input type="hidden" name="authorId" ng-model="form.book.authorId" />
-                    <div class="required field">
-                        <label>Title</label>
-                        <input type="text" name="title" placeholder="Title" ng-model="form.book.title" required>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="book-form" ng-click="addBook()">
-                <i class="checkmark icon"></i>
-                Submit
-            </button>
-        </div>
-    </div>-->
-
 </body>
 </html>

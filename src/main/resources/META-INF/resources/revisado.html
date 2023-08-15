@@ -46,10 +46,10 @@
 
             $scope.revisados = [];
             $scope.form = []
-            $scope.desperfectos = [{ id: 0, nombre: 'Seleccionar opción' }];
+            $scope.desperfectos = [];
             $scope.equipos = [];
             $scope.pattern = '';
-            $scope.desperfectoId = 0;
+            $scope.desperfectoId = '';
 
             // initializes the data from the REST endpoint
             _refreshPageData();
@@ -62,17 +62,16 @@
                 }).then(_success, _error);
             };
             $scope.showAddRevisadoModal = function () {
+                _clearForm()
                 $scope.revisadoModalTitle = "Add revisado";
                 $('#modal-revisado').modal('show');
             }
-
             $scope.showEditRevisadoModal = function (revisado) {
                 _getDesperfectoId(revisado)
                 $scope.revisadoModalTitle = "Editar Revisado " + revisado.nombre
                 $scope.form.revisado = revisado;
                 $('#modal-revisado').modal('show');
             }
-
             $scope.agregarOEditarRevisado = function () {
                 data = {};
                 if ($scope.form.revisado.id == -1 || typeof $scope.form.revisado.id === 'undefined') {
@@ -100,8 +99,7 @@
                     }
                 }).then(_success, _error);
             }
-
-
+            
             function _getDesperfectos() {
                 $http({
                     method: 'GET',
@@ -112,7 +110,6 @@
                     console.log(response.statusText);
                 });
             }
-
             function _getEquipo() {
                 $http({
                     method: 'GET',
@@ -123,19 +120,29 @@
                     console.log(response.statusText);
                 });
             }
-
+            
             function _getDesperfectoId(revisado) {
             // $scope._getDesperfectoId = function (revisado) {
                 $http({
                     method: 'GET',
-                    url: '/inventario/desperfecto/search/id?id=' + revisado.id
+                    url: '/inventario/desperfecto/search/id?revisadoId=' + revisado.id
                 }).then(function successCallback(response) {
-                    $scope.desperfectoId = response.data[0].id;
+                    $scope.desperfectoId = response.data.id;
                 }, function errorCallback(response) {
                     return -1;
                 });
             }
-
+            function _getEquipoId(revisado) {
+                $http({
+                    method: 'GET',
+                    url: '/inventario/equipo/search/id?revisadoId=' + revisado.id
+                }).then(function successCallback(response) {
+                    $scope.desperfectoId = response.data.id;
+                }, function errorCallback(response) {
+                    return -1;
+                });
+            }
+            
             function _refreshPageData() {
                 $http({
                     method: 'GET',
@@ -148,37 +155,34 @@
                 _getDesperfectos();
                 _getEquipo();
             }
-
             function _success(response) {
                 $scope.pattern = '';
                 _refreshPageData();
                 _clearForm();
             }
-
             function _clearForm() {
                 $scope.form.revisado = {
                     id: -1,
                     duracion: '',
                     ordenTrabajo: '',
+                    desperfectoId: ''
                 };
             }
-
             function _error(response) {
                 alert(response.data.message || response.statusText);
                 _clearForm();
             }
-
         }]);
     </script>
 </head>
 
 <body ng-app="InventarioManagement" ng-controller="InventarioManagementController">
-    <!--MENU -->
-    <div class="ui fixed inverted menu"> <!--!-->
+    
+    <!-- MENU -->
+    <div class="ui fixed inverted menu">
         <div class="ui container">
             <a class="header item" href="https://quarkus.io/">
-                <img class="logo" src="https://quarkus.io/assets/images/quarkus_logo_horizontal_rgb_reverse.svg"
-                    alt="Quarkus logo" style="width:200px;">
+                <img class="logo" src="https://quarkus.io/assets/images/quarkus_logo_horizontal_rgb_reverse.svg" alt="Quarkus logo" style="width:200px;">
             </a>
             <a href="/index.html">
                 <span class="header item">
@@ -190,19 +194,34 @@
                     Area
                 </span>
             </a>
+            <a href="/desperfecto.html">
+                <span class="header item">
+                    Desperfecto
+                </span>
+            </a>
             <a href="/equipo.html">
                 <span class="header item">
                     Equipo
                 </span>
             </a>
-            <a href="/revisado.html">
+            <a href="/Material.html">
                 <span class="header item">
-                    revisado
+                    Material
                 </span>
             </a>
-            <a href="/solicitante.html">
+            <a href="/revisado.html">
                 <span class="header item">
-                    solicitante
+                    Revisado
+                </span>
+            </a>
+            <a href="/tipoequipo.html">
+                <span class="header item">
+                    Tipos de Equipo
+                </span>
+            </a>
+            <a href="/tipomantenimiento.html">
+                <span class="header item">
+                    Tipos de Mantenimiento
                 </span>
             </a>
         </div>
@@ -300,33 +319,28 @@
                 <form class="ui form" id="revisado-form">
                     <input type="hidden" name="revisadoId" ng-model="form.revisado.id" />
                     <div class="required field">
-                        <label>Duracion</label>
+                        <label>Duracion:</label>
                         <input type="text" name="duracion" placeholder="Duracion" ng-model="form.revisado.duracion"
                             required>
                     </div>
 
                     <div class="required field">
-                        <label>ordenTrabajo</label>
+                        <label>ordenTrabajo:</label>
                         <input type="text" name="ordenTrabajo" placeholder="ordenTrabajo"
                             ng-model="form.revisado.ordenTrabajo" required>
                     </div>
 
                     <div class="required field">
-                        <!-- <select class="field" ng-model="form.revisado.desperfectoId" required>
-                            <option ng-value="desperfectoId === 0 ? form.revisado.desperfectoId : desperfectoId" ng-repeat="desperfecto in desperfectos" value="{{ desperfecto.id}}">{{
-                                desperfecto.nombre}}</option>
-                        </select> -->
-
-                        <select class="field" ng-model="form.revisado.desperfectoId" required>
-                            <option ng-repeat="option in desperfectos" ng-value="option.id" ng-selected="form.revisado.desperfectoId === option.value">{{ option.nombre }}</option>
+                        <label>Desperfecto:</label>
+                        <select ng-model="selectedDesperfecto" ng-options="desperfecto as desperfecto.nombre for desperfecto in desperfectos | orderBy:'id'">
+                            <option value="">Seleccionar opción</option>
                         </select>
-
                     </div>
 
                     <div class="required field">
-                        <select class="field" ng-model="form.revisado.equipoId" required>
-                            <option value="">Seleccione un equipo...</option>
-                            <option ng-repeat="equipo in equipos" value="{{ equipo.id}}">{{ equipo.nombre}}</option>
+                        <label>Equipo:</label>
+                        <select ng-model="selectedEquiopo" ng-options="equipo as equipos.nombre for equipo in equipos | orderBy:'id'">
+                            <option value="">Seleccionar opción</option>
                         </select>
                     </div>
                 </form>

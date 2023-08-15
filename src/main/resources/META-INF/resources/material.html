@@ -39,43 +39,47 @@
       app.controller("InventarioManagementController", ['$scope', '$http', '$httpParamSerializerJQLike', function ($scope, $http, $httpParamSerializerJQLike) {
 
         // initialize page with default data which is blank in this example
-        $scope.areas = [];
+        $scope.materiales = [];
         $scope.pattern = '';
         $scope.formulario = {};
 
         // initializes the data from the REST endpoint
         _actualizarDatos();
-        $('.areas').show();
+        $('.material').show();
         
 
-        $scope.AreaModal = function (accion,area) {
+        $scope.materialModal = function (accion,material) {
             switch (accion) {
                 case "agregar":
-                    $scope.areaModalTitle = "Agregar area";
+                    $scope.materialModalTitle = "Agregar material";
                     break;
             
                 case "editar":
-                    $scope.areaModalTitle = "Editar area "
-                    $scope.formulario.area = area;
+                    $scope.materialModalTitle = "Editar material"
+                    $scope.formulario.material = material;
                     break;
 
                 default:
                     break;
             }       
-            $('#modal-area').modal('show');
+            $('#modal-material').modal('show');
         }
 
         //Guardar Editar
-        $scope.agregarEditarArea = function () {
+        $scope.agregarEditarMaterial = function () {
             data = {};
-            if ($scope.formulario.area.id == -1 ||$scope.formulario.area.id === undefined ) {
+            if ($scope.formulario.material.id == -1 ||$scope.formulario.material.id === undefined ) {
                 method = 'PUT';
-                url = '/inventario/area';
-                data.nombre = $scope.formulario.area.nombre;
+                url = '/inventario/material';
+                data.nombre = $scope.formulario.material.nombre;
+                data.cantidad = $scope.formulario.material.cantidad;
+                data.tipoRefrigerante = $scope.formulario.material.tipoRefrigerante;
             } else {
                 method = 'POST';
-                url = '/inventario/area/' + $scope.formulario.area.id;
-                data.nombre = $scope.formulario.area.nombre;
+                url = '/inventario/material/' + $scope.formulario.material.id;
+                data.nombre = $scope.formulario.material.nombre;
+                data.cantidad = $scope.formulario.material.cantidad;
+                data.tipoRefrigerante = $scope.formulario.material.tipoRefrigerante;
             }
             $http({
                 method: method,
@@ -99,9 +103,9 @@
         function _actualizarDatos() {
             $http({
                 method: 'GET',
-                url: '/inventario/area/buscar?pattern=' + $scope.pattern
+                url: '/inventario/material/buscar?pattern=' + $scope.pattern
             }).then(function successCallback(response) {
-                $scope.areas = response.data;
+                $scope.materiales = response.data;
             }, function errorCallback(response) {
                 console.log(response.statusText);
             });
@@ -112,9 +116,11 @@
         }
 
         function _limpiarFormulario() {
-            $scope.formulario.area = {
+            $scope.formulario.material = {
                 id: -1,
                 nombre: '',
+                cantidad: '',
+                tipoRefrigerante: '',
             };
         }
 
@@ -221,27 +227,28 @@
     <div class="ui container search">
         <form class="ui form" ng-submit="actualizar()">
             <div class="fluid big left ui action input">
-                <input type="text" placeholder="Busca el nombre de una area o el título de un libro. Intenta buscar con un * al final" ng-model="pattern">
+                <input type="text" placeholder="Busca el nombre de un Material. Intenta buscar con un * al final" ng-model="pattern">
                 <button class="ui blue right labeled icon button" ng-click="actualizar()"><i class="search icon"></i> Buscar</button>
             </div>
         </form>
     </div>
        <!--CONTENIDO -->
-    <div class="ui container areas">
+    <div class="ui container materiales">
         <div class="ui cards">
-            <div class="card" ng-repeat="area in areas">
+            <div class="card" ng-repeat="material in materiales">
                 <div class="content">
-                    <div class="header">{{ area.nombre }}</div>
+                    <div class="header">{{ material.nombre }}</div>
                     <div class="meta">
-                        {{ area.equipos.length }}
+                        <div class="meta">{{ material.cantidad }}</div>
+                        <div class="meta">{{ material.tipoRefrigerante }}</div>
                         <!-- <button class="ui basic blue icon button mini right floated" ng-click="showBookModal(area)"><i class="plus circle icon"></i> Add book</button> -->
                     </div>
                     
                     <div class="extra content">
                         <div class="ui two buttons">
-                            <button class="ui basic green button" ng-click="AreaModal('editar',area)"><i class="pencil alternate icon"></i> 
+                            <button class="ui basic green button" ng-click="materialModal('editar',material)"><i class="pencil alternate icon"></i> 
                                 Editar</button>
-                            <button class="ui basic red button" ng-click="eliminar('area', area)"><i class="trash alternate outline icon"></i>
+                            <button class="ui basic red button" ng-click="eliminar('material', material)"><i class="trash alternate outline icon"></i>
                                 Eliminar</button>
                         </div>
                     </div>
@@ -249,60 +256,43 @@
             </div>
             <div class="card">
                 <div class="content">
-                    <button class="ui blue labeled icon button" ng-click="AreaModal('agregar')"><i class="plus circle icon"></i> 
-                        Agregar area</button>
+                    <button class="ui blue labeled icon button" ng-click="materialModal('agregar')"><i class="plus circle icon"></i> 
+                        Agregar material</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="ui modal" id="modal-area">
+    <div class="ui modal" id="modal-material">
         <i class="close icon"></i>
         <div class="header">
-            {{ areaModalTitle }}
+            {{ materialModalTitle }}
         </div>
         <div class="content">
             <div class="description">
-                <form class="ui form" id="area-formulario">
-                    <input type="hidden" name="areaId" ng-model="formulario.area.id" />
+                <form class="ui form" id="material-formulario">
+                    <input type="hidden" name="materialId" ng-model="formulario.material.id" />
                     <div class="required field">
-                        <label>Nombre</label>
-                        <input type="text" name="nombre" placeholder="nombre" ng-model="formulario.area.nombre" required>
+                        <label>Nombre: </label>
+                        <input type="text" name="nombre" placeholder="nombre" ng-model="formulario.material.nombre" required>
+                    </div>
+                    <div class="required field">
+                        <label>Cantidad: </label>
+                        <input type="text" name="cantidad" placeholder="cantidad" ng-model="formulario.material.cantidad" required>
+                    </div>
+                    <div class="required field">
+                        <label>Tipo Refrigerante: </label>
+                        <input type="text" name="tipoRefrigerante" placeholder="tipoRefrigerante" ng-model="formulario.material.tipoRefrigerante" required>
                     </div>
                 </form>
             </div>
         </div>
         <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="area-formulario" ng-click="agregarEditarArea()">
+            <button type="submit" class="ui positive right labeled icon button" form="material-formulario" ng-click="agregarEditarMaterial()">
                 <i class="checkmark icon"></i>
                 Guardar
             </button>
         </div>
     </div>
-
-<!--    <div class="ui modal" id="modal-book">
-        <i class="close icon"></i>
-        <div class="header">
-            Add book
-        </div>
-        <div class="content">
-            <div class="description">
-                <form class="ui form" id="book-form">
-                    <input type="hidden" name="authorId" ng-model="form.book.authorId" />
-                    <div class="required field">
-                        <label>Title</label>
-                        <input type="text" name="title" placeholder="Title" ng-model="form.book.title" required>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="book-form" ng-click="addBook()">
-                <i class="checkmark icon"></i>
-                Submit
-            </button>
-        </div>
-    </div>-->
-
 </body>
 </html>

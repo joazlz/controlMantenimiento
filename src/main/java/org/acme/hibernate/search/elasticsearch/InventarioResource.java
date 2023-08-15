@@ -15,7 +15,6 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
-
 import org.acme.hibernate.search.elasticsearch.model.Area;
 import org.acme.hibernate.search.elasticsearch.model.Desperfecto;
 import org.acme.hibernate.search.elasticsearch.model.Equipo;
@@ -26,9 +25,6 @@ import org.acme.hibernate.search.elasticsearch.model.TipoMantenimiento;
 import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.jboss.resteasy.reactive.RestForm;
 import org.jboss.resteasy.reactive.RestQuery;
-
-import com.arjuna.ats.internal.jdbc.drivers.modifiers.list;
-
 import io.quarkus.runtime.StartupEvent;
 
 @Path("/inventario")
@@ -47,48 +43,21 @@ public class InventarioResource {
         }
     }
 
-    // @PUT
-    // @Path("equipo")
-    // @Transactional
-    // @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    // public void addEquipo(@RestForm String nombre, @RestForm Long areaId) {
-    //     Area area = Area.findById(areaId);
-    //     if (area == null) {
-    //         return;
-    //     }
-    //     Equipo equipo = new Equipo();
-    //     equipo.nombre = nombre;
-    //     equipo.area = area;
-    //     equipo.persist();
-    //     area.equipos.add(equipo);
-    //     area.persist();
-    // }
-    // @DELETE
-    // @Path("book/{id}")
-    // @Transactional
-    // public void deleteBook(Long id) {
-    //     Book book = Book.findById(id);
-    //     if (book != null) {
-    //         book.author.books.remove(book);
-    //         book.delete();
-    //     }
-    // }
     // AREA
     @PUT
     @Path("area")
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void addArea(@RestForm String nombre) {
+    public void agregarArea(@RestForm String nombre) {
         Area area = new Area();
         area.nombre = nombre;
         area.persist();
     }
-
     @POST
     @Path("area/{id}")
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void updateArea(Long id, @RestForm String nombre) {
+    public void actualizarArea(Long id, @RestForm String nombre) {
         Area area = Area.findById(id);
         if (area == null) {
             return;
@@ -96,75 +65,70 @@ public class InventarioResource {
         area.nombre = nombre;
         area.persist();
     }
-
     @DELETE
     @Path("area/{id}")
     @Transactional
-    public void deleteArea(Long id) {
+    public void eliminarArea(Long id) {
         Area area = Area.findById(id);
         if (area != null) {
             area.delete();
         }
     }
-
     @GET
-    @Path("area/search")
+    @Path("area/buscar")
     @Transactional
-    public List<Area> searchAreas(@RestQuery String pattern,
+    public List<Area> buscarAreas(@RestQuery String pattern,
             @RestQuery Optional<Integer> size) {
         return searchSession.search(Area.class)
                 .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
-                : f.simpleQueryString()
-                        .fields("nombre", "equipos.nombre").matching(pattern))
-                .sort(f -> f.field("nombre_sort"))
+                        : f.simpleQueryString()
+                                .fields("nombre", "equipos.nombre").matching(pattern))
+                .sort(f -> f.field("nombre_ordenado"))
                 .fetchHits(size.orElse(20));
     }
 
-    //TIPO EQUIPO
-    @PUT
-    @Path("tipoequipo")
+    // DESPERFECTO
+    @GET
+    @Path("desperfecto/buscar")
     @Transactional
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void addTipoEquipo(@RestForm String nombre) {
-        TipoEquipo tipoEquipo = new TipoEquipo();
-        tipoEquipo.nombre = nombre;
-        tipoEquipo.persist();
+    public List<Desperfecto> buscarDesperfectos(@RestQuery String pattern,
+            @RestQuery Optional<Integer> size) {
+        return searchSession.search(Desperfecto.class)
+                .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
+                        : f.simpleQueryString()
+                                .fields("nombre").matching(pattern))
+                .sort(f -> f.field("nombre_ordenado"))
+                .fetchHits(size.orElse(20));
     }
-
-    @POST
-    @Path("tipoequipo/{id}")
+    @PUT
+    @Path("desperfecto")
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void updateTipoEquipo(Long id, @RestForm String nombre) {
-        TipoEquipo tipoEquipo = TipoEquipo.findById(id);
-        if (tipoEquipo == null) {
+    public void agregarDesperfecto(@RestForm String nombre) {
+        Desperfecto desperfecto = new Desperfecto();
+        desperfecto.nombre = nombre;
+        desperfecto.persist();
+    }
+    @POST
+    @Path("desperfecto/{id}")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void actualizarDesperfecto(Long id, @RestForm String nombre) {
+        Desperfecto desperfecto = Desperfecto.findById(id);
+        if (desperfecto == null) {
             return;
         }
-        tipoEquipo.nombre = nombre;
-        tipoEquipo.persist();
+        desperfecto.nombre = nombre;
+        desperfecto.persist();
     }
-
     @DELETE
-    @Path("tipoequipo/{id}")
+    @Path("desperfecto/{id}")
     @Transactional
-    public void deleteTipoEquipo(Long id) {
-        TipoEquipo tipoEquipo = TipoEquipo.findById(id);
-        if (tipoEquipo != null) {
-            tipoEquipo.delete();
+    public void eliminarDesperfecto(Long id) {
+        Desperfecto desperfecto = Desperfecto.findById(id);
+        if (desperfecto != null) {
+            desperfecto.delete();
         }
-    }
-
-    @GET
-    @Path("tipoequipo/search")
-    @Transactional
-    public List<TipoEquipo> searchTipoEquipo(@RestQuery String pattern,
-            @RestQuery Optional<Integer> size) {
-        return searchSession.search(TipoEquipo.class)
-                .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
-                : f.simpleQueryString()
-                        .fields("nombre", "equipos.nombre").matching(pattern))
-                .sort(f -> f.field("nombre_sort"))
-                .fetchHits(size.orElse(20));
     }
 
     // EQUIPO
@@ -172,73 +136,69 @@ public class InventarioResource {
     @Path("equipo")
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void addEquipo(@RestForm String nombre,
-            @RestForm String marca,
-            @RestForm String modelo,
-            @RestForm String voltaje,
-            @RestForm String capacidad,
-            @RestForm String capacitor,
-            @RestForm String tipoMotor,
-            //@RestForm String tipoMotorcondensador,
-            //@RestForm String tipoMotorevaporador,
-            @RestForm String capacidadMotor,
-            @RestForm String numeroEquipo,
-            @RestForm String hp,
-            @RestForm String amperaje,
-            @RestForm Long areaId,
-            @RestForm Long tipoEquipoId) {
+    public void agregarEquipo(
+    @RestForm String nombre,
+    @RestForm String marca,
+    @RestForm String modelo,
+    @RestForm String voltaje,
+    @RestForm String capacidad,
+    @RestForm String capacitor,
+    @RestForm String tipoMotor,
+    @RestForm String capacidadMotor,
+    @RestForm String numeroEquipo,
+    @RestForm String hp,
+    @RestForm String amperaje,
+    @RestForm Long areaId,
+    @RestForm Long tipoEquipoId) {
+        
         Area area = Area.findById(areaId);
-        if (area == null) {
-            return;
-        }
-
         TipoEquipo tipoEquipo = TipoEquipo.findById(tipoEquipoId);
-        if (tipoEquipo == null) {
+        
+        if (area != null & tipoEquipo != null) {
+            Equipo equipo = new Equipo();
+            equipo.nombre = nombre;
+            equipo.marca = marca;
+            equipo.modelo = modelo;
+            equipo.voltaje = voltaje;
+            equipo.capacidad = capacidad;
+            equipo.capacitor = capacitor;
+            equipo.tipoMotor = tipoMotor;
+            equipo.capacidadMotor = capacidadMotor;
+            equipo.numeroEquipo = numeroEquipo;
+            equipo.hp = hp;
+            equipo.amperaje = amperaje;
+            equipo.area = area;
+            equipo.tipoEquipo = tipoEquipo;
+            equipo.persist();
+
+            area.equipos.add(equipo);
+            area.persist();
+
+            tipoEquipo.equipos.add(equipo);
+            tipoEquipo.persist();
+        }else{
             return;
         }
-
-        Equipo equipo = new Equipo();
-        equipo.nombre = nombre;
-        equipo.marca = marca;
-        equipo.modelo = modelo;
-        equipo.voltaje = voltaje;
-        equipo.capacidad = capacidad;
-        equipo.capacitor = capacitor;
-        equipo.tipoMotor = tipoMotor;
-        //equipo.tipoMotorcondensador = tipoMotorcondensador;
-        //equipo.tipoMotorevaporador = tipoMotorevaporador;
-        equipo.capacidadMotor = capacidadMotor;
-        equipo.numeroEquipo = numeroEquipo;
-        equipo.hp = hp;
-        equipo.amperaje = amperaje;
-        equipo.area = area;
-        equipo.tipoEquipo = tipoEquipo;
-        equipo.persist();
-
-        area.equipos.add(equipo);
-        area.persist();
-
-        tipoEquipo.equipos.add(equipo);
-        tipoEquipo.persist();
     }
 
+
     @GET
-    @Path("equipo/search")
+    @Path("equipo/buscar")
     @Transactional
-    public List<Equipo> searchEquipos(@RestQuery String pattern,
+    public List<Equipo> buscarEquipos(@RestQuery String pattern,
             @RestQuery Optional<Integer> size) {
         return searchSession.search(Equipo.class)
                 .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
-                : f.simpleQueryString()
-                        .fields("nombre").matching(pattern))
-                .sort(f -> f.field("equipoNombre_sort").then().field("numeroEquipo_sort"))
+                        : f.simpleQueryString()
+                                .fields("nombre").matching(pattern))
+                .sort(f -> f.field("equipoNombre_ordenado").then().field("numeroEquipo_ordenado"))
                 .fetchHits(size.orElse(20));
     }
 
     @DELETE
     @Path("equipo/{id}")
     @Transactional
-    public void deleteEquipo(Long id) {
+    public void eliminarEquipo(Long id) {
         Equipo equipo = Equipo.findById(id);
         if (equipo != null) {
             for (int i = 0; i < equipo.revisados.size(); i++) {
@@ -252,74 +212,60 @@ public class InventarioResource {
 
     // MATERIAL
     @GET
-    @Path("material/search")
+    @Path("material/buscar")
     @Transactional
-    public List<Material> searchMateriales(@RestQuery String pattern,
+    public List<Material> buscarMateriales(@RestQuery String pattern,
             @RestQuery Optional<Integer> size) {
         return searchSession.search(Material.class)
                 .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
-                : f.simpleQueryString()
-                        .fields("nombre").matching(pattern))
-                .sort(f -> f.field("nombre_sort"))
+                        : f.simpleQueryString()
+                                .fields("nombre").matching(pattern))
+                .sort(f -> f.field("nombre_ordenado"))
                 .fetchHits(size.orElse(20));
     }
-
-    // DESPERFECTO
-    @GET
-    @Path("desperfecto/search")  //este es el pat//
+    @PUT
+    @Path("material")
     @Transactional
-    public List<Desperfecto> searchDesperfectos(@RestQuery String pattern,
-            @RestQuery Optional<Integer> size) {
-        return searchSession.search(Desperfecto.class)
-                .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
-                : f.simpleQueryString()
-                        .fields("nombre").matching(pattern))
-                .sort(f -> f.field("nombre_sort"))
-                .fetchHits(size.orElse(20));
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void agregarMaterial(
+        @RestForm String nombre,
+        @RestForm String cantidad,
+        @RestForm String tipoRefrigerante) {
+        Material material = new Material();
+        material.nombre = nombre;
+        material.cantidad = cantidad;
+        material.tipoRefrigerante = tipoRefrigerante;
+        material.persist();
     }
-
-    // TIPOMANTENIMIENTO
-    @GET
-    @Path("tipomantenimiento/search")
+    @POST
+    @Path("material/{id}")
     @Transactional
-    public List<TipoMantenimiento> searchTipoMantenimientos(@RestQuery String pattern,
-            @RestQuery Optional<Integer> size) {
-        return searchSession.search(TipoMantenimiento.class)
-                .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
-                : f.simpleQueryString()
-                        .fields("nombre").matching(pattern))
-                .sort(f -> f.field("nombre_sort"))
-                .fetchHits(size.orElse(20));
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void actualizarMaterial(
+        Long id, 
+        @RestForm String nombre,
+        @RestForm String cantidad,
+        @RestForm String tipoRefrigerante) {
+        Material material = Material.findById(id);
+        if (material == null) {
+            return;
+        }
+        material.nombre = nombre;
+        material.cantidad = cantidad;
+        material.tipoRefrigerante = tipoRefrigerante;
+        material.persist();
     }
-
+    @DELETE
+    @Path("material/{id}")
+    @Transactional
+    public void eliminarMaterial(Long id) {
+        Material material = Material.findById(id);
+        if (material != null) {
+            material.delete();
+        }
+    }
+    
     // REVISADO
-    @GET
-    @Path("revisado/search")
-    @Transactional
-    public List<Revisado> searchRevisados(@RestQuery String pattern,
-            @RestQuery Optional<Integer> size) {
-        return searchSession.search(Revisado.class)
-                .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
-                : f.simpleQueryString()
-                        .fields("nombre","id").matching(pattern))
-                .sort(f -> f.field("ordenTrabajo_sort"))
-                .fetchHits(size.orElse(20));
-    }
-
-    // REVISADO
-    @GET
-    @Path("desperfecto/search/id")
-    @Transactional
-    public List<Desperfecto> searchRevisados(@RestQuery Long id,
-            @RestQuery Optional<Integer> size) {
-        return searchSession.search(Desperfecto.class)
-                .where(f -> id == null || id>0 ? f.matchAll()
-                : f.simpleQueryString()
-                        .fields("id").matching(id.toString()))
-                .fetchHits(size.orElse(20));
-    }
-
-    //REVISADO
     @PUT
     @Path("revisado")
     @Transactional
@@ -328,8 +274,7 @@ public class InventarioResource {
             @RestForm String duracion,
             @RestForm String ordenTrabajo,
             @RestForm Long desperfectoId,
-            @RestForm Long equipoId
-    ) {
+            @RestForm Long equipoId) {
         Desperfecto desperfecto = Desperfecto.findById(desperfectoId);
         if (desperfecto == null) {
             return;
@@ -345,7 +290,7 @@ public class InventarioResource {
         revisado.ordenTrabajo = ordenTrabajo;
         revisado.desperfecto = desperfecto;
         revisado.equipo = equipo;
-        revisado.persist(); //Guarda la base de datos pesist//
+        revisado.persist(); // Guarda la base de datos pesist//
 
         desperfecto.revisados.add(revisado);
         desperfecto.persist();
@@ -364,8 +309,7 @@ public class InventarioResource {
             @RestForm String duracion,
             @RestForm String ordenTrabajo,
             @RestForm Long desperfectoId,
-            @RestForm Long equipoId
-    ) {
+            @RestForm Long equipoId) {
         Desperfecto desperfecto = Desperfecto.findById(desperfectoId);
         if (desperfecto == null) {
             return;
@@ -399,16 +343,92 @@ public class InventarioResource {
         }
     }
 
-//    @GET
-//    @Path("revisado/search")
-//    @Transactional
-//    public List<Revisado> searchRevisado(@RestQuery String pattern,
-//            @RestQuery Optional<Integer> size) {
-//        return searchSession.search(Revisado.class)
-//                .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
-//                        : f.simpleQueryString()
-//                                .fields("nombre", "equipos.nombre").matching(pattern))
-//                .sort(f -> f.field("nombre_sort"))
-//                .fetchHits(size.orElse(20));
-//    }
+    // TIPO EQUIPO
+    @PUT
+    @Path("tipoequipo")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void agregarTipoEquipo(@RestForm String nombre) {
+        TipoEquipo tipoEquipo = new TipoEquipo();
+        tipoEquipo.nombre = nombre;
+        tipoEquipo.persist();
+    }
+    @POST
+    @Path("tipoequipo/{id}")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void actualizarTipoEquipo(Long id, @RestForm String nombre) {
+        TipoEquipo tipoEquipo = TipoEquipo.findById(id);
+        if (tipoEquipo == null) {
+            return;
+        }
+        tipoEquipo.nombre = nombre;
+        tipoEquipo.persist();
+    }
+    @DELETE
+    @Path("tipoequipo/{id}")
+    @Transactional
+    public void eliminarTipoEquipo(Long id) {
+        TipoEquipo tipoEquipo = TipoEquipo.findById(id);
+        if (tipoEquipo != null) {
+            tipoEquipo.delete();
+        }
+    }
+    @GET
+    @Path("tipoequipo/buscar")
+    @Transactional
+    public List<TipoEquipo> buscarTipoEquipo(@RestQuery String pattern,
+            @RestQuery Optional<Integer> size) {
+        return searchSession.search(TipoEquipo.class)
+                .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
+                        : f.simpleQueryString()
+                                .fields("nombre", "equipos.nombre").matching(pattern))
+                .sort(f -> f.field("nombre_ordenado"))
+                .fetchHits(size.orElse(20));
+    }
+
+    // TIPOMANTENIMIENTO
+    @GET
+    @Path("tipomantenimiento/buscar")
+    @Transactional
+    public List<TipoMantenimiento> buscarTipoMantenimientos(@RestQuery String pattern,
+            @RestQuery Optional<Integer> size) {
+        return searchSession.search(TipoMantenimiento.class)
+                .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
+                        : f.simpleQueryString()
+                                .fields("nombre").matching(pattern))
+                .sort(f -> f.field("nombre_ordenado"))
+                .fetchHits(size.orElse(20));
+    }
+    @PUT
+    @Path("tipomantenimiento")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void agregarTipoMantenimiento(@RestForm String nombre) {
+        TipoMantenimiento tipoMantenimiento = new TipoMantenimiento();
+        tipoMantenimiento.nombre = nombre;
+        tipoMantenimiento.persist();
+    }
+    @DELETE
+    @Path("tipomantenimiento/{id}")
+    @Transactional
+    public void eliminarTipoMantenimiento(Long id) {
+        TipoMantenimiento tipoMantenimiento = TipoMantenimiento.findById(id);
+        if (tipoMantenimiento != null) {
+            tipoMantenimiento.delete();
+        }
+    }
+    @POST
+    @Path("tipomantenimiento/{id}")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void actualizarTipoMantenimiento(Long id, @RestForm String nombre) {
+        TipoMantenimiento tipoMantenimiento = TipoMantenimiento.findById(id);
+        if (tipoMantenimiento == null) {
+            return;
+        }
+        tipoMantenimiento.nombre = nombre;
+        tipoMantenimiento.persist();
+    }
+    
 }

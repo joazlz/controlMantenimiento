@@ -20,14 +20,13 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 @Indexed
 public class Area extends PanacheEntity {
 
-    @FullTextField(analyzer = "name")
-    @KeywordField(name = "nombre_sort", sortable = Sortable.YES, normalizer = "sort")
+    @FullTextField(analyzer = "nombre")
+    @KeywordField(name = "nombre_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String nombre;
 
     @OneToMany(mappedBy = "area", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @IndexedEmbedded
     public List<Equipo> equipos;
-
 
     @Override
     public boolean equals(Object o) {

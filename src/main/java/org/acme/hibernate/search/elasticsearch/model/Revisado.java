@@ -18,11 +18,11 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 @Indexed
 public class Revisado extends PanacheEntity {
 
-    @FullTextField(analyzer = "english")
+    @FullTextField(analyzer = "ingles")
     public String duracion;
 
-    @FullTextField(analyzer = "english")
-    @KeywordField(name = "ordenTrabajo_sort", sortable = Sortable.YES, normalizer = "sort")
+    @FullTextField(analyzer = "ingles")
+    @KeywordField(name = "ordenTrabajo_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String ordenTrabajo;
     
     @ManyToOne

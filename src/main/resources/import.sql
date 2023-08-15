@@ -20,7 +20,7 @@ INSERT INTO tipomantenimiento(id, nombre) VALUES (2, 'programado');
 INSERT INTO tipomantenimiento(id, nombre) VALUES (3, 'correctivo');
 ALTER SEQUENCE tipomantenimiento_seq RESTART WITH 4;
 
-INSERT INTO material(id, nombre,cantidad,tipoRefrigerante) VALUES (1, 'material1','3','tipoRefrigerante1');
+INSERT INTO material(id, nombre,cantidad,tipoRefrigerante) VALUES (1, 'VRX','3','Helio');
 ALTER SEQUENCE material_seq RESTART WITH 2;
 
 INSERT INTO equipo(id,capacidad,capacidadMotor,capacitor,marca,modelo,nombre,numeroEquipo,tipoMotor,voltaje,hp,amperaje,area_id,tipoEquipo_id) VALUES (1,'capacidad','capacidadMotor','capacitor','marca','modelo','nombre','numeroEquipo','tipoMotor','voltaje','hp','12',1,1);

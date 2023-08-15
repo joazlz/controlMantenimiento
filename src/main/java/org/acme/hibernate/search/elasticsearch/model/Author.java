@@ -20,12 +20,12 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 @Indexed
 public class Author extends PanacheEntity {
 
-    @FullTextField(analyzer = "name")
-    @KeywordField(name = "firstName_sort", sortable = Sortable.YES, normalizer = "sort")
+    @FullTextField(analyzer = "nombre")
+    @KeywordField(name = "firstName_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String firstName;
 
-    @FullTextField(analyzer = "name")
-    @KeywordField(name = "lastName_sort", sortable = Sortable.YES, normalizer = "sort")
+    @FullTextField(analyzer = "nombre")
+    @KeywordField(name = "lastName_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String lastName;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)

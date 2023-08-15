@@ -10,15 +10,15 @@ public class AnalysisConfigurer implements ElasticsearchAnalysisConfigurer {
 
     @Override
     public void configure(ElasticsearchAnalysisConfigurationContext context) {
-        context.analyzer("name").custom()
+        context.analyzer("nombre").custom()
                 .tokenizer("standard")
                 .tokenFilters("asciifolding", "lowercase");
 
-        context.analyzer("english").custom()
+        context.analyzer("ingles").custom()
                 .tokenizer("standard")
                 .tokenFilters("asciifolding", "lowercase", "porter_stem");
 
-        context.normalizer("sort").custom()
+        context.normalizer("ordenar").custom()
                 .tokenFilters("asciifolding", "lowercase");
     }
 }

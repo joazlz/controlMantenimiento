@@ -111,7 +111,7 @@ public class LibraryResource {
                 .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
                         : f.simpleQueryString()
                                 .fields("firstName", "lastName", "books.title").matching(pattern))
-                .sort(f -> f.field("lastName_sort").then().field("firstName_sort"))
+                .sort(f -> f.field("lastName_ordenado").then().field("firstName_ordenado"))
                 .fetchHits(size.orElse(20));
     }
 }
