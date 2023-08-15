@@ -1,6 +1,6 @@
 package org.acme.hibernate.search.elasticsearch;
 
-import org.jboss.logging.Logger;
+// import org.jboss.logging.Logger;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,9 +22,12 @@ import org.acme.hibernate.search.elasticsearch.model.Material;
 import org.acme.hibernate.search.elasticsearch.model.Revisado;
 import org.acme.hibernate.search.elasticsearch.model.TipoEquipo;
 import org.acme.hibernate.search.elasticsearch.model.TipoMantenimiento;
+import org.acme.hibernate.search.elasticsearch.model.TipoRefrigerante;
 import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.jboss.resteasy.reactive.RestForm;
 import org.jboss.resteasy.reactive.RestQuery;
+
+import io.quarkus.logging.Log;
 import io.quarkus.runtime.StartupEvent;
 
 @Path("/inventario")
@@ -32,7 +35,7 @@ public class InventarioResource {
 
     @Inject
     SearchSession searchSession;
-    private static final Logger LOG = Logger.getLogger(InventarioResource.class);
+    // private static final Logger LOG = Logger.getLogger(InventarioResource.class);
 
     @Transactional
     void onStart(@Observes StartupEvent ev) throws InterruptedException {
@@ -53,6 +56,7 @@ public class InventarioResource {
         area.nombre = nombre;
         area.persist();
     }
+
     @POST
     @Path("area/{id}")
     @Transactional
@@ -65,6 +69,7 @@ public class InventarioResource {
         area.nombre = nombre;
         area.persist();
     }
+
     @DELETE
     @Path("area/{id}")
     @Transactional
@@ -74,6 +79,7 @@ public class InventarioResource {
             area.delete();
         }
     }
+
     @GET
     @Path("area/buscar")
     @Transactional
@@ -100,6 +106,7 @@ public class InventarioResource {
                 .sort(f -> f.field("nombre_ordenado"))
                 .fetchHits(size.orElse(20));
     }
+
     @PUT
     @Path("desperfecto")
     @Transactional
@@ -109,6 +116,7 @@ public class InventarioResource {
         desperfecto.nombre = nombre;
         desperfecto.persist();
     }
+
     @POST
     @Path("desperfecto/{id}")
     @Transactional
@@ -121,6 +129,7 @@ public class InventarioResource {
         desperfecto.nombre = nombre;
         desperfecto.persist();
     }
+
     @DELETE
     @Path("desperfecto/{id}")
     @Transactional
@@ -137,23 +146,23 @@ public class InventarioResource {
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public void agregarEquipo(
-    @RestForm String nombre,
-    @RestForm String marca,
-    @RestForm String modelo,
-    @RestForm String voltaje,
-    @RestForm String capacidad,
-    @RestForm String capacitor,
-    @RestForm String tipoMotor,
-    @RestForm String capacidadMotor,
-    @RestForm String numeroEquipo,
-    @RestForm String hp,
-    @RestForm String amperaje,
-    @RestForm Long areaId,
-    @RestForm Long tipoEquipoId) {
-        
+            @RestForm String nombre,
+            @RestForm String marca,
+            @RestForm String modelo,
+            @RestForm String voltaje,
+            @RestForm String capacidad,
+            @RestForm String capacitor,
+            @RestForm String tipoMotor,
+            @RestForm String capacidadMotor,
+            @RestForm String numeroEquipo,
+            @RestForm String hp,
+            @RestForm String amperaje,
+            @RestForm Long areaId,
+            @RestForm Long tipoEquipoId) {
+
         Area area = Area.findById(areaId);
         TipoEquipo tipoEquipo = TipoEquipo.findById(tipoEquipoId);
-        
+
         if (area != null & tipoEquipo != null) {
             Equipo equipo = new Equipo();
             equipo.nombre = nombre;
@@ -176,11 +185,10 @@ public class InventarioResource {
 
             tipoEquipo.equipos.add(equipo);
             tipoEquipo.persist();
-        }else{
+        } else {
             return;
         }
     }
-
 
     @GET
     @Path("equipo/buscar")
@@ -223,38 +231,62 @@ public class InventarioResource {
                 .sort(f -> f.field("nombre_ordenado"))
                 .fetchHits(size.orElse(20));
     }
+
+    @GET
+    @Path("material/buscarTipoRefrigerante")
+    @Transactional  
+    public TipoRefrigerante buscarTipoRefrigeranteMaterial(@RestQuery Long idMaterial) {
+        Material material = Material.findById(idMaterial);
+        TipoRefrigerante tipoRefrigerante = TipoRefrigerante.findById(material.tipoRefrigerante.id);
+        return tipoRefrigerante;
+    }
+
     @PUT
     @Path("material")
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public void agregarMaterial(
-        @RestForm String nombre,
-        @RestForm String cantidad,
-        @RestForm String tipoRefrigerante) {
-        Material material = new Material();
-        material.nombre = nombre;
-        material.cantidad = cantidad;
-        material.tipoRefrigerante = tipoRefrigerante;
-        material.persist();
+            @RestForm String nombre,
+            @RestForm String cantidad,
+            @RestForm Long idTipoRefrigerante) {
+
+        TipoRefrigerante tipoRefrigerante = TipoRefrigerante.findById(idTipoRefrigerante);
+        if (tipoRefrigerante == null) {
+            return;
+        } else {
+            Material material = new Material();
+            material.nombre = nombre;
+            material.cantidad = cantidad;
+            material.tipoRefrigerante = tipoRefrigerante;
+            material.persist();
+        }
     }
+
     @POST
     @Path("material/{id}")
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public void actualizarMaterial(
-        Long id, 
-        @RestForm String nombre,
-        @RestForm String cantidad,
-        @RestForm String tipoRefrigerante) {
+            Long id,
+            @RestForm String nombre,
+            @RestForm String cantidad,
+            @RestForm Long idTipoRefrigerante) {
+
         Material material = Material.findById(id);
         if (material == null) {
             return;
         }
+        TipoRefrigerante tipoRefrigerante = TipoRefrigerante.findById(idTipoRefrigerante);
+        if (tipoRefrigerante == null) {
+            return;
+        }
+
         material.nombre = nombre;
         material.cantidad = cantidad;
         material.tipoRefrigerante = tipoRefrigerante;
         material.persist();
     }
+
     @DELETE
     @Path("material/{id}")
     @Transactional
@@ -264,7 +296,7 @@ public class InventarioResource {
             material.delete();
         }
     }
-    
+
     // REVISADO
     @PUT
     @Path("revisado")
@@ -353,6 +385,7 @@ public class InventarioResource {
         tipoEquipo.nombre = nombre;
         tipoEquipo.persist();
     }
+
     @POST
     @Path("tipoequipo/{id}")
     @Transactional
@@ -365,6 +398,7 @@ public class InventarioResource {
         tipoEquipo.nombre = nombre;
         tipoEquipo.persist();
     }
+
     @DELETE
     @Path("tipoequipo/{id}")
     @Transactional
@@ -374,6 +408,7 @@ public class InventarioResource {
             tipoEquipo.delete();
         }
     }
+
     @GET
     @Path("tipoequipo/buscar")
     @Transactional
@@ -400,6 +435,7 @@ public class InventarioResource {
                 .sort(f -> f.field("nombre_ordenado"))
                 .fetchHits(size.orElse(20));
     }
+
     @PUT
     @Path("tipomantenimiento")
     @Transactional
@@ -409,6 +445,7 @@ public class InventarioResource {
         tipoMantenimiento.nombre = nombre;
         tipoMantenimiento.persist();
     }
+
     @DELETE
     @Path("tipomantenimiento/{id}")
     @Transactional
@@ -418,6 +455,7 @@ public class InventarioResource {
             tipoMantenimiento.delete();
         }
     }
+
     @POST
     @Path("tipomantenimiento/{id}")
     @Transactional
@@ -430,5 +468,52 @@ public class InventarioResource {
         tipoMantenimiento.nombre = nombre;
         tipoMantenimiento.persist();
     }
-    
+
+    // TIPOREFRIGERANTE
+    @GET
+    @Path("tiporefrigerante/buscar")
+    @Transactional
+    public List<TipoRefrigerante> buscarTipoRefrigerante(@RestQuery String pattern,
+            @RestQuery Optional<Integer> size) {
+        return searchSession.search(TipoRefrigerante.class)
+                .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
+                        : f.simpleQueryString()
+                                .fields("nombre").matching(pattern))
+                .sort(f -> f.field("nombre_ordenado"))
+                .fetchHits(size.orElse(20));
+    }
+
+    @PUT
+    @Path("tiporefrigerante")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void agregarTipoRefrigerante(@RestForm String nombre) {
+        TipoRefrigerante tiporefrigerante = new TipoRefrigerante();
+        tiporefrigerante.nombre = nombre;
+        tiporefrigerante.persist();
+    }
+
+    @DELETE
+    @Path("tiporefrigerante/{id}")
+    @Transactional
+    public void eliminarTipoRefriferante(Long id) {
+        TipoRefrigerante tipoRefrigerante = TipoRefrigerante.findById(id);
+        if (tipoRefrigerante != null) {
+            tipoRefrigerante.delete();
+        }
+    }
+
+    @POST
+    @Path("tiporefrigerante/{id}")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void actualizarTipoRefrigerante(Long id, @RestForm String nombre) {
+        TipoRefrigerante tipoRefrigerante = TipoRefrigerante.findById(id);
+        if (tipoRefrigerante == null) {
+            return;
+        }
+        tipoRefrigerante.nombre = nombre;
+        tipoRefrigerante.persist();
+    }
+
 }

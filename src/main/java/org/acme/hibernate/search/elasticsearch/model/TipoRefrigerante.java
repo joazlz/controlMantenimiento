@@ -1,32 +1,32 @@
 package org.acme.hibernate.search.elasticsearch.model;
 
+import java.util.List;
 import java.util.Objects;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 
 import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 @Entity
 @Indexed
-public class Material extends PanacheEntity {
+public class TipoRefrigerante extends PanacheEntity {
 
     @FullTextField(analyzer = "nombre")
     @KeywordField(name = "nombre_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String nombre;
 
-    @FullTextField(analyzer = "nombre")
-    public String cantidad;
-
-    @ManyToOne
-    @JsonIgnore
-    public TipoRefrigerante tipoRefrigerante;
+    @OneToMany(mappedBy = "tipoRefrigerante", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @IndexedEmbedded
+    public List<Material> materiales;
 
     @Override
     public boolean equals(Object o) {
@@ -46,5 +46,4 @@ public class Material extends PanacheEntity {
     public int hashCode() {
         return 31;
     }
-
 }

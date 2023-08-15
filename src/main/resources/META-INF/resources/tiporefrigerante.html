@@ -44,43 +44,44 @@
         app.controller("InventarioManagementController", ['$scope', '$http', '$httpParamSerializerJQLike', function ($scope, $http, $httpParamSerializerJQLike) {
 
             // initialize page with default data which is blank in this example
-            $scope.desperfectos = [];
+            $scope.tiposRefrigerante = [];
             $scope.pattern = '';
             $scope.formulario = {};
 
             // initializes the data from the REST endpoint
             _actualizarDatos();
-            $('.desperfecto').show();
+            $('.tipoRefrigerante').show();
 
 
-            $scope.desperfectoModal = function (accion, desperfecto) {
+            $scope.tipoRefrigeranteModal = function (accion, tipoRefrigerante) {
                 switch (accion) {
                     case "agregar":
-                        $scope.desperfectoModalTitle = "Agregar desperfecto";
+                        _limpiarFormulario()
+                        $scope.tipoRefrigeranteModalTitle = "Agregar Tipo de Refrigerante";
                         break;
 
                     case "editar":
-                        $scope.desperfectoModalTitle = "Editar desperfecto"
-                        $scope.formulario.desperfecto = desperfecto;
+                        $scope.tipoRefrigeranteModalTitle = "Editar Tipo de Refrigerante"
+                        $scope.formulario.tipoRefrigerante = tipoRefrigerante;
                         break;
 
                     default:
                         break;
                 }
-                $('#modal-desperfecto').modal('show');
+                $('#modal-tipoRefrigerante').modal('show');
             }
 
             //Guardar Editar
-            $scope.agregarEditarDesperfecto = function () {
+            $scope.agregarEditarTipoRefrigerante = function () {
                 data = {};
-                if ($scope.formulario.desperfecto.id == -1 || $scope.formulario.desperfecto.id === undefined) {
+                if ($scope.formulario.tipoRefrigerante.id == -1 || $scope.formulario.tipoRefrigerante.id === undefined) {
                     method = 'PUT';
-                    url = '/inventario/desperfecto';
-                    data.nombre = $scope.formulario.desperfecto.nombre;
+                    url = '/inventario/tiporefrigerante';
+                    data.nombre = $scope.formulario.tipoRefrigerante.nombre;
                 } else {
                     method = 'POST';
-                    url = '/inventario/desperfecto/' + $scope.formulario.desperfecto.id;
-                    data.nombre = $scope.formulario.desperfecto.nombre;
+                    url = '/inventario/tiporefrigerante/' + $scope.formulario.tipoRefrigerante.id;
+                    data.nombre = $scope.formulario.tipoRefrigerante.nombre;
                 }
                 $http({
                     method: method,
@@ -104,9 +105,9 @@
             function _actualizarDatos() {
                 $http({
                     method: 'GET',
-                    url: '/inventario/desperfecto/buscar?pattern=' + $scope.pattern
+                    url: '/inventario/tiporefrigerante/buscar?pattern=' + $scope.pattern
                 }).then(function successCallback(response) {
-                    $scope.desperfectos = response.data;
+                    $scope.tiposRefrigerantes = response.data;
                 }, function errorCallback(response) {
                     console.log(response.statusText);
                 });
@@ -114,10 +115,11 @@
 
             $scope.actualizar = function () {
                 _actualizarDatos();
+                _limpiarFormulario()
             }
 
             function _limpiarFormulario() {
-                $scope.formulario.desperfecto = {
+                $scope.formulario.tipoRefrigerante = {
                     id: -1,
                     nombre: '',
                 };
@@ -231,7 +233,7 @@
         <form class="ui form" ng-submit="actualizar()">
             <div class="fluid big left ui action input">
                 <input type="text"
-                    placeholder="Busca el nombre de un desperfecto o el título de un libro. Intenta buscar con un * al final"
+                    placeholder="Busca el nombre de un tipo de Mantenimiento. Intenta buscar con un * al final"
                     ng-model="pattern">
                 <button class="ui blue right labeled icon button" ng-click="actualizar()"><i class="search icon"></i>
                     Buscar</button>
@@ -239,22 +241,24 @@
         </form>
     </div>
     <!--CONTENIDO -->
-    <div class="ui container desperfectos">
+    <div class="ui container tiposRefrigerantes">
         <div class="ui cards">
-            <div class="card" ng-repeat="desperfecto in desperfectos">
+            <div class="card" ng-repeat="tipoRefrigerante in tiposRefrigerantes">
                 <div class="content">
-                    <div class="header">{{ desperfecto.nombre }}</div>
+                    <div class="header">{{ tipoRefrigerante.nombre }}</div>
                     <div class="meta">
-                        {{ desperfecto.revisados.length }}
+                        {{ tipoRefrigerante.materiales.length }}
                         <!-- <button class="ui basic blue icon button mini right floated" ng-click="showBookModal(area)"><i class="plus circle icon"></i> Add book</button> -->
                     </div>
 
                     <div class="extra content">
                         <div class="ui two buttons">
-                            <button class="ui basic green button" ng-click="desperfectoModal('editar',desperfecto)"><i
+                            <button class="ui basic green button"
+                                ng-click="tipoRefrigeranteModal('editar',tipoRefrigerante)"><i
                                     class="pencil alternate icon"></i>
                                 Editar</button>
-                            <button class="ui basic red button" ng-click="eliminar('desperfecto', desperfecto)"><i
+                            <button class="ui basic red button"
+                                ng-click="eliminar('tiporefrigerante', tipoRefrigerante)"><i
                                     class="trash alternate outline icon"></i>
                                 Eliminar</button>
                         </div>
@@ -263,39 +267,39 @@
             </div>
             <div class="card">
                 <div class="content">
-                    <button class="ui blue labeled icon button" ng-click="desperfectoModal('agregar')"><i
+                    <button class="ui blue labeled icon button" ng-click="tipoRefrigeranteModal('agregar')"><i
                             class="plus circle icon"></i>
-                        Agregar desperfecto</button>
+                        Agregar Tipo de Refrigerante</button>
                 </div>
             </div>
         </div>
     </div>
-    <!-- MODAL -->
-    <div class="ui modal" id="modal-desperfecto">
+    <!-- MODALES -->
+    <div class="ui modal" id="modal-tipoRefrigerante">
         <i class="close icon"></i>
         <div class="header">
-            {{ desperfectoModalTitle }}
+            {{ tipoRefrigeranteModalTitle }}
         </div>
         <div class="content">
             <div class="description">
-                <form class="ui form" id="desperfecto-formulario">
-                    <input type="hidden" name="desperfectoId" ng-model="formulario.desperfecto.id" />
+                <form class="ui form" id="tipoRefrigerante-formulario">
+                    <input type="hidden" name="tipoRefrigeranteId" ng-model="formulario.tipoRefrigerante.id" />
                     <div class="required field">
                         <label>Nombre</label>
-                        <input type="text" name="nombre" placeholder="nombre" ng-model="formulario.desperfecto.nombre"
-                            required>
+                        <input type="text" name="nombre" placeholder="nombre"
+                            ng-model="formulario.tipoRefrigerante.nombre" required>
                     </div>
                 </form>
             </div>
         </div>
         <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="desperfecto-formulario"
-                ng-click="agregarEditarDesperfecto()">
+            <button type="submit" class="ui positive right labeled icon button" form="tipoRefrigerantes-formulario"
+                ng-click="agregarEditarTipoRefrigerante()">
                 <i class="checkmark icon"></i>
                 Guardar
             </button>
         </div>
     </div>
-</body>
+</body>S
 
 </html>
