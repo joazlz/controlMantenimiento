@@ -42,12 +42,6 @@ public class Equipo extends PanacheEntity {
     @KeywordField(name = "capacitor_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String capacitor;
     @FullTextField(analyzer = "ingles")
-    @KeywordField(name = "tipoMotor_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
-    public String tipoMotor;
-    @FullTextField(analyzer = "ingles")
-    @KeywordField(name = "capacidadMotor_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
-    public String capacidadMotor;
-    @FullTextField(analyzer = "ingles")
     @KeywordField(name = "numeroEquipo_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String numeroEquipo;
     @FullTextField(analyzer = "ingles")
@@ -64,6 +58,10 @@ public class Equipo extends PanacheEntity {
     @ManyToOne
     @JsonIgnore
     public TipoEquipo tipoEquipo;
+    
+    @ManyToOne
+    @JsonIgnore
+    public TipoMotor tipoMotor;
 
     @OneToMany(mappedBy = "equipo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @IndexedEmbedded

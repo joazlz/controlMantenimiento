@@ -44,43 +44,44 @@
         app.controller("InventarioManagementController", ['$scope', '$http', '$httpParamSerializerJQLike', function ($scope, $http, $httpParamSerializerJQLike) {
 
             // initialize page with default data which is blank in this example
-            $scope.areas = [];
+            $scope.tiposUsuario = [];
             $scope.pattern = '';
             $scope.formulario = {};
 
             // initializes the data from the REST endpoint
             _actualizarDatos();
-            $('.areas').show();
+            $('.tipoUsuario').show();
 
 
-            $scope.AreaModal = function (accion, area) {
+            $scope.tipoUsuarioModal = function (accion, tipoUsuario) {
                 switch (accion) {
                     case "agregar":
-                        $scope.areaModalTitle = "Agregar area";
+                        _limpiarFormulario()
+                        $scope.tipoUsuarioModalTitle = "Agregar Tipo de Usuario";
                         break;
 
                     case "editar":
-                        $scope.areaModalTitle = "Editar area "
-                        $scope.formulario.area = area;
+                        $scope.tipoUsuarioModalTitle = "Editar Tipo de Usuario"
+                        $scope.formulario.tipoUsuario = tipoUsuario;
                         break;
 
                     default:
                         break;
                 }
-                $('#modal-area').modal('show');
+                $('#modal-tipoUsuario').modal('show');
             }
 
             //Guardar Editar
-            $scope.agregarEditarArea = function () {
+            $scope.agregarEditarTipoUsuario = function () {
                 data = {};
-                if ($scope.formulario.area.id == -1 || $scope.formulario.area.id === undefined) {
+                if ($scope.formulario.tipoUsuario.id == -1 || $scope.formulario.tipoUsuario.id === undefined) {
                     method = 'PUT';
-                    url = '/inventario/area';
-                    data.nombre = $scope.formulario.area.nombre;
+                    url = '/inventario/tipousuario';
+                    data.nombre = $scope.formulario.tipoUsuario.nombre;
                 } else {
                     method = 'POST';
-                    url = '/inventario/area/' + $scope.formulario.area.id;
-                    data.nombre = $scope.formulario.area.nombre;
+                    url = '/inventario/tipousuario/' + $scope.formulario.tipoUsuario.id;
+                    data.nombre = $scope.formulario.tipoUsuario.nombre;
                 }
                 $http({
                     method: method,
@@ -104,9 +105,9 @@
             function _actualizarDatos() {
                 $http({
                     method: 'GET',
-                    url: '/inventario/area/buscar?pattern=' + $scope.pattern
+                    url: '/inventario/tipousuario/buscar?pattern=' + $scope.pattern
                 }).then(function successCallback(response) {
-                    $scope.areas = response.data;
+                    $scope.tiposUsuario = response.data;
                 }, function errorCallback(response) {
                     console.log(response.statusText);
                 });
@@ -114,10 +115,11 @@
 
             $scope.actualizar = function () {
                 _actualizarDatos();
+                _limpiarFormulario()
             }
 
             function _limpiarFormulario() {
-                $scope.formulario.area = {
+                $scope.formulario.tipoUsuario = {
                     id: -1,
                     nombre: '',
                 };
@@ -205,7 +207,7 @@
             </a>
         </div>
     </div>
-    <!-- PRESENTCION -->
+    <!-- PRESENTACION -->
     <div class="presentation">
         <div class="ui main container">
             <p>This Quarkus application demonstrates how to implement a CRUD endpoint to manage a library using
@@ -241,7 +243,7 @@
         <form class="ui form" ng-submit="actualizar()">
             <div class="fluid big left ui action input">
                 <input type="text"
-                    placeholder="Busca el nombre de una area o el título de un libro. Intenta buscar con un * al final"
+                    placeholder="Busca el nombre de un tipo de Usuario. Intenta buscar con un * al final"
                     ng-model="pattern">
                 <button class="ui blue right labeled icon button" ng-click="actualizar()"><i class="search icon"></i>
                     Buscar</button>
@@ -249,22 +251,24 @@
         </form>
     </div>
     <!--CONTENIDO -->
-    <div class="ui container areas">
+    <div class="ui container tiposUsuario">
         <div class="ui cards">
-            <div class="card" ng-repeat="area in areas">
+            <div class="card" ng-repeat="tipoUsuario in tiposUsuario">
                 <div class="content">
-                    <div class="header">{{ area.nombre }}</div>
+                    <div class="header">{{ tipoUsuario.nombre }}</div>
                     <div class="meta">
-                        {{ area.equipos.length }}
+                        <!-- {{ tipoUsuario.materiales.length }} -->
                         <!-- <button class="ui basic blue icon button mini right floated" ng-click="showBookModal(area)"><i class="plus circle icon"></i> Add book</button> -->
                     </div>
 
                     <div class="extra content">
                         <div class="ui two buttons">
-                            <button class="ui basic green button" ng-click="AreaModal('editar',area)"><i
+                            <button class="ui basic green button"
+                                ng-click="tipoUsuarioModal('editar',tipoUsuario)"><i
                                     class="pencil alternate icon"></i>
                                 Editar</button>
-                            <button class="ui basic red button" ng-click="eliminar('area', area)"><i
+                            <button class="ui basic red button"
+                                ng-click="eliminar('tipousuario', tipoUsuario)"><i
                                     class="trash alternate outline icon"></i>
                                 Eliminar</button>
                         </div>
@@ -273,34 +277,34 @@
             </div>
             <div class="card">
                 <div class="content">
-                    <button class="ui blue labeled icon button" ng-click="AreaModal('agregar')"><i
+                    <button class="ui blue labeled icon button" ng-click="tipoUsuarioModal('agregar')"><i
                             class="plus circle icon"></i>
-                        Agregar area</button>
+                        Agregar Tipo de Usuario</button>
                 </div>
             </div>
         </div>
     </div>
     <!-- MODALES -->
-    <div class="ui modal" id="modal-area">
+    <div class="ui modal" id="modal-tipoUsuario">
         <i class="close icon"></i>
         <div class="header">
-            {{ areaModalTitle }}
+            {{ tipoUsuarioModalTitle }}
         </div>
         <div class="content">
             <div class="description">
-                <form class="ui form" id="area-formulario">
-                    <input type="hidden" name="areaId" ng-model="formulario.area.id" />
+                <form class="ui form" id="tipoUsuario-formulario">
+                    <input type="hidden" name="tipoUsuarioId" ng-model="formulario.tipoUsuario.id" />
                     <div class="required field">
                         <label>Nombre</label>
-                        <input type="text" name="nombre" placeholder="nombre" ng-model="formulario.area.nombre"
-                            required>
+                        <input type="text" name="nombre" placeholder="nombre"
+                            ng-model="formulario.tipoUsuario.nombre" required>
                     </div>
                 </form>
             </div>
         </div>
         <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="area-formulario"
-                ng-click="agregarEditarArea()">
+            <button type="submit" class="ui positive right labeled icon button" form="tipoUsuario-formulario"
+                ng-click="agregarEditarTipoUsuario()">
                 <i class="checkmark icon"></i>
                 Guardar
             </button>

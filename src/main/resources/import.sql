@@ -23,11 +23,18 @@ ALTER SEQUENCE tipomantenimiento_seq RESTART WITH 4;
 INSERT INTO tiporefrigerante(id, nombre) VALUES (1, '00002514203952');
 ALTER SEQUENCE tiporefrigerante_seq RESTART WITH 2;
 
+INSERT INTO tipousuario(id, nombre) VALUES (1, 'admin');
+INSERT INTO tipousuario(id, nombre) VALUES (2, 'tecnico');
+INSERT INTO tipousuario(id, nombre) VALUES (3, 'supervisor');
+ALTER SEQUENCE tipousuario_seq RESTART WITH 4;
 
 INSERT INTO material(id, nombre,cantidad,tipoRefrigerante_id) VALUES (1, 'VRX','3',1);
 ALTER SEQUENCE material_seq RESTART WITH 2;
 
-INSERT INTO equipo(id,capacidad,capacidadMotor,capacitor,marca,modelo,nombre,numeroEquipo,tipoMotor,voltaje,hp,amperaje,area_id,tipoEquipo_id) VALUES (1,'capacidad','capacidadMotor','capacitor','marca','modelo','nombre','numeroEquipo','tipoMotor','voltaje','hp','12',1,1);
+INSERT INTO tipomotor(id, nombre) VALUES (1, 'V8');
+ALTER SEQUENCE tipomotor_seq RESTART WITH 2;
+
+INSERT INTO equipo(id,capacidad,capacitor,marca,modelo,nombre,numeroEquipo,tipoMotor_id,voltaje,hp,amperaje,area_id,tipoEquipo_id) VALUES (1,'Barcelona','capacitor','XaviNeta ©','2023 lite','nombre','numeroEquipo',1,'voltaje','hp','12',1,1);
 ALTER SEQUENCE equipo_seq RESTART WITH 2;
 
 INSERT INTO revisado(id, duracion,ordenTrabajo,desperfecto_id,equipo_id) VALUES (1, '12','OT1234',1,1   );
