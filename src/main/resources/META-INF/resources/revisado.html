@@ -37,56 +37,58 @@
     </style>
     <!-- Load AngularJS -->
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <!--JAVA SCRIPT-->
     <script type="text/javascript">
-        var app = angular.module("LibraryManagement", []);
+        var app = angular.module("InventarioManagement", []);
 
         //Controller Part
-        app.controller("LibraryManagementController", ['$scope', '$http', '$httpParamSerializerJQLike', function ($scope, $http, $httpParamSerializerJQLike) {
+        app.controller("InventarioManagementController", ['$scope', '$http', '$httpParamSerializerJQLike', function ($scope, $http, $httpParamSerializerJQLike) {
 
-            // initialize page with default data which is blank in this example
-            $scope.authors = [];
+            $scope.revisados = [];
+            $scope.form = []
+            $scope.desperfectos = [];
+            $scope.equipos = [];
             $scope.pattern = '';
-            $scope.form = {};
+            $scope.desperfectoId = '';
 
             // initializes the data from the REST endpoint
             _refreshPageData();
-            $('.authors').show();
-            _clearForm();
-
-            $scope.refresh = function () {
-                _refreshPageData();
-            }
+            $('.revisado').show();
 
             $scope.remove = function (type, element) {
                 $http({
                     method: 'DELETE',
-                    url: '/library/' + type + '/' + element.id
+                    url: '/inventario/' + type + '/' + element.id
                 }).then(_success, _error);
             };
-
-            $scope.showAddAuthorModal = function () {
-                $scope.authorModalTitle = "Add author";
-                $('#modal-author').modal('show');
+            $scope.showAddRevisadoModal = function () {
+                _clearForm()
+                $scope.revisadoModalTitle = "Add Revisado";
+                $('#modal-revisado').modal('show');
             }
-
-            $scope.showEditAuthorModal = function (author) {
-                $scope.authorModalTitle = "Edit author " + author.firstName + ' ' + author.lastName;
-                $scope.form.author = author;
-                $('#modal-author').modal('show');
+            $scope.showEditRevisadoModal = function (revisado) {
+                _getDesperfectoId(revisado)
+                $scope.revisadoModalTitle = "Editar Revisado " + revisado.nombre
+                $scope.form.revisado = revisado;
+                $('#modal-revisado').modal('show');
             }
-
-            $scope.addOrEditAuthor = function () {
+            $scope.agregarOEditarRevisado = function () {
                 data = {};
-                if ($scope.form.author.id == -1) {
+                if ($scope.form.revisado.id == -1 || typeof $scope.form.revisado.id === 'undefined') {
                     method = 'PUT';
-                    url = '/library/author';
-                    data.firstName = $scope.form.author.firstName;
-                    data.lastName = $scope.form.author.lastName;
+                    url = '/inventario/revisado/';
+                    data.duracion = $scope.form.revisado.duracion;
+                    data.ordenTrabajo = $scope.form.revisado.ordenTrabajo;
+                    data.desperfectoId = $scope.form.revisado.desperfectoId;
+                    data.equipoId = $scope.form.revisado.equipoId;
                 } else {
                     method = 'POST';
-                    url = '/library/author/' + $scope.form.author.id;
-                    data.firstName = $scope.form.author.firstName;
-                    data.lastName = $scope.form.author.lastName;
+                    url = '/inventario/revisado/' + $scope.form.revisado.id;
+                    data.id = $scope.form.revisado.id;
+                    data.duracion = $scope.form.revisado.duracion;
+                    data.ordenTrabajo = $scope.form.revisado.ordenTrabajo;
+                    data.desperfectoId = $scope.form.revisado.desperfectoId;
+                    data.equipoId = $scope.form.revisado.equipoId;
                 }
                 $http({
                     method: method,
@@ -98,56 +100,74 @@
                 }).then(_success, _error);
             }
 
-            $scope.showBookModal = function (author) {
-                $scope.form.book.authorId = author.id;
-                $('#modal-book').modal('show');
-            }
-
-            $scope.addBook = function () {
-                data = {
-                    authorId: $scope.form.book.authorId,
-                    title: $scope.form.book.title
-                };
-                $http({
-                    method: 'PUT',
-                    url: '/library/book/',
-                    data: $httpParamSerializerJQLike(data),
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    }
-                }).then(_success, _error);
-            }
-
-            function _refreshPageData() {
+            function _getDesperfectos() {
                 $http({
                     method: 'GET',
-                    url: '/library/author/search?pattern=' + $scope.pattern
+                    url: '/inventario/desperfecto/search?pattern=' + $scope.pattern
                 }).then(function successCallback(response) {
-                    $scope.authors = response.data;
+                    $scope.desperfectos = response.data;
+                }, function errorCallback(response) {
+                    console.log(response.statusText);
+                });
+            }
+            function _getEquipo() {
+                $http({
+                    method: 'GET',
+                    url: '/inventario/equipo/search?pattern=' + $scope.pattern
+                }).then(function successCallback(response) {
+                    $scope.equipos = response.data;
                 }, function errorCallback(response) {
                     console.log(response.statusText);
                 });
             }
 
+            function _getDesperfectoId(revisado) {
+                // $scope._getDesperfectoId = function (revisado) {
+                $http({
+                    method: 'GET',
+                    url: '/inventario/desperfecto/search/id?revisadoId=' + revisado.id
+                }).then(function successCallback(response) {
+                    $scope.desperfectoId = response.data.id;
+                }, function errorCallback(response) {
+                    return -1;
+                });
+            }
+            function _getEquipoId(revisado) {
+                $http({
+                    method: 'GET',
+                    url: '/inventario/equipo/search/id?revisadoId=' + revisado.id
+                }).then(function successCallback(response) {
+                    $scope.desperfectoId = response.data.id;
+                }, function errorCallback(response) {
+                    return -1;
+                });
+            }
+
+            function _refreshPageData() {
+                $http({
+                    method: 'GET',
+                    url: '/inventario/revisado/search?pattern=' + $scope.pattern
+                }).then(function successCallback(response) {
+                    $scope.revisados = response.data;
+                }, function errorCallback(response) {
+                    console.log(response.statusText);
+                });
+                _getDesperfectos();
+                _getEquipo();
+            }
             function _success(response) {
                 $scope.pattern = '';
                 _refreshPageData();
                 _clearForm();
             }
-
             function _clearForm() {
-                $scope.form.author = {
+                $scope.form.revisado = {
                     id: -1,
-                    firstName: '',
-                    lastName: ''
-                };
-                $scope.form.book = {
-                    id: -1,
-                    title: '',
-                    authorId: ''
+                    duracion: '',
+                    ordenTrabajo: '',
+                    desperfectoId: ''
                 };
             }
-
             function _error(response) {
                 alert(response.data.message || response.statusText);
                 _clearForm();
@@ -156,7 +176,7 @@
     </script>
 </head>
 
-<body ng-app="LibraryManagement" ng-controller="LibraryManagementController">
+<body ng-app="InventarioManagement" ng-controller="InventarioManagementController">
     <!-- MENU -->
     <div class="ui fixed inverted menu">
         <div class="ui container">
@@ -226,7 +246,7 @@
             </a>
         </div>
     </div>
-    <!-- PRESENTACION -->
+    <!--PRESENTACION-->
     <div class="presentation">
         <div class="ui main container">
             <p>This Quarkus application demonstrates how to implement a CRUD endpoint to manage a library using
@@ -257,7 +277,7 @@
             </div>
         </div>
     </div>
-    <!-- BUSCAR -->
+    <!--BUSQUEDA-->
     <div class="ui container search">
         <form class="ui form" ng-submit="refresh()">
             <div class="fluid big left ui action input">
@@ -265,104 +285,93 @@
                     placeholder="Search for an author name or a book title. Try searching for aus*, owen or mystery."
                     ng-model="pattern">
                 <button class="ui blue right labeled icon button" ng-click="refresh()"><i class="search icon"></i>
-                    Search</button>
+                    Buscar</button>
             </div>
         </form>
     </div>
-    <!-- CONTENIDO -->
-    <div class="ui container authors" style="display:none;">
+    <!--CONTENIDO-->
+    <div class="ui container revisado" style="display:none;">
         <div class="ui cards">
-            <div class="card" ng-repeat="author in authors">
+            <div class="card" ng-repeat="revisado in revisados">
                 <div class="content">
-                    <div class="header">{{ author.firstName }} {{ author.lastName }}</div>
+                    <div class="header">{{ revisado.Id}}</div>
                     <div class="meta">
-                        {{ author.books.length }} <i class="book icon"></i>
-                        <button class="ui basic blue icon button mini right floated" ng-click="showBookModal(author)"><i
-                                class="plus circle icon"></i> Add book</button>
+                        {{ revisado.equipos.length}}
+                        <!-- <button class="ui basic blue icon button mini right floated" ng-click="showBookModal(area)"><i class="plus circle icon"></i> Add book</button> -->
                     </div>
-                    <div class="description">
-                        <div ng-repeat="book in author.books">
-                            <div>
-                                {{ book.title }}
-                                <a ng-click="remove('book', book)"><i
-                                        class="trash alternate outline right floated icon"></i></a>
-                            </div>
-                            <div class="ui divider"></div>
-                        </div>
-                    </div>
-                    <div class="extra content">
-                        <div class="ui two buttons">
-                            <button class="ui basic green button" ng-click="showEditAuthorModal(author)"><i
-                                    class="pencil alternate icon"></i> Edit</button>
-                            <button class="ui basic red button" ng-click="remove('author', author)"><i
-                                    class="trash alternate outline icon"></i> Delete</button>
-                        </div>
+                    <div class="content">duracion: {{revisado.duracion}}</div>
+                    <div class="content">ordenTrabajo: {{revisado.ordenTrabajo}}</div>
+
+
+                </div>
+                <div class="extra content">
+                    <div class="ui two buttons">
+                        <button class="ui basic green button" ng-click="showEditRevisadoModal(revisado)"><i
+                                class="pencil alternate icon"></i>
+                            Edit</button>
+                        <button class="ui basic red button" ng-click="remove('revisado', revisado)"><i
+                                class="trash alternate outline icon"></i>
+                            Delete</button>
                     </div>
                 </div>
             </div>
+
             <div class="card">
                 <div class="content">
-                    <button class="ui blue labeled icon button" ng-click="showAddAuthorModal()"><i
-                            class="plus circle icon"></i> Add author</button>
+                    <button class="ui blue labeled icon button" ng-click="showAddRevisadoModal()"><i
+                            class="plus circle icon"></i> Agregar revisado</button>
                 </div>
             </div>
         </div>
     </div>
-    <!-- MODALES -->
-    <div class="ui modal" id="modal-author">
+    <!-- MODAL -->
+    <div class="ui modal" id="modal-revisado">
         <i class="close icon"></i>
         <div class="header">
-            {{ authorModalTitle }}
+            {{ revisadoModalTitle}}
         </div>
         <div class="content">
             <div class="description">
-                <form class="ui form" id="author-form">
-                    <input type="hidden" name="authorId" ng-model="form.author.id" />
+                <form class="ui form" id="revisado-form">
+                    <input type="hidden" name="revisadoId" ng-model="form.revisado.id" />
                     <div class="required field">
-                        <label>First name</label>
-                        <input type="text" name="firstName" placeholder="First name" ng-model="form.author.firstName"
+                        <label>Duracion:</label>
+                        <input type="text" name="duracion" placeholder="Duracion" ng-model="form.revisado.duracion"
                             required>
                     </div>
-                    <div class="required field">
-                        <label>Last name</label>
-                        <input type="text" name="lastName" placeholder="Last name" ng-model="form.author.lastName"
-                            required>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="author-form"
-                ng-click="addOrEditAuthor()">
-                <i class="checkmark icon"></i>
-                Submit
-            </button>
-        </div>
-    </div>
-    <div class="ui modal" id="modal-book">
-        <i class="close icon"></i>
-        <div class="header">
-            Add book
-        </div>
-        <div class="content">
-            <div class="description">
-                <form class="ui form" id="book-form">
-                    <input type="hidden" name="authorId" ng-model="form.book.authorId" />
-                    <div class="required field">
-                        <label>Title</label>
-                        <input type="text" name="title" placeholder="Title" ng-model="form.book.title" required>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="book-form" ng-click="addBook()">
-                <i class="checkmark icon"></i>
-                Submit
-            </button>
-        </div>
-    </div>
 
+                    <div class="required field">
+                        <label>ordenTrabajo:</label>
+                        <input type="text" name="ordenTrabajo" placeholder="ordenTrabajo"
+                            ng-model="form.revisado.ordenTrabajo" required>
+                    </div>
+
+                    <div class="required field">
+                        <label>Desperfecto:</label>
+                        <select ng-model="selectedDesperfecto"
+                            ng-options="desperfecto as desperfecto.nombre for desperfecto in desperfectos | orderBy:'id'">
+                            <option value="">Seleccionar opción</option>
+                        </select>
+                    </div>
+
+                    <div class="required field">
+                        <label>Equipo:</label>
+                        <select ng-model="selectedEquiopo"
+                            ng-options="equipo as equipos.nombre for equipo in equipos | orderBy:'id'">
+                            <option value="">Seleccionar opción</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="actions">
+            <button type="submit" class="ui positive right labeled icon button" form="revisado-form"
+                ng-click="agregarOEditarRevisado()">
+                <i class="checkmark icon"></i>
+                Guardar
+            </button>
+        </div>
+    </div>
 </body>
 
 </html>

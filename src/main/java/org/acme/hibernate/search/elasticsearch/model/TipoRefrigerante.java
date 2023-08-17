@@ -18,30 +18,26 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 @Entity
 @Indexed
-public class Author extends PanacheEntity {
+public class TipoRefrigerante extends PanacheEntity {
 
     @FullTextField(analyzer = "nombre")
-    @KeywordField(name = "firstName_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
-    public String firstName;
+    @KeywordField(name = "nombre_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
+    public String nombre;
 
-    @FullTextField(analyzer = "nombre")
-    @KeywordField(name = "lastName_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
-    public String lastName;
-
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "tipoRefrigerante", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @IndexedEmbedded
-    public List<Book> books;
+    public List<Material> materiales;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Author)) {
+        if (!(o instanceof Area)) {
             return false;
         }
 
-        Author other = (Author) o;
+        Area other = (Area) o;
 
         return Objects.equals(id, other.id);
     }

@@ -1,16 +1,18 @@
 <!doctype html>
 <html>
+
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <title>Hibernate Search + Elasticsearch quickstart - Quarkus</title>
     <!-- Semantic UI -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
     <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
     <style type="text/css">
         .ui.menu .item {
             font-size: 20px;
         }
+
         .presentation {
             margin-top: 5em;
             background-color: #F0F0F0;
@@ -19,12 +21,15 @@
             padding-top: 1em;
             padding-bottom: 1em;
         }
+
         .search {
             margin-top: 2em;
         }
+
         .authors {
             margin-top: 2em;
         }
+
         .authors .meta {
             margin-top: 5px;
             margin-bottom: 15px;
@@ -33,121 +38,115 @@
     <!-- Load AngularJS -->
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
     <script type="text/javascript">
-      var app = angular.module("InventarioManagement", []);
+        var app = angular.module("InventarioManagement", []);
 
-      //Controller Part
-      app.controller("InventarioManagementController", ['$scope', '$http', '$httpParamSerializerJQLike', function ($scope, $http, $httpParamSerializerJQLike) {
+        //Controller Part
+        app.controller("InventarioManagementController", ['$scope', '$http', '$httpParamSerializerJQLike', function ($scope, $http, $httpParamSerializerJQLike) {
 
-        // initialize page with default data which is blank in this example
-        $scope.areas = [];
-        $scope.pattern = '';
-        $scope.form = {};
-
-        // initializes the data from the REST endpoint
-        _refreshPageData();
-        $('.areas').show();
-        _clearForm();
-
-        $scope.refresh = function () {
-            _refreshPageData();
-        }
-
-        $scope.remove = function (type, element) {
-            $http({
-                method: 'DELETE',
-                url: '/inventario/' + type + '/' + element.id
-            }).then(_success, _error);
-        };
-
-        $scope.showAddAreaModal = function () {
-            $scope.areaModalTitle = "Agregar area";
-            $('#modal-area').modal('show');
-        }
-
-        $scope.showEditAreaModal = function (area) {
-            $scope.areaModalTitle = "Editar area " + area.nombre
-            $scope.form.area = area;
-            $('#modal-area').modal('show');
-        }
-
-        $scope.addOrEditArea = function () {
-            data = {};
-            if ($scope.form.area.id == -1) {
-                method = 'PUT';
-                url = '/inventario/area';
-                data.nombre = $scope.form.area.nombre;
-            } else {
-                method = 'POST';
-                url = '/inventario/area/' + $scope.form.area.id;
-                data.nombre = $scope.form.area.nombre;
-            }
-            $http({
-                method: method,
-                url: url,
-                data: $httpParamSerializerJQLike(data),
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            }).then(_success, _error);
-        }
-
-        // $scope.showBookModal = function (author) {
-        //     $scope.form.book.authorId = author.id;
-        //     $('#modal-book').modal('show');
-        // }
-
-        // $scope.addBook = function () {
-        //     data = {
-        //         authorId: $scope.form.book.authorId,
-        //         title: $scope.form.book.title
-        //     };
-        //     $http({
-        //         method: 'PUT',
-        //         url: '/library/book/',
-        //         data: $httpParamSerializerJQLike(data),
-        //         headers: {
-        //             'Content-Type': 'application/x-www-form-urlencoded'
-        //         }
-        //     }).then(_success, _error);
-        // }
-
-        function _refreshPageData() {
-            $http({
-                method: 'GET',
-                url: '/inventario/area/search?pattern=' + $scope.pattern
-            }).then(function successCallback(response) {
-                $scope.areas = response.data;
-            }, function errorCallback(response) {
-                console.log(response.statusText);
-            });
-        }
-
-        function _success(response) {
+            // initialize page with default data which is blank in this example
+            $scope.areas = [];
             $scope.pattern = '';
-            _refreshPageData();
-            _clearForm();
-        }
+            $scope.formulario = {};
 
-        function _clearForm() {
-            $scope.form.area = {
-                id: -1,
-                nombre: '',
+            // initializes the data from the REST endpoint
+            _actualizarDatos();
+            $('.areas').show();
+
+
+            $scope.AreaModal = function (accion, area) {
+                switch (accion) {
+                    case "agregar":
+                        $scope.areaModalTitle = "Agregar area";
+                        break;
+
+                    case "editar":
+                        $scope.areaModalTitle = "Editar area "
+                        $scope.formulario.area = area;
+                        break;
+
+                    default:
+                        break;
+                }
+                $('#modal-area').modal('show');
+            }
+
+            //Guardar Editar
+            $scope.agregarEditarArea = function () {
+                data = {};
+                if ($scope.formulario.area.id == -1 || $scope.formulario.area.id === undefined) {
+                    method = 'PUT';
+                    url = '/inventario/area';
+                    data.nombre = $scope.formulario.area.nombre;
+                } else {
+                    method = 'POST';
+                    url = '/inventario/area/' + $scope.formulario.area.id;
+                    data.nombre = $scope.formulario.area.nombre;
+                }
+                $http({
+                    method: method,
+                    url: url,
+                    data: $httpParamSerializerJQLike(data),
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                }).then($scope._correcto, $scope._error);
+            }
+
+            //Eliminar
+            $scope.eliminar = function (type, element) {
+                $http({
+                    method: 'DELETE',
+                    url: '/inventario/' + type + '/' + element.id
+                }).then($scope._correcto, $scope._error);
             };
-        }
 
-        function _error(response) {
-            alert(response.data.message || response.statusText);
-            _clearForm();
-        }
-      }]);
+            //Busqueda
+            function _actualizarDatos() {
+                $http({
+                    method: 'GET',
+                    url: '/inventario/area/buscar?pattern=' + $scope.pattern
+                }).then(function successCallback(response) {
+                    $scope.areas = response.data;
+                }, function errorCallback(response) {
+                    console.log(response.statusText);
+                });
+            }
+
+            $scope.actualizar = function () {
+                _actualizarDatos();
+            }
+
+            function _limpiarFormulario() {
+                $scope.formulario.area = {
+                    id: -1,
+                    nombre: '',
+                };
+            }
+
+            $scope._error = function (response) {
+                alert(response.data.message || response.statusText);
+                $scope.limpiarFormulario();
+            }
+
+            $scope._correcto = function (response) {
+                $scope.pattern = '';
+                _actualizarDatos();
+                _limpiarFormulario();
+            }
+
+
+        }]);
     </script>
 </head>
+
 <body ng-app="InventarioManagement" ng-controller="InventarioManagementController">
-    
+
+    <!-- MENU -->
     <div class="ui fixed inverted menu">
         <div class="ui container">
             <a class="header item" href="https://quarkus.io/">
-                <img class="logo" src="https://quarkus.io/assets/images/quarkus_logo_horizontal_rgb_reverse.svg" alt="Quarkus logo" style="width:200px;">
+                <img class="logo" src="https://quarkus.io/assets/images/quarkus_logo_horizontal_rgb_reverse.svg"
+                    alt="Quarkus logo" style="width:200px;">
             </a>
             <a href="/index.html">
                 <span class="header item">
@@ -159,17 +158,63 @@
                     Area
                 </span>
             </a>
+            <a href="/desperfecto.html">
+                <span class="header item">
+                    Desperfecto
+                </span>
+            </a>
             <a href="/equipo.html">
                 <span class="header item">
                     Equipo
                 </span>
             </a>
+            <a href="/Material.html">
+                <span class="header item">
+                    Material
+                </span>
+            </a>
+            <a href="/revisado.html">
+                <span class="header item">
+                    Revisado
+                </span>
+            </a>
+            <a href="/tipoequipo.html">
+                <span class="header item">
+                    Tipos de Equipo
+                </span>
+            </a>
+            <a href="/tipomantenimiento.html">
+                <span class="header item">
+                    Tipos de Mantenimiento
+                </span>
+            </a>
+            <a href="/tipomotor.html">
+                <span class="header item">
+                    Tipos de Motor
+                </span>
+            </a>
+            <a href="/tiponotificacion.html">
+                <span class="header item">
+                    Tipos de Notificacion
+                </span>
+            </a>
+            <a href="/tiporefrigerante.html">
+                <span class="header item">
+                    Tipos de Refrigerante
+                </span>
+            </a>
+            <a href="/tipousuario.html">
+                <span class="header item">
+                    Tipos de Usuario
+                </span>
+            </a>
         </div>
     </div>
-    
+    <!-- PRESENTCION -->
     <div class="presentation">
         <div class="ui main container">
-            <p>This Quarkus application demonstrates how to implement a CRUD endpoint to manage a library using Hibernate ORM with Panache and Hibernate Search.</p>
+            <p>This Quarkus application demonstrates how to implement a CRUD endpoint to manage a library using
+                Hibernate ORM with Panache and Hibernate Search.</p>
             <p>Entities are automatically indexed in an Elasticsearch cluster.</p>
             <div class="ui tablet stackable three steps">
                 <div class="step">
@@ -196,17 +241,20 @@
             </div>
         </div>
     </div>
-    
+    <!--BUSQUEDA-->
     <div class="ui container search">
-        <form class="ui form" ng-submit="refresh()">
+        <form class="ui form" ng-submit="actualizar()">
             <div class="fluid big left ui action input">
-                <input type="text" placeholder="Search for an author name or a book title. Try searching for aus*, owen or mystery." ng-model="pattern">
-                <button class="ui blue right labeled icon button" ng-click="refresh()"><i class="search icon"></i> Search</button>
+                <input type="text"
+                    placeholder="Busca el nombre de una area o el título de un libro. Intenta buscar con un * al final"
+                    ng-model="pattern">
+                <button class="ui blue right labeled icon button" ng-click="actualizar()"><i class="search icon"></i>
+                    Buscar</button>
             </div>
         </form>
     </div>
-
-    <div class="ui container areas" style="display:none;">
+    <!--CONTENIDO -->
+    <div class="ui container areas">
         <div class="ui cards">
             <div class="card" ng-repeat="area in areas">
                 <div class="content">
@@ -215,31 +263,29 @@
                         {{ area.equipos.length }}
                         <!-- <button class="ui basic blue icon button mini right floated" ng-click="showBookModal(area)"><i class="plus circle icon"></i> Add book</button> -->
                     </div>
-                    <!-- <div class="description">
-                        <div ng-repeat="book in author.books">
-                            <div>
-                                {{ book.title }}
-                                <a ng-click="remove('book', book)"><i class="trash alternate outline right floated icon"></i></a>
-                            </div>
-                            <div class="ui divider"></div>
-                        </div>
-                    </div> -->
+
                     <div class="extra content">
                         <div class="ui two buttons">
-                            <button class="ui basic green button" ng-click="showEditAreaModal(area)"><i class="pencil alternate icon"></i> Edit</button>
-                            <button class="ui basic red button" ng-click="remove('area', area)"><i class="trash alternate outline icon"></i> Delete</button>
+                            <button class="ui basic green button" ng-click="AreaModal('editar',area)"><i
+                                    class="pencil alternate icon"></i>
+                                Editar</button>
+                            <button class="ui basic red button" ng-click="eliminar('area', area)"><i
+                                    class="trash alternate outline icon"></i>
+                                Eliminar</button>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="card">
                 <div class="content">
-                    <button class="ui blue labeled icon button" ng-click="showAddAreaModal()"><i class="plus circle icon"></i> Add area</button>
+                    <button class="ui blue labeled icon button" ng-click="AreaModal('agregar')"><i
+                            class="plus circle icon"></i>
+                        Agregar area</button>
                 </div>
             </div>
         </div>
     </div>
-
+    <!-- MODALES -->
     <div class="ui modal" id="modal-area">
         <i class="close icon"></i>
         <div class="header">
@@ -247,46 +293,24 @@
         </div>
         <div class="content">
             <div class="description">
-                <form class="ui form" id="area-form">
-                    <input type="hidden" name="areaId" ng-model="form.area.id" />
+                <form class="ui form" id="area-formulario">
+                    <input type="hidden" name="areaId" ng-model="formulario.area.id" />
                     <div class="required field">
                         <label>Nombre</label>
-                        <input type="text" name="nombre" placeholder="nombre" ng-model="form.area.nombre" required>
+                        <input type="text" name="nombre" placeholder="nombre" ng-model="formulario.area.nombre"
+                            required>
                     </div>
                 </form>
             </div>
         </div>
         <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="area-form" ng-click="addOrEditArea()">
+            <button type="submit" class="ui positive right labeled icon button" form="area-formulario"
+                ng-click="agregarEditarArea()">
                 <i class="checkmark icon"></i>
-                Submit
+                Guardar
             </button>
         </div>
     </div>
-
-    <div class="ui modal" id="modal-book">
-        <i class="close icon"></i>
-        <div class="header">
-            Add book
-        </div>
-        <div class="content">
-            <div class="description">
-                <form class="ui form" id="book-form">
-                    <input type="hidden" name="authorId" ng-model="form.book.authorId" />
-                    <div class="required field">
-                        <label>Title</label>
-                        <input type="text" name="title" placeholder="Title" ng-model="form.book.title" required>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="book-form" ng-click="addBook()">
-                <i class="checkmark icon"></i>
-                Submit
-            </button>
-        </div>
-    </div>
-
 </body>
+
 </html>

@@ -16,7 +16,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 @Indexed
 public class Book extends PanacheEntity {
 
-    @FullTextField(analyzer = "english")
+    @FullTextField(analyzer = "ingles")
     public String title;
 
     @ManyToOne

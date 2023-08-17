@@ -38,55 +38,50 @@
     <!-- Load AngularJS -->
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
     <script type="text/javascript">
-        var app = angular.module("LibraryManagement", []);
+        var app = angular.module("InventarioManagement", []);
 
         //Controller Part
-        app.controller("LibraryManagementController", ['$scope', '$http', '$httpParamSerializerJQLike', function ($scope, $http, $httpParamSerializerJQLike) {
+        app.controller("InventarioManagementController", ['$scope', '$http', '$httpParamSerializerJQLike', function ($scope, $http, $httpParamSerializerJQLike) {
 
             // initialize page with default data which is blank in this example
-            $scope.authors = [];
+            $scope.tiposMantenimiento = [];
             $scope.pattern = '';
-            $scope.form = {};
+            $scope.formulario = {};
 
             // initializes the data from the REST endpoint
-            _refreshPageData();
-            $('.authors').show();
-            _clearForm();
+            _actualizarDatos();
+            $('.tipoMantenimiento').show();
 
-            $scope.refresh = function () {
-                _refreshPageData();
+
+            $scope.tipoMantenimientoModal = function (accion, tipoMantenimiento) {
+                switch (accion) {
+                    case "agregar":
+                        _limpiarFormulario()
+                        $scope.tipoMantenimientoModalTitle = "Agregar Tipo de Mantenimiento";
+                        break;
+
+                    case "editar":
+                        $scope.tipoMantenimientoModalTitle = "Editar Tipo de Mantenimiento"
+                        $scope.formulario.tipoMantenimiento = tipoMantenimiento;
+                        break;
+
+                    default:
+                        break;
+                }
+                $('#modal-tipoMantenimiento').modal('show');
             }
 
-            $scope.remove = function (type, element) {
-                $http({
-                    method: 'DELETE',
-                    url: '/library/' + type + '/' + element.id
-                }).then(_success, _error);
-            };
-
-            $scope.showAddAuthorModal = function () {
-                $scope.authorModalTitle = "Add author";
-                $('#modal-author').modal('show');
-            }
-
-            $scope.showEditAuthorModal = function (author) {
-                $scope.authorModalTitle = "Edit author " + author.firstName + ' ' + author.lastName;
-                $scope.form.author = author;
-                $('#modal-author').modal('show');
-            }
-
-            $scope.addOrEditAuthor = function () {
+            //Guardar Editar
+            $scope.agregarEditarTipoMantenimiento = function () {
                 data = {};
-                if ($scope.form.author.id == -1) {
+                if ($scope.formulario.tipoMantenimiento.id == -1 || $scope.formulario.tipoMantenimiento.id === undefined) {
                     method = 'PUT';
-                    url = '/library/author';
-                    data.firstName = $scope.form.author.firstName;
-                    data.lastName = $scope.form.author.lastName;
+                    url = '/inventario/tipomantenimiento';
+                    data.nombre = $scope.formulario.tipoMantenimiento.nombre;
                 } else {
                     method = 'POST';
-                    url = '/library/author/' + $scope.form.author.id;
-                    data.firstName = $scope.form.author.firstName;
-                    data.lastName = $scope.form.author.lastName;
+                    url = '/inventario/tipomantenimiento/' + $scope.formulario.tipoMantenimiento.id;
+                    data.nombre = $scope.formulario.tipoMantenimiento.nombre;
                 }
                 $http({
                     method: method,
@@ -95,68 +90,58 @@
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     }
-                }).then(_success, _error);
+                }).then($scope._correcto, $scope._error);
             }
 
-            $scope.showBookModal = function (author) {
-                $scope.form.book.authorId = author.id;
-                $('#modal-book').modal('show');
-            }
-
-            $scope.addBook = function () {
-                data = {
-                    authorId: $scope.form.book.authorId,
-                    title: $scope.form.book.title
-                };
+            //Eliminar
+            $scope.eliminar = function (type, element) {
                 $http({
-                    method: 'PUT',
-                    url: '/library/book/',
-                    data: $httpParamSerializerJQLike(data),
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    }
-                }).then(_success, _error);
-            }
+                    method: 'DELETE',
+                    url: '/inventario/' + type + '/' + element.id
+                }).then($scope._correcto, $scope._error);
+            };
 
-            function _refreshPageData() {
+            //Busqueda
+            function _actualizarDatos() {
                 $http({
                     method: 'GET',
-                    url: '/library/author/search?pattern=' + $scope.pattern
+                    url: '/inventario/tipomantenimiento/buscar?pattern=' + $scope.pattern
                 }).then(function successCallback(response) {
-                    $scope.authors = response.data;
+                    $scope.tiposMantenimiento = response.data;
                 }, function errorCallback(response) {
                     console.log(response.statusText);
                 });
             }
 
-            function _success(response) {
-                $scope.pattern = '';
-                _refreshPageData();
-                _clearForm();
+            $scope.actualizar = function () {
+                _actualizarDatos();
+                _limpiarFormulario()
             }
 
-            function _clearForm() {
-                $scope.form.author = {
+            function _limpiarFormulario() {
+                $scope.formulario.tipoMantenimiento = {
                     id: -1,
-                    firstName: '',
-                    lastName: ''
-                };
-                $scope.form.book = {
-                    id: -1,
-                    title: '',
-                    authorId: ''
+                    nombre: '',
                 };
             }
 
-            function _error(response) {
+            $scope._error = function (response) {
                 alert(response.data.message || response.statusText);
-                _clearForm();
+                $scope.limpiarFormulario();
             }
+
+            $scope._correcto = function (response) {
+                $scope.pattern = '';
+                _actualizarDatos();
+                _limpiarFormulario();
+            }
+
+
         }]);
     </script>
 </head>
 
-<body ng-app="LibraryManagement" ng-controller="LibraryManagementController">
+<body ng-app="InventarioManagement" ng-controller="InventarioManagementController">
     <!-- MENU -->
     <div class="ui fixed inverted menu">
         <div class="ui container">
@@ -257,112 +242,78 @@
             </div>
         </div>
     </div>
-    <!-- BUSCAR -->
+    <!--BUSQUEDA-->
     <div class="ui container search">
-        <form class="ui form" ng-submit="refresh()">
+        <form class="ui form" ng-submit="actualizar()">
             <div class="fluid big left ui action input">
                 <input type="text"
-                    placeholder="Search for an author name or a book title. Try searching for aus*, owen or mystery."
+                    placeholder="Busca el nombre de un tipo de Mantenimiento. Intenta buscar con un * al final"
                     ng-model="pattern">
-                <button class="ui blue right labeled icon button" ng-click="refresh()"><i class="search icon"></i>
-                    Search</button>
+                <button class="ui blue right labeled icon button" ng-click="actualizar()"><i class="search icon"></i>
+                    Buscar</button>
             </div>
         </form>
     </div>
-    <!-- CONTENIDO -->
-    <div class="ui container authors" style="display:none;">
+    <!--CONTENIDO -->
+    <div class="ui container tiposMantenimiento">
         <div class="ui cards">
-            <div class="card" ng-repeat="author in authors">
+            <div class="card" ng-repeat="tipoMantenimiento in tiposMantenimiento">
                 <div class="content">
-                    <div class="header">{{ author.firstName }} {{ author.lastName }}</div>
+                    <div class="header">{{ tipoMantenimiento.nombre }}</div>
                     <div class="meta">
-                        {{ author.books.length }} <i class="book icon"></i>
-                        <button class="ui basic blue icon button mini right floated" ng-click="showBookModal(author)"><i
-                                class="plus circle icon"></i> Add book</button>
+                        {{ tipoMantenimiento.equipos.length }}
+                        <!-- <button class="ui basic blue icon button mini right floated" ng-click="showBookModal(area)"><i class="plus circle icon"></i> Add book</button> -->
                     </div>
-                    <div class="description">
-                        <div ng-repeat="book in author.books">
-                            <div>
-                                {{ book.title }}
-                                <a ng-click="remove('book', book)"><i
-                                        class="trash alternate outline right floated icon"></i></a>
-                            </div>
-                            <div class="ui divider"></div>
-                        </div>
-                    </div>
+
                     <div class="extra content">
                         <div class="ui two buttons">
-                            <button class="ui basic green button" ng-click="showEditAuthorModal(author)"><i
-                                    class="pencil alternate icon"></i> Edit</button>
-                            <button class="ui basic red button" ng-click="remove('author', author)"><i
-                                    class="trash alternate outline icon"></i> Delete</button>
+                            <button class="ui basic green button"
+                                ng-click="tipoMantenimientoModal('editar',tipoMantenimiento)"><i
+                                    class="pencil alternate icon"></i>
+                                Editar</button>
+                            <button class="ui basic red button"
+                                ng-click="eliminar('tipomantenimiento', tipoMantenimiento)"><i
+                                    class="trash alternate outline icon"></i>
+                                Eliminar</button>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="card">
                 <div class="content">
-                    <button class="ui blue labeled icon button" ng-click="showAddAuthorModal()"><i
-                            class="plus circle icon"></i> Add author</button>
+                    <button class="ui blue labeled icon button" ng-click="tipoMantenimientoModal('agregar')"><i
+                            class="plus circle icon"></i>
+                        Agregar Tipo de Mantenimiento/button>
                 </div>
             </div>
         </div>
     </div>
-    <!-- MODALES -->
-    <div class="ui modal" id="modal-author">
+    <!-- MODAL -->
+    <div class="ui modal" id="modal-tipoMantenimiento">
         <i class="close icon"></i>
         <div class="header">
-            {{ authorModalTitle }}
+            {{ tipoMantenimientoModalTitle }}
         </div>
         <div class="content">
             <div class="description">
-                <form class="ui form" id="author-form">
-                    <input type="hidden" name="authorId" ng-model="form.author.id" />
+                <form class="ui form" id="tipoMantenimiento-formulario">
+                    <input type="hidden" name="tipoMantenimientoId" ng-model="formulario.tipoMantenimiento.id" />
                     <div class="required field">
-                        <label>First name</label>
-                        <input type="text" name="firstName" placeholder="First name" ng-model="form.author.firstName"
-                            required>
-                    </div>
-                    <div class="required field">
-                        <label>Last name</label>
-                        <input type="text" name="lastName" placeholder="Last name" ng-model="form.author.lastName"
-                            required>
+                        <label>Nombre</label>
+                        <input type="text" name="nombre" placeholder="nombre"
+                            ng-model="formulario.tipoMantenimiento.nombre" required>
                     </div>
                 </form>
             </div>
         </div>
         <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="author-form"
-                ng-click="addOrEditAuthor()">
+            <button type="submit" class="ui positive right labeled icon button" form="tipoMantenimiento-formulario"
+                ng-click="agregarEditarTipoMantenimiento()">
                 <i class="checkmark icon"></i>
-                Submit
+                Guardar
             </button>
         </div>
     </div>
-    <div class="ui modal" id="modal-book">
-        <i class="close icon"></i>
-        <div class="header">
-            Add book
-        </div>
-        <div class="content">
-            <div class="description">
-                <form class="ui form" id="book-form">
-                    <input type="hidden" name="authorId" ng-model="form.book.authorId" />
-                    <div class="required field">
-                        <label>Title</label>
-                        <input type="text" name="title" placeholder="Title" ng-model="form.book.title" required>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="book-form" ng-click="addBook()">
-                <i class="checkmark icon"></i>
-                Submit
-            </button>
-        </div>
-    </div>
-
 </body>
 
 </html>

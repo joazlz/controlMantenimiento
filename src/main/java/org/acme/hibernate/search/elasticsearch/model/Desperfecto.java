@@ -20,8 +20,8 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 @Indexed
 public class Desperfecto extends PanacheEntity {
 
-    @FullTextField(analyzer = "name")
-    @KeywordField(name = "nombre_sort", sortable = Sortable.YES, normalizer = "sort")
+    @FullTextField(analyzer = "nombre")
+    @KeywordField(name = "nombre_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String nombre;
 
     @OneToMany(mappedBy = "desperfecto", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
