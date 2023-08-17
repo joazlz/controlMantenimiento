@@ -44,91 +44,44 @@
         app.controller("InventarioManagementController", ['$scope', '$http', '$httpParamSerializerJQLike', function ($scope, $http, $httpParamSerializerJQLike) {
 
             // initialize page with default data which is blank in this example
-            $scope.materiales = [];
-            $scope.tiposRefrigerante = [];
-
+            $scope.tiposNotificacion = [];
             $scope.pattern = '';
             $scope.formulario = {};
 
             // initializes the data from the REST endpoint
             _actualizarDatos();
-            $('.material').show();
-            _limpiarFormulario();
+            $('.tipoMotor').show();
 
-            function _limpiarFormulario() {
-                $scope.formulario.material = {
-                    id: -1,
-                    nombre: '',
-                    cantidad: '',
-                    idTipoRefrigerante: "",
-                };
-            }
-            function _actualizarDatos() {
-                $http({
-                    method: 'GET',
-                    url: '/inventario/material/buscar?pattern=' + $scope.pattern
-                }).then(function successCallback(response) {
-                    $scope.materiales = response.data;
-                }, function errorCallback(response) {
-                    console.log(response.statusText);
-                });
-                _getTiposRefrigerante()
-            }
-            function _getTiposRefrigerante() {
-                $http({
-                    method: 'GET',
-                    url: '/inventario/tiporefrigerante/buscar?pattern=' + $scope.pattern
-                }).then(function successCallback(response) {
-                    $scope.tiposRefrigerante = response.data;
-                }, function errorCallback(response) {
-                    console.log(response.statusText);
-                });
-            }
-            function _getIdTipoRefrigerante(material) {
-                $http({
-                    method: 'GET',
-                    url: '/inventario/material/buscarTipoRefrigerante?idMaterial=' + material.id
-                }).then(function successCallback(response) {
-                    $scope.formulario.material.idTipoRefrigerante = response.data.id;
-                }, function errorCallback(response) {
-                    console.log(response.statusText);
-                });
-            }
-            $scope.materialModal = function (accion, material) {
+
+            $scope.tipoNotificacionModal = function (accion, tipoNotificacion) {
                 switch (accion) {
                     case "agregar":
-                        $scope.materialModalTitle = "Agregar material";
-                        _limpiarFormulario();
+                        _limpiarFormulario()
+                        $scope.tipoNotificacionModalTitle = "Agregar Tipo de Motor";
                         break;
 
                     case "editar":
-                        $scope.materialModalTitle = "Editar material"
-                        $scope.formulario.material = material;
-                        _getIdTipoRefrigerante(material)
+                        $scope.tipoNotificacionModalTitle = "Editar Tipo de Motor"
+                        $scope.formulario.tipoNotificacion = tipoNotificacion;
                         break;
 
                     default:
                         break;
                 }
-                $('#modal-material').modal('show');
+                $('#modal-tipoNotificacion').modal('show');
             }
 
             //Guardar Editar
-            $scope.agregarEditarMaterial = function () {
+            $scope.agregarEditarTipoNotificacion = function () {
                 data = {};
-                _getTiposRefrigerante()
-                if ($scope.formulario.material.id == -1 || $scope.formulario.material.id === undefined) {
+                if ($scope.formulario.tipoNotificacion.id == -1 || $scope.formulario.tipoNotificacion.id === undefined) {
                     method = 'PUT';
-                    url = '/inventario/material';
-                    data.nombre = $scope.formulario.material.nombre;
-                    data.cantidad = $scope.formulario.material.cantidad;
-                    data.idTipoRefrigerante = $scope.formulario.material.idTipoRefrigerante;
+                    url = '/inventario/tiponotificacion';
+                    data.nombre = $scope.formulario.tipoNotificacion.nombre;
                 } else {
                     method = 'POST';
-                    url = '/inventario/material/' + $scope.formulario.material.id;
-                    data.nombre = $scope.formulario.material.nombre;
-                    data.cantidad = $scope.formulario.material.cantidad;
-                    data.idTipoRefrigerante = $scope.formulario.material.idTipoRefrigerante;
+                    url = '/inventario/tiponotificacion/' + $scope.formulario.tipoNotificacion.id;
+                    data.nombre = $scope.formulario.tipoNotificacion.nombre;
                 }
                 $http({
                     method: method,
@@ -149,12 +102,28 @@
             };
 
             //Busqueda
-
+            function _actualizarDatos() {
+                $http({
+                    method: 'GET',
+                    url: '/inventario/tiponotificacion/buscar?pattern=' + $scope.pattern
+                }).then(function successCallback(response) {
+                    $scope.tiposNotificacion = response.data;
+                }, function errorCallback(response) {
+                    console.log(response.statusText);
+                });
+            }
 
             $scope.actualizar = function () {
                 _actualizarDatos();
+                _limpiarFormulario()
             }
 
+            function _limpiarFormulario() {
+                $scope.formulario.tipoNotificacion = {
+                    id: -1,
+                    nombre: '',
+                };
+            }
 
             $scope._error = function (response) {
                 alert(response.data.message || response.statusText);
@@ -166,6 +135,8 @@
                 _actualizarDatos();
                 _limpiarFormulario();
             }
+
+
         }]);
     </script>
 </head>
@@ -271,36 +242,36 @@
             </div>
         </div>
     </div>
-    <!-- BUSCAR -->
+    <!--BUSQUEDA-->
     <div class="ui container search">
         <form class="ui form" ng-submit="actualizar()">
             <div class="fluid big left ui action input">
                 <input type="text"
-                    placeholder="Search for an author name or a book title. Try searching for aus*, owen or mystery."
+                    placeholder="Busca el nombre de un tipo de Mantenimiento. Intenta buscar con un * al final"
                     ng-model="pattern">
                 <button class="ui blue right labeled icon button" ng-click="actualizar()"><i class="search icon"></i>
-                    Search</button>
+                    Buscar</button>
             </div>
         </form>
     </div>
     <!--CONTENIDO -->
-    <div class="ui container materiales">
+    <div class="ui container tiposMotor">
         <div class="ui cards">
-            <div class="card" ng-repeat="material in materiales">
+            <div class="card" ng-repeat="tipoNotificacion in tiposNotificacion">
                 <div class="content">
-                    <div class="header">{{ material.nombre }}</div>
+                    <div class="header">{{ tipoNotificacion.nombre }}</div>
                     <div class="meta">
-                        <div class="meta">{{ material.cantidad }}</div>
-                        <div class="meta">{{ material.tipoRefrigerante }}</div>
+                        <!-- {{ tipoMotor.equipos.length }} -->
                         <!-- <button class="ui basic blue icon button mini right floated" ng-click="showBookModal(area)"><i class="plus circle icon"></i> Add book</button> -->
                     </div>
-
                     <div class="extra content">
                         <div class="ui two buttons">
-                            <button class="ui basic green button" ng-click="materialModal('editar',material)"><i
+                            <button class="ui basic green button"
+                                ng-click="tipoNotificacionModal('editar',tipoNotificacion)"><i
                                     class="pencil alternate icon"></i>
                                 Editar</button>
-                            <button class="ui basic red button" ng-click="eliminar('material', material)"><i
+                            <button class="ui basic red button"
+                                ng-click="eliminar('tiponotificacion', tipoNotificacion)"><i
                                     class="trash alternate outline icon"></i>
                                 Eliminar</button>
                         </div>
@@ -309,48 +280,35 @@
             </div>
             <div class="card">
                 <div class="content">
-                    <button class="ui blue labeled icon button" ng-click="materialModal('agregar')"><i
+                    <button class="ui blue labeled icon button" ng-click="tipoNotificacionModal('agregar')"><i
                             class="plus circle icon"></i>
-                        Agregar material</button>
+                        Agregar Tipo de Notificacion</button>
                 </div>
             </div>
         </div>
     </div>
+
     <!-- MODAL -->
-    <div class="ui modal" id="modal-material">
+    <div class="ui modal" id="modal-tipoNotificacion">
         <i class="close icon"></i>
         <div class="header">
-            {{ materialModalTitle }}
+            {{ tipoNotificacionModalTitle }}
         </div>
         <div class="content">
             <div class="description">
-                <form class="ui form" id="material-formulario">
-                    <input type="hidden" name="materialId" ng-model="formulario.material.id" />
+                <form class="ui form" id="tipoNotificacion-formulario">
+                    <input type="hidden" name="tipoNotificacionId" ng-model="formulario.tipoNotificacion.id" />
                     <div class="required field">
-                        <label>Nombre: </label>
-                        <input type="text" name="nombre" placeholder="nombre" ng-model="formulario.material.nombre"
-                            required>
-                    </div>
-                    <div class="required field">
-                        <label>Cantidad: </label>
-                        <input type="text" name="cantidad" placeholder="cantidad"
-                            ng-model="formulario.material.cantidad" required>
-                    </div>
-                    <div class="required field">
-                        <select class="field" ng-model="formulario.material.idTipoRefrigerante" required>
-                            <option value="">Seleccione un tipo de Refrigerante...</option>
-                            <option ng-repeat="tipoRefrigerante in tiposRefrigerante" value="{{ tipoRefrigerante.id}}"
-                                    ng-selected="formulario.material.idTipoRefrigerante === tipoRefrigerante.id">
-                                {{
-                                tipoRefrigerante.nombre}}</option>
-                        </select>
+                        <label>Nombre</label>
+                        <input type="text" name="nombre" placeholder="nombre"
+                            ng-model="formulario.tipoNotificacion.nombre" required>
                     </div>
                 </form>
             </div>
         </div>
         <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="material-formulario"
-                ng-click="agregarEditarMaterial()">
+            <button type="submit" class="ui positive right labeled icon button" form="tipoNotificacion-formulario"
+                ng-click="agregarEditarTipoNotificacion()">
                 <i class="checkmark icon"></i>
                 Guardar
             </button>

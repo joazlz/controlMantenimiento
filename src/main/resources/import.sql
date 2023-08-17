@@ -2,6 +2,10 @@ INSERT INTO author(id, firstname, lastname) VALUES (1, 'John', 'Irving');
 INSERT INTO author(id, firstname, lastname) VALUES (2, 'Paul', 'Auster');
 ALTER SEQUENCE author_seq RESTART WITH 3;
 
+INSERT INTO tiponotificacion(id, nombre) VALUES (1, 'asignado');
+INSERT INTO tiponotificacion(id, nombre) VALUES (2, 'completado');
+ALTER SEQUENCE tiponotificacion_seq RESTART WITH 3;
+
 INSERT INTO tipoequipo(id, nombre) VALUES (1, 'split');
 INSERT INTO tipoequipo(id, nombre) VALUES (2, 'mini-split');
 INSERT INTO tipoequipo(id, nombre) VALUES (3, 'paquete');

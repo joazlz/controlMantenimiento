@@ -23,6 +23,7 @@ import org.acme.hibernate.search.elasticsearch.model.Revisado;
 import org.acme.hibernate.search.elasticsearch.model.TipoEquipo;
 import org.acme.hibernate.search.elasticsearch.model.TipoMantenimiento;
 import org.acme.hibernate.search.elasticsearch.model.TipoMotor;
+import org.acme.hibernate.search.elasticsearch.model.TipoNotificacion;
 import org.acme.hibernate.search.elasticsearch.model.TipoRefrigerante;
 import org.acme.hibernate.search.elasticsearch.model.TipoUsuario;
 import org.hibernate.search.mapper.orm.session.SearchSession;
@@ -604,6 +605,50 @@ public class InventarioResource {
         tipoMotor.nombre = nombre;
         tipoMotor.capacidad = capacidad;
         tipoMotor.persist();
+    }
+
+    // TIPONOTIFICACION
+    @GET
+    @Path("tiponotificacion/buscar")
+    @Transactional
+    public List<TipoNotificacion> buscarTipoNotificacion(@RestQuery String pattern,
+            @RestQuery Optional<Integer> size) {
+        return searchSession.search(TipoNotificacion.class)
+                .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
+                        : f.simpleQueryString()
+                                .fields("nombre").matching(pattern))
+                .sort(f -> f.field("nombre_ordenado"))
+                .fetchHits(size.orElse(20));
+    }
+    @PUT
+    @Path("tiponotificacion")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void agregarTipoNotificacion(@RestForm String nombre) {
+        TipoNotificacion tipoNotificacion = new TipoNotificacion();
+        tipoNotificacion.nombre = nombre;
+        tipoNotificacion.persist();
+    }
+    @POST
+    @Path("tiponotificacion/{id}")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void actualizarTipoNotificacion(Long id, @RestForm String nombre) {
+        TipoNotificacion tipoNotificacion = TipoNotificacion.findById(id);
+        if (tipoNotificacion == null) {
+            return;
+        }
+        tipoNotificacion.nombre = nombre;
+        tipoNotificacion.persist();
+    }
+    @DELETE
+    @Path("tiponotificacion/{id}")
+    @Transactional
+    public void eliminarTipoNotificacion(Long id) {
+        TipoNotificacion tipoNotificacion = TipoNotificacion.findById(id);
+        if (tipoNotificacion != null) {
+            tipoNotificacion.delete();
+        }
     }
 
     // TIPOREFRIGERANTE
