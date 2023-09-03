@@ -16,7 +16,7 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
 import org.acme.hibernate.search.elasticsearch.model.Area;
-import org.acme.hibernate.search.elasticsearch.model.Bateria;
+// import org.acme.hibernate.search.elasticsearch.model.Bateria;
 //import org.acme.hibernate.search.elasticsearch.model.Desperfecto;
 //import org.acme.hibernate.search.elasticsearch.model.Equipo;
 //import org.acme.hibernate.search.elasticsearch.model.Material;
@@ -44,10 +44,10 @@ public class EquipoResource {
     @Transactional
     void onStart(@Observes StartupEvent ev) throws InterruptedException {
         // only reindex if we imported some content
-        //if (Equipo.count() > 0) {
-           // searchSession.massIndexer()
-               //     .startAndWait();
-        //}
+        if (Area.count() > 0) {
+           searchSession.massIndexer()
+                   .startAndWait();
+        }
     }
 
     // AREA
@@ -97,52 +97,52 @@ public class EquipoResource {
                 .fetchHits(size.orElse(20));
     }
 
-     // Bateria
-     @PUT
-     @Path("bateria")
-     @Transactional
-     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-     public void agregarBateria(@RestForm String nombre) {
-         Area area = new Area();
-         area.nombre = nombre;
-         area.persist();
-     }
+    //  // Bateria
+    //  @PUT
+    //  @Path("bateria")
+    //  @Transactional
+    //  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    //  public void agregarBateria(@RestForm String nombre) {
+    //      Area area = new Area();
+    //      area.nombre = nombre;
+    //      area.persist();
+    //  }
  
-     @POST
-     @Path("bateria/{id}")
-     @Transactional
-     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-     public void actualizarBateria(Long id, @RestForm String nombre) {
-         Area area = Area.findById(id);
-         if (area == null) {
-             return;
-         }
-         area.nombre = nombre;
-         area.persist();
-     }
+    //  @POST
+    //  @Path("bateria/{id}")
+    //  @Transactional
+    //  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    //  public void actualizarBateria(Long id, @RestForm String nombre) {
+    //      Area area = Area.findById(id);
+    //      if (area == null) {
+    //          return;
+    //      }
+    //      area.nombre = nombre;
+    //      area.persist();
+    //  }
  
-     @DELETE
-     @Path("bateria/{id}")
-     @Transactional
-     public void eliminarBateria(Long id) {
-         Area area = Area.findById(id);
-         if (area != null) {
-             area.delete();
-         }
-     }
+    //  @DELETE
+    //  @Path("bateria/{id}")
+    //  @Transactional
+    //  public void eliminarBateria(Long id) {
+    //      Area area = Area.findById(id);
+    //      if (area != null) {
+    //          area.delete();
+    //      }
+    //  }
  
-     @GET
-     @Path("bateria/buscar")
-     @Transactional
-     public List<Bateria> buscarBaterias(@RestQuery String pattern,
-             @RestQuery Optional<Integer> size) {
-         return searchSession.search(Bateria.class)
-                 .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
-                         : f.simpleQueryString()
-                                 .fields("nombre", "equipos.nombre").matching(pattern))
-                 .sort(f -> f.field("nombre_ordenado"))
-                 .fetchHits(size.orElse(20));
-     }
+    //  @GET
+    //  @Path("bateria/buscar")
+    //  @Transactional
+    //  public List<Bateria> buscarBaterias(@RestQuery String pattern,
+    //          @RestQuery Optional<Integer> size) {
+    //      return searchSession.search(Bateria.class)
+    //              .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
+    //                      : f.simpleQueryString()
+    //                              .fields("nombre", "equipos.nombre").matching(pattern))
+    //              .sort(f -> f.field("nombre_ordenado"))
+    //              .fetchHits(size.orElse(20));
+    //  }
 
     
 

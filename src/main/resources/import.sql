@@ -36,7 +36,7 @@ ALTER SEQUENCE tipogas_seq RESTART WITH 2;
 INSERT INTO tipolimpieza(id, nombre) VALUES (1, 'condensador');
 ALTER SEQUENCE tipolimpieza_seq RESTART WITH 2;
 
-INSERT INTO tipomotor(id, nombre) VALUES (1, '')1/2;
+INSERT INTO tipomotor(id, nombre) VALUES (1, '1/2');
 ALTER SEQUENCE tipomotor_seq RESTART WITH 2;
 
 INSERT INTO tiponotificacion(id, nombre) VALUES (1, 'asignado');
