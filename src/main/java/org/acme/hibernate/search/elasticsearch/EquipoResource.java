@@ -18,10 +18,12 @@ import jakarta.ws.rs.core.MediaType;
 import org.acme.hibernate.search.elasticsearch.model.Area;
 import org.acme.hibernate.search.elasticsearch.model.Bateria;
 import org.acme.hibernate.search.elasticsearch.model.CapacidadBTU;
+import org.acme.hibernate.search.elasticsearch.model.Equipo;
 import org.acme.hibernate.search.elasticsearch.model.TipoMotor;
 import org.acme.hibernate.search.elasticsearch.model.Estado;
 import org.acme.hibernate.search.elasticsearch.model.Limpieza;
 import org.acme.hibernate.search.elasticsearch.model.Marca;
+import org.acme.hibernate.search.elasticsearch.model.Material;
 import org.acme.hibernate.search.elasticsearch.model.PH;
 import org.acme.hibernate.search.elasticsearch.model.Presostato;
 import org.acme.hibernate.search.elasticsearch.model.RangoPresion;
@@ -771,60 +773,13 @@ public class EquipoResource {
                 .fetchHits(size.orElse(20));
     }
 
-    // TipoNotificacion
-    @PUT
-    @Path("tiponotificacion")
-    @Transactional
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void agregarTipoNotificacion(@RestForm String nombre) {
-        TipoNotificacion tipoNotificacion = new TipoNotificacion();
-        tipoNotificacion.nombre = nombre;
-        tipoNotificacion.persist();
-    }
-
-    @POST
-    @Path("tiponotificacion/{id}")
-    @Transactional
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void actualizarTipoNotificacion(Long id, @RestForm String nombre) {
-        TipoNotificacion tipoNotificacion = TipoNotificacion.findById(id);
-        if (tipoNotificacion == null) {
-            return;
-        }
-        tipoNotificacion.nombre = nombre;
-        tipoNotificacion.persist();
-    }
-
-    @DELETE
-    @Path("tiponotificacion/{id}")
-    @Transactional
-    public void eliminarTipoNotificacion(Long id) {
-        TipoNotificacion tipoNotificacion = TipoNotificacion.findById(id);
-        if (tipoNotificacion != null) {
-            tipoNotificacion.delete();
-        }
-    }
-
-    @GET
-    @Path("tiponotificacion/buscar")
-    @Transactional
-    public List<TipoNotificacion> buscarTipoNotificacion(@RestQuery String pattern,
-            @RestQuery Optional<Integer> size) {
-        return searchSession.search(TipoNotificacion.class)
-                .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
-                        : f.simpleQueryString()
-                                .fields("nombre").matching(pattern))
-                .sort(f -> f.field("nombre_ordenado"))
-                .fetchHits(size.orElse(20));
-    }
-
     // RangoPresion
     @GET
     @Path("rangopresion/buscar")
     @Transactional
     public List<RangoPresion> buscarRangoPresion() {
         return searchSession.search(RangoPresion.class)
-                .where(f ->   f.matchAll())
+                .where(f -> f.matchAll())
                 .fetchHits(10);
     }
 
@@ -841,6 +796,7 @@ public class EquipoResource {
         rangoPresion.maximo = maximo;
         rangoPresion.persist();
     }
+
     @DELETE
     @Path("rangopresion/{id}")
     @Transactional
@@ -850,11 +806,12 @@ public class EquipoResource {
             rangoPresion.delete();
         }
     }
+
     @PUT
     @Path("rangopresion")
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void agregarRangoPresion(@RestForm Long minimo,@RestForm Long maximo) {
+    public void agregarRangoPresion(@RestForm Long minimo, @RestForm Long maximo) {
         RangoPresion rangoPresion = new RangoPresion();
         rangoPresion.minimo = minimo;
         rangoPresion.maximo = maximo;
@@ -867,7 +824,7 @@ public class EquipoResource {
     @Transactional
     public List<Limpieza> buscarLimpieza() {
         return searchSession.search(Limpieza.class)
-                .where(f ->   f.matchAll())
+                .where(f -> f.matchAll())
                 .fetchHits(10);
     }
 
@@ -879,21 +836,23 @@ public class EquipoResource {
         Limpieza limpieza = Limpieza.findById(id);
         TipoLimpieza tipoLimpieda = TipoLimpieza.findById(tipoLimpiedaId);
 
-        if (limpieza == null || tipoLimpieda== null) {
+        if (limpieza == null || tipoLimpieda == null) {
             return;
-        }else{
+        } else {
             limpieza.realizada = realizada;
             limpieza.tipoLimpieza = tipoLimpieda;
             limpieza.persist();
         }
 
     }
+
     @DELETE
     @Path("limpieza/{id}")
     @Transactional
     public void eliminarLimpieza(Long id) {
         Limpieza limpieza = Limpieza.findById(id);
         if (limpieza != null) {
+            limpieza.tipoLimpieza.limpiezas.remove(limpieza);
             limpieza.delete();
         }
     }
@@ -902,18 +861,85 @@ public class EquipoResource {
     @Path("limpieza")
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void agregarLimpieza(@RestForm Boolean realizada,@RestForm Long tipoLimpiedaId) {
+    public void agregarLimpieza(@RestForm Boolean realizada, @RestForm Long tipoLimpiedaId) {
         Limpieza limpieza = new Limpieza();
 
         TipoLimpieza tipoLimpieda = TipoLimpieza.findById(tipoLimpiedaId);
 
-        if (tipoLimpieda== null) {
+        if (tipoLimpieda == null) {
             return;
-        }else{
+        } else {
             limpieza.realizada = realizada;
             limpieza.tipoLimpieza = tipoLimpieda;
             limpieza.persist();
         }
+    }
+
+    // material
+    @GET
+    @Path("material/buscar")
+    @Transactional
+    public List<Material> buscarMaterial() {
+        return searchSession.search(Material.class)
+                .where(f -> f.matchAll())
+                .fetchHits(10);
+    }
+
+    @POST
+    @Path("material/{id}")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void actualizarMaterial(Long id, @RestForm String nombre, @RestForm String codigoSap) {
+        Material material = Material.findById(id);
+        if (material == null) {
+            return;
+        } else {
+            material.nombre = nombre;
+            material.codigoSap = codigoSap;
+            material.persist();
+        }
+
+    }
+
+    @DELETE
+    @Path("material/{id}")
+    @Transactional
+    public void eliminarMaterial(Long id) {
+        Material material = Material.findById(id);
+        if (material != null) {
+            material.delete();
+        }
+    }
+
+    @PUT
+    @Path("material")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void agregarMaterial(@RestForm String nombre, @RestForm String codigoSap) {
+        Material material = new Material();
+
+        material.nombre = nombre;
+        material.codigoSap = codigoSap;
+        material.persist();
+
+    }
+
+    // equipo
+    @GET
+    @Path("buscar")
+    @Transactional
+    public List<Equipo> buscarEquipo(@RestForm String pattern, @RestForm Optional<Integer> size) {
+        return searchSession.search(Equipo.class)
+                .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
+                        : f.simpleQueryString()
+                                .fields("nombre").matching(pattern))
+                .sort(f -> f.field("modelo_ordenado").then().field("voltaje_ordenado")
+                        .then().field("amperaje_ordenado").then().field("flipon_ordenado").then()
+                        .field("cableAlimentacion_ordenado").then().field("tranformador_ordenado").then()
+                        .field("contactor_ordenado").then().field("termostato_ordenado").then()
+                        .field("tarjetaElectronica_ordenado").then().field("selectro_ordenado").then()
+                        .field("retardor_ordenado"))
+                .fetchHits(size.orElse(20));
     }
 
 }

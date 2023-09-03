@@ -9,6 +9,7 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextFi
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 
+
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 @Entity
@@ -18,6 +19,7 @@ public class Bateria extends PanacheEntity {
     @FullTextField(analyzer = "nombre")
     @KeywordField(name = "nombre_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String nombre;
+
 
     @Override
     public boolean equals(Object o) {

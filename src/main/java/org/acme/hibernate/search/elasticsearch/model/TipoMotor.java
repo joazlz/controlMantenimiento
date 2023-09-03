@@ -6,6 +6,7 @@ import java.util.Objects;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 import org.hibernate.search.engine.backend.types.Sortable;
@@ -13,6 +14,8 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextFi
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
@@ -27,6 +30,10 @@ public class TipoMotor extends PanacheEntity {
     @FullTextField(analyzer = "ingles")
     @KeywordField(name = "capacidad_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String capacidad;
+
+    @ManyToOne
+    @JsonIgnore
+    public Equipo equipo;
     
     @Override
     public boolean equals(Object o) {

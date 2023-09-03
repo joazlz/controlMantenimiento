@@ -1,12 +1,17 @@
 package org.acme.hibernate.search.elasticsearch.model;
 
+import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
+
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 @Entity
@@ -17,6 +22,14 @@ public class RangoPresion extends PanacheEntity {
 
     public Long maximo;
 
+    @OneToMany(mappedBy = "rangoPresionAlta", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @IndexedEmbedded
+    public List<Equipo> equiposAlta;
+
+    @OneToMany(mappedBy = "rangoPresionBaja", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @IndexedEmbedded
+    public List<Equipo> equiposBaja;
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
