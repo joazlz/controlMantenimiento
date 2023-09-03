@@ -23,11 +23,11 @@ public class TipoNotificacion extends PanacheEntity {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Area)) {
+        if (!(o instanceof TipoNotificacion)) {
             return false;
         }
 
-        Area other = (Area) o;
+        TipoNotificacion other = (TipoNotificacion) o;
 
         return Objects.equals(id, other.id);
     }

@@ -13,7 +13,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 @Entity
 @Indexed
-public class TipoEquipo extends PanacheEntity {
+public class PH extends PanacheEntity {
 
     @FullTextField(analyzer = "nombre")
     @KeywordField(name = "nombre_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
@@ -24,11 +24,11 @@ public class TipoEquipo extends PanacheEntity {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof TipoEquipo)) {
+        if (!(o instanceof PH)) {
             return false;
         }
 
-        TipoEquipo other = (TipoEquipo) o;
+        PH other = (PH) o;
 
         return Objects.equals(id, other.id);
     }

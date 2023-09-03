@@ -3,36 +3,32 @@ package org.acme.hibernate.search.elasticsearch.model;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
 
+import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 @Entity
 @Indexed
-public class Book extends PanacheEntity {
+public class TipoDesperfecto extends PanacheEntity {
 
-    @FullTextField(analyzer = "ingles")
-    public String title;
-
-    @ManyToOne
-    @JsonIgnore
-    public Author author;
+    @FullTextField(analyzer = "nombre")
+    @KeywordField(name = "nombre_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
+    public String nombre;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Book)) {
+        if (!(o instanceof TipoDesperfecto)) {
             return false;
         }
 
-        Book other = (Book) o;
+        TipoDesperfecto other = (TipoDesperfecto) o;
 
         return Objects.equals(id, other.id);
     }

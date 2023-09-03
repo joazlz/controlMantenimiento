@@ -28,10 +28,6 @@ public class TipoMotor extends PanacheEntity {
     @KeywordField(name = "capacidad_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String capacidad;
     
-    @OneToMany(mappedBy = "tipoMotor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @IndexedEmbedded
-    public List<Equipo> equipos;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {

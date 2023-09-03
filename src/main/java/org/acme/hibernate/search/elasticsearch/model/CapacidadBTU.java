@@ -1,43 +1,35 @@
 package org.acme.hibernate.search.elasticsearch.model;
 
 import java.util.Objects;
+
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
 
 import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 @Entity
 @Indexed
-public class Material extends PanacheEntity {
+public class CapacidadBTU extends PanacheEntity {
 
     @FullTextField(analyzer = "nombre")
     @KeywordField(name = "nombre_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String nombre;
-
-    @FullTextField(analyzer = "nombre")
-    public String cantidad;
-
-    @ManyToOne
-    @JsonIgnore
-    public TipoRefrigerante tipoRefrigerante;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Area)) {
+        if (!(o instanceof CapacidadBTU)) {
             return false;
         }
 
-        Area other = (Area) o;
+        CapacidadBTU other = (CapacidadBTU) o;
 
         return Objects.equals(id, other.id);
     }
@@ -46,5 +38,4 @@ public class Material extends PanacheEntity {
     public int hashCode() {
         return 31;
     }
-
 }

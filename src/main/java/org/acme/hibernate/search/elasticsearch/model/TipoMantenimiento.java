@@ -22,11 +22,11 @@ public class TipoMantenimiento extends PanacheEntity {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Area)) {
+        if (!(o instanceof TipoMantenimiento)) {
             return false;
         }
 
-        Area other = (Area) o;
+        TipoMantenimiento other = (TipoMantenimiento) o;
 
         return Objects.equals(id, other.id);
     }
