@@ -64,3 +64,6 @@ INSERT INTO tipomantenimiento(id, nombre) VALUES (3, 'correctivo');
 INSERT INTO tipomantenimiento(id, nombre) VALUES (4, 'evaluacion');
 ALTER SEQUENCE tipomantenimiento_seq RESTART WITH 5;
 
+INSERT INTO rangopresion(id, minimo,maximo) VALUES (1, 0,10);
+ALTER SEQUENCE rangopresion_seq RESTART WITH 2;
+

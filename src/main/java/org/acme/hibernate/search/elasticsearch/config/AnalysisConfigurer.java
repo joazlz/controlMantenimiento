@@ -13,7 +13,7 @@ public class AnalysisConfigurer implements ElasticsearchAnalysisConfigurer {
         context.analyzer("nombre").custom()
                 .tokenizer("standard")
                 .tokenFilters("asciifolding", "lowercase");
-
+                
         context.analyzer("ingles").custom()
                 .tokenizer("standard")
                 .tokenFilters("asciifolding", "lowercase", "porter_stem");
