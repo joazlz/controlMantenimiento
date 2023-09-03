@@ -67,3 +67,6 @@ ALTER SEQUENCE tipomantenimiento_seq RESTART WITH 5;
 INSERT INTO rangopresion(id, minimo,maximo) VALUES (1, 0,10);
 ALTER SEQUENCE rangopresion_seq RESTART WITH 2;
 
+INSERT INTO limpieza(id, realizado,tipolimpieza_id) VALUES (1, True,10);
+ALTER SEQUENCE limpieza_seq RESTART WITH 2;
+

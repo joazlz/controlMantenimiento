@@ -3,11 +3,10 @@ package org.acme.hibernate.search.elasticsearch.model;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
-
-import org.hibernate.search.engine.backend.types.Sortable;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import jakarta.persistence.ManyToOne;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
@@ -15,8 +14,11 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 @Indexed
 public class Limpieza extends PanacheEntity {
 
-    
     public Boolean realizada;
+
+    @ManyToOne
+    @JsonIgnore
+    public TipoLimpieza tipoLimpieza;
 
     @Override
     public boolean equals(Object o) {

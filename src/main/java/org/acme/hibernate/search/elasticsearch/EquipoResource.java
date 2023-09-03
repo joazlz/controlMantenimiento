@@ -20,6 +20,7 @@ import org.acme.hibernate.search.elasticsearch.model.Bateria;
 import org.acme.hibernate.search.elasticsearch.model.CapacidadBTU;
 import org.acme.hibernate.search.elasticsearch.model.TipoMotor;
 import org.acme.hibernate.search.elasticsearch.model.Estado;
+import org.acme.hibernate.search.elasticsearch.model.Limpieza;
 import org.acme.hibernate.search.elasticsearch.model.Marca;
 import org.acme.hibernate.search.elasticsearch.model.PH;
 import org.acme.hibernate.search.elasticsearch.model.Presostato;
@@ -858,6 +859,61 @@ public class EquipoResource {
         rangoPresion.minimo = minimo;
         rangoPresion.maximo = maximo;
         rangoPresion.persist();
+    }
+
+    // limpieza
+    @GET
+    @Path("limpieza/buscar")
+    @Transactional
+    public List<Limpieza> buscarLimpieza() {
+        return searchSession.search(Limpieza.class)
+                .where(f ->   f.matchAll())
+                .fetchHits(10);
+    }
+
+    @POST
+    @Path("limpieza/{id}")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void actualizarLimpieza(Long id, @RestForm Boolean realizada, @RestForm Long tipoLimpiedaId) {
+        Limpieza limpieza = Limpieza.findById(id);
+        TipoLimpieza tipoLimpieda = TipoLimpieza.findById(tipoLimpiedaId);
+
+        if (limpieza == null || tipoLimpieda== null) {
+            return;
+        }else{
+            limpieza.realizada = realizada;
+            limpieza.tipoLimpieza = tipoLimpieda;
+            limpieza.persist();
+        }
+
+    }
+    @DELETE
+    @Path("limpieza/{id}")
+    @Transactional
+    public void eliminarLimpieza(Long id) {
+        Limpieza limpieza = Limpieza.findById(id);
+        if (limpieza != null) {
+            limpieza.delete();
+        }
+    }
+
+    @PUT
+    @Path("limpieza")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void agregarLimpieza(@RestForm Boolean realizada,@RestForm Long tipoLimpiedaId) {
+        Limpieza limpieza = new Limpieza();
+
+        TipoLimpieza tipoLimpieda = TipoLimpieza.findById(tipoLimpiedaId);
+
+        if (tipoLimpieda== null) {
+            return;
+        }else{
+            limpieza.realizada = realizada;
+            limpieza.tipoLimpieza = tipoLimpieda;
+            limpieza.persist();
+        }
     }
 
 }
