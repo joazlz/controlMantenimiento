@@ -3,16 +3,16 @@ package org.acme.hibernate.search.elasticsearch.model;
 import java.util.List;
 import java.util.Objects;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 
 import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -40,13 +40,23 @@ public class Equipo extends PanacheEntity {
     public TipoFiltroDeshidratador tipoFiltroDeshidratador;
 
     // list< TipoMotor >
-    // @OneToMany(mappedBy = "equipo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    // @IndexedEmbedded
-    // public List<TipoMotor> tiposMotor;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "equipo_tipo_motor", // Nombre de la tabla intermedia
+        joinColumns = @JoinColumn(name = "equipo_id"), // Columna de la tabla Equipo
+        inverseJoinColumns = @JoinColumn(name = "tipomotor_id") // Columna de la tabla TipoMotor
+    )
+    @JsonIgnore
+    public List<TipoMotor> tiposMotor;
     // list< TipoCompresor >
-    // @OneToMany(mappedBy = "equipo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    // @IndexedEmbedded
-    // public List<TipoCompresor> tiposCompresor;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "equipo_tipo_compresor", 
+        joinColumns = @JoinColumn(name = "equipo_id"), 
+        inverseJoinColumns = @JoinColumn(name = "tipocompresor_id") 
+    )
+    @JsonIgnore
+    public List<TipoCompresor> tiposCompresor;
     // RangoPresionAlta
     @ManyToOne
     @JsonIgnore
@@ -112,9 +122,14 @@ public class Equipo extends PanacheEntity {
     @KeywordField(name = "retardor_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String retardor;
     // list< Baterias >
-    // @OneToMany(mappedBy = "equipos", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    // @IndexedEmbedded
-    // public List<Bateria> baterias;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "equipo_bateria", 
+        joinColumns = @JoinColumn(name = "equipo_id"), 
+        inverseJoinColumns = @JoinColumn(name = "bateria_id") 
+    )
+    @JsonIgnore
+    public List<Bateria> baterias;
     // PresostatoAlta
     @ManyToOne
     @JsonIgnore
@@ -124,6 +139,13 @@ public class Equipo extends PanacheEntity {
     @JsonIgnore
     public Presostato presostatoBaja;
     // list< tags >
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "equipo_tag", 
+        joinColumns = @JoinColumn(name = "equipo_id"), 
+        inverseJoinColumns = @JoinColumn(name = "tag_id") 
+    )
+    public List<Tag> tags;
 
     @Override
     public boolean equals(Object o) {

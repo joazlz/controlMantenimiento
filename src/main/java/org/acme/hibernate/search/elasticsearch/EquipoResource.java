@@ -32,16 +32,8 @@ import org.acme.hibernate.search.elasticsearch.model.TipoDesperfecto;
 import org.acme.hibernate.search.elasticsearch.model.TipoFiltroDeshidratador;
 import org.acme.hibernate.search.elasticsearch.model.TipoGas;
 import org.acme.hibernate.search.elasticsearch.model.TipoLimpieza;
-//import org.acme.hibernate.search.elasticsearch.model.Desperfecto;
-//import org.acme.hibernate.search.elasticsearch.model.Equipo;
-//import org.acme.hibernate.search.elasticsearch.model.Material;
-//import org.acme.hibernate.search.elasticsearch.model.Revisado;
 import org.acme.hibernate.search.elasticsearch.model.TipoEquipo;
 import org.acme.hibernate.search.elasticsearch.model.TipoMantenimiento;
-//import org.acme.hibernate.search.elasticsearch.model.TipoMotor;
-import org.acme.hibernate.search.elasticsearch.model.TipoNotificacion;
-//import org.acme.hibernate.search.elasticsearch.model.TipoRefrigerante;
-//import org.acme.hibernate.search.elasticsearch.model.TipoUsuario;
 import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.jboss.resteasy.reactive.RestForm;
 import org.jboss.resteasy.reactive.RestQuery;
@@ -59,10 +51,10 @@ public class EquipoResource {
     @Transactional
     void onStart(@Observes StartupEvent ev) throws InterruptedException {
         // only reindex if we imported some content
-        if (Area.count() > 0) {
-            searchSession.massIndexer()
-                    .startAndWait();
-        }
+        // if (Area.count() > 0) {
+        //     searchSession.massIndexer()
+        //             .startAndWait();
+        // }
     }
 
     // AREA

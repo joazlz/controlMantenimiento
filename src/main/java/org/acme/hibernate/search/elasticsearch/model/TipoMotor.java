@@ -3,19 +3,15 @@ package org.acme.hibernate.search.elasticsearch.model;
 import java.util.List;
 import java.util.Objects;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
 
 import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
@@ -31,20 +27,21 @@ public class TipoMotor extends PanacheEntity {
     @KeywordField(name = "capacidad_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String capacidad;
 
-    @ManyToOne
-    @JsonIgnore
-    public Equipo equipo;
+    
+    @ManyToMany(mappedBy = "tiposMotor", fetch = FetchType.EAGER)
+    @IndexedEmbedded
+    public List<Equipo> equipo;
     
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Area)) {
+        if (!(o instanceof TipoMotor)) {
             return false;
         }
 
-        Area other = (Area) o;
+        TipoMotor other = (TipoMotor) o;
 
         return Objects.equals(id, other.id);
     }

@@ -73,3 +73,18 @@ ALTER SEQUENCE limpieza_seq RESTART WITH 2;
 INSERT INTO material(id, nombre,codigosap) VALUES (1, 'tornillo','1ASDOFKN19802');
 ALTER SEQUENCE material_seq RESTART WITH 2;
 INSERT INTO  equipo(id ,area_id ,tipogas_id ,capacidadbtu_id ,tipofiltrodeshidratador_id ,rangopresionalta_id ,rangopresionbaja_id ,marca_id ,ph_id ,tipoequipo_id ,modelo ,voltaje ,amperaje ,flipon ,cableAlimentacion ,tranformador ,contactor ,termostato ,tarjetaElectronica ,selectro ,retardor ,presostatoAlta_id ,presostatoBaja_id) VALUES (1,1,1,1,1,1,1,1,1,1,'modelo','voltaje','amperaje','flipon','cableAlimentacion','tranformador','contactor','termostato','tarjetaElectronica','selectro','retardor',1,1);
+
+INSERT INTO equipo_tipo_motor(equipo_id, tipomotor_id)
+VALUES (1, 1);
+
+INSERT INTO equipo_tipo_compresor(equipo_id, tipocompresor_id)
+VALUES (1, 1);
+
+INSERT INTO equipo_bateria(equipo_id, bateria_id)
+VALUES (1, 1);
+
+INSERT INTO tag(id, nombre) VALUES (1, 'depaquete');
+ALTER SEQUENCE tag_seq RESTART WITH 2;
+
+INSERT INTO equipo_tag(equipo_id, tag_id)
+VALUES (1, 1);

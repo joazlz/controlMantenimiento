@@ -1,6 +1,6 @@
 package org.acme.hibernate.search.elasticsearch;
 
-import org.jboss.logging.Logger;
+// import org.jboss.logging.Logger;
 
 import java.util.List;
 import java.util.Optional;
