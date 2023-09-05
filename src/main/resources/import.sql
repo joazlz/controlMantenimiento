@@ -1,5 +1,6 @@
 INSERT INTO area(id, nombre) VALUES (1, 'ccm tachos');
-ALTER SEQUENCE area_seq RESTART WITH 2;
+INSERT INTO area(id, nombre) VALUES (2, '3 marias');
+ALTER SEQUENCE area_seq RESTART WITH 3;
 
 INSERT INTO bateria(id, nombre) VALUES (1, 'aaa');
 ALTER SEQUENCE bateria_seq RESTART WITH 2;
@@ -72,7 +73,9 @@ ALTER SEQUENCE limpieza_seq RESTART WITH 2;
 
 INSERT INTO material(id, nombre,codigosap) VALUES (1, 'tornillo','1ASDOFKN19802');
 ALTER SEQUENCE material_seq RESTART WITH 2;
+
 INSERT INTO  equipo(id ,area_id ,tipogas_id ,capacidadbtu_id ,tipofiltrodeshidratador_id ,rangopresionalta_id ,rangopresionbaja_id ,marca_id ,ph_id ,tipoequipo_id ,modelo ,voltaje ,amperaje ,flipon ,cableAlimentacion ,tranformador ,contactor ,termostato ,tarjetaElectronica ,selectro ,retardor ,presostatoAlta_id ,presostatoBaja_id) VALUES (1,1,1,1,1,1,1,1,1,1,'modelo','voltaje','amperaje','flipon','cableAlimentacion','tranformador','contactor','termostato','tarjetaElectronica','selectro','retardor',1,1);
+ALTER SEQUENCE equipo_seq RESTART WITH 2;
 
 INSERT INTO equipo_tipo_motor(equipo_id, tipomotor_id)
 VALUES (1, 1);

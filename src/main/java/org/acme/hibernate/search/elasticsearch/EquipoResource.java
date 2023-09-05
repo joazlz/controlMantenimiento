@@ -52,8 +52,8 @@ public class EquipoResource {
     void onStart(@Observes StartupEvent ev) throws InterruptedException {
         // only reindex if we imported some content
         // if (Area.count() > 0) {
-        //     searchSession.massIndexer()
-        //             .startAndWait();
+        // searchSession.massIndexer()
+        // .startAndWait();
         // }
     }
 
@@ -932,6 +932,169 @@ public class EquipoResource {
                         .field("tarjetaElectronica_ordenado").then().field("selectro_ordenado").then()
                         .field("retardor_ordenado"))
                 .fetchHits(size.orElse(20));
+    }
+
+    @PUT
+    @Path("agregar")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void agregarEquipo(
+            @RestForm String modelo,
+            @RestForm String voltaje,
+            @RestForm String amperaje,
+            @RestForm String flipon,
+            @RestForm String cableAlimentacion,
+            @RestForm String tranformador,
+            @RestForm String contactor,
+            @RestForm String termostato,
+            @RestForm String tarjetaElectronica,
+            @RestForm String selectro,
+            @RestForm String retardor,
+            @RestForm Long area_id,
+            @RestForm Long tipoGas_id,
+            @RestForm Long capacidadBTU_id,
+            @RestForm Long tipoFiltroDeshidratador_id,
+            @RestForm Long rangoPresionAlta_id,
+            @RestForm Long rangoPresionBaja_id,
+            @RestForm Long marca_id,
+            @RestForm Long pH_id,
+            @RestForm Long tipoEquipo_id,
+            @RestForm Long presostatoAlta_id,
+            @RestForm Long presostatoBaja_id) {
+        Equipo equipo = new Equipo();
+
+        Area area = Area.findById(area_id);
+        TipoGas tipoGas = TipoGas.findById(tipoGas_id);
+        CapacidadBTU capacidadBTU = CapacidadBTU.findById(capacidadBTU_id);
+        TipoFiltroDeshidratador tipoFiltroDeshidratador = TipoFiltroDeshidratador.findById(tipoFiltroDeshidratador_id);
+        RangoPresion rangoPresionAlta = RangoPresion.findById(rangoPresionAlta_id);
+        RangoPresion rangoPresionBaja = RangoPresion.findById(rangoPresionBaja_id);
+        Marca marca = Marca.findById(marca_id);
+        PH pH = PH.findById(pH_id);
+        TipoEquipo tipoEquipo = TipoEquipo.findById(tipoEquipo_id);
+        Presostato presostatoAlta = Presostato.findById(presostatoAlta_id);
+        Presostato presostatoBaja = Presostato.findById(presostatoBaja_id);
+
+        if (!area.equals(null) &
+                !tipoGas.equals(null) &
+                !capacidadBTU.equals(null) &
+                !tipoFiltroDeshidratador.equals(null) &
+                !rangoPresionAlta.equals(null) &
+                !rangoPresionBaja.equals(null) &
+                !marca.equals(null) &
+                !pH.equals(null) &
+                !tipoEquipo.equals(null) &
+                !presostatoAlta.equals(null) &
+                !presostatoBaja.equals(null)) {
+            equipo.modelo = modelo;
+            equipo.voltaje = voltaje;
+            equipo.amperaje = amperaje;
+            equipo.flipon = flipon;
+            equipo.cableAlimentacion = cableAlimentacion;
+            equipo.tranformador = tranformador;
+            equipo.contactor = contactor;
+            equipo.termostato = termostato;
+            equipo.tarjetaElectronica = tarjetaElectronica;
+            equipo.selectro = selectro;
+            equipo.retardor = retardor;
+
+            equipo.area = area;
+            equipo.tipoGas = tipoGas;
+            equipo.capacidadBTU = capacidadBTU;
+            equipo.tipoFiltroDeshidratador = tipoFiltroDeshidratador;
+            equipo.rangoPresionAlta = rangoPresionAlta;
+            equipo.rangoPresionBaja = rangoPresionBaja;
+            equipo.marca = marca;
+            equipo.pH = pH;
+            equipo.tipoEquipo = tipoEquipo;
+            equipo.presostatoAlta = presostatoAlta;
+            equipo.presostatoBaja = presostatoBaja;
+            equipo.persist();
+        }
+
+    }
+
+    @POST
+    @Path("actualizar/{id}")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void actualizarEquipo(
+            Long id,
+            @RestForm String modelo,
+            @RestForm String voltaje,
+            @RestForm String amperaje,
+            @RestForm String flipon,
+            @RestForm String cableAlimentacion,
+            @RestForm String tranformador,
+            @RestForm String contactor,
+            @RestForm String termostato,
+            @RestForm String tarjetaElectronica,
+            @RestForm String selectro,
+            @RestForm String retardor,
+            @RestForm Long area_id,
+            @RestForm Long tipoGas_id,
+            @RestForm Long capacidadBTU_id,
+            @RestForm Long tipoFiltroDeshidratador_id,
+            @RestForm Long rangoPresionAlta_id,
+            @RestForm Long rangoPresionBaja_id,
+            @RestForm Long marca_id,
+            @RestForm Long pH_id,
+            @RestForm Long tipoEquipo_id,
+            @RestForm Long presostatoAlta_id,
+            @RestForm Long presostatoBaja_id) {
+        
+        Equipo equipo = Equipo.findById(id);
+
+        Area area = Area.findById(area_id);
+        TipoGas tipoGas = TipoGas.findById(tipoGas_id);
+        CapacidadBTU capacidadBTU = CapacidadBTU.findById(capacidadBTU_id);
+        TipoFiltroDeshidratador tipoFiltroDeshidratador = TipoFiltroDeshidratador.findById(tipoFiltroDeshidratador_id);
+        RangoPresion rangoPresionAlta = RangoPresion.findById(rangoPresionAlta_id);
+        RangoPresion rangoPresionBaja = RangoPresion.findById(rangoPresionBaja_id);
+        Marca marca = Marca.findById(marca_id);
+        PH pH = PH.findById(pH_id);
+        TipoEquipo tipoEquipo = TipoEquipo.findById(tipoEquipo_id);
+        Presostato presostatoAlta = Presostato.findById(presostatoAlta_id);
+        Presostato presostatoBaja = Presostato.findById(presostatoBaja_id);
+
+        if (!equipo.equals(null) &
+            !area.equals(null) &
+                !tipoGas.equals(null) &
+                !capacidadBTU.equals(null) &
+                !tipoFiltroDeshidratador.equals(null) &
+                !rangoPresionAlta.equals(null) &
+                !rangoPresionBaja.equals(null) &
+                !marca.equals(null) &
+                !pH.equals(null) &
+                !tipoEquipo.equals(null) &
+                !presostatoAlta.equals(null) &
+                !presostatoBaja.equals(null)) {
+            equipo.modelo = modelo;
+            equipo.voltaje = voltaje;
+            equipo.amperaje = amperaje;
+            equipo.flipon = flipon;
+            equipo.cableAlimentacion = cableAlimentacion;
+            equipo.tranformador = tranformador;
+            equipo.contactor = contactor;
+            equipo.termostato = termostato;
+            equipo.tarjetaElectronica = tarjetaElectronica;
+            equipo.selectro = selectro;
+            equipo.retardor = retardor;
+
+            equipo.area = area;
+            equipo.tipoGas = tipoGas;
+            equipo.capacidadBTU = capacidadBTU;
+            equipo.tipoFiltroDeshidratador = tipoFiltroDeshidratador;
+            equipo.rangoPresionAlta = rangoPresionAlta;
+            equipo.rangoPresionBaja = rangoPresionBaja;
+            equipo.marca = marca;
+            equipo.pH = pH;
+            equipo.tipoEquipo = tipoEquipo;
+            equipo.presostatoAlta = presostatoAlta;
+            equipo.presostatoBaja = presostatoBaja;
+            equipo.persist();
+        }
+
     }
 
 }

@@ -22,61 +22,6 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 @Entity
 @Indexed
 public class Equipo extends PanacheEntity {
-    // Area
-    @ManyToOne
-    @JsonIgnore
-    public Area area;
-    // TipoGas
-    @ManyToOne
-    @JsonIgnore
-    public TipoGas tipoGas;
-    // CapacidadBTU
-    @ManyToOne
-    @JsonIgnore
-    public CapacidadBTU capacidadBTU;
-    // TipoFiltroDeshidratador
-    @ManyToOne
-    @JsonIgnore
-    public TipoFiltroDeshidratador tipoFiltroDeshidratador;
-
-    // list< TipoMotor >
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "equipo_tipo_motor", // Nombre de la tabla intermedia
-        joinColumns = @JoinColumn(name = "equipo_id"), // Columna de la tabla Equipo
-        inverseJoinColumns = @JoinColumn(name = "tipomotor_id") // Columna de la tabla TipoMotor
-    )
-    @JsonIgnore
-    public List<TipoMotor> tiposMotor;
-    // list< TipoCompresor >
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "equipo_tipo_compresor", 
-        joinColumns = @JoinColumn(name = "equipo_id"), 
-        inverseJoinColumns = @JoinColumn(name = "tipocompresor_id") 
-    )
-    @JsonIgnore
-    public List<TipoCompresor> tiposCompresor;
-    // RangoPresionAlta
-    @ManyToOne
-    @JsonIgnore
-    public RangoPresion rangoPresionAlta;
-    // RangoPresionBaja
-    @ManyToOne
-    @JsonIgnore
-    public RangoPresion rangoPresionBaja;
-    // Marca
-    @ManyToOne
-    @JsonIgnore
-    public Marca marca;
-    // PH
-    @ManyToOne
-    @JsonIgnore
-    public PH pH;
-    // TipoEquipo
-    @ManyToOne
-    @JsonIgnore
-    public TipoEquipo tipoEquipo;
     // modelo (string)
     @FullTextField(analyzer = "nombre")
     @KeywordField(name = "modelo_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
@@ -121,6 +66,73 @@ public class Equipo extends PanacheEntity {
     @FullTextField(analyzer = "nombre")
     @KeywordField(name = "retardor_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String retardor;
+
+    
+    
+    // Area
+    @ManyToOne
+    @JsonIgnore
+    public Area area;
+    // TipoGas
+    @ManyToOne
+    @JsonIgnore
+    public TipoGas tipoGas;
+    // CapacidadBTU
+    @ManyToOne
+    @JsonIgnore
+    public CapacidadBTU capacidadBTU;
+    // TipoFiltroDeshidratador
+    @ManyToOne
+    @JsonIgnore
+    public TipoFiltroDeshidratador tipoFiltroDeshidratador;
+    // RangoPresionAlta
+    @ManyToOne
+    @JsonIgnore
+    public RangoPresion rangoPresionAlta;
+    // RangoPresionBaja
+    @ManyToOne
+    @JsonIgnore
+    public RangoPresion rangoPresionBaja;
+    // Marca
+    @ManyToOne
+    @JsonIgnore
+    public Marca marca;
+    // PH
+    @ManyToOne
+    @JsonIgnore
+    public PH pH;
+    // TipoEquipo
+    @ManyToOne
+    @JsonIgnore
+    public TipoEquipo tipoEquipo;
+    // PresostatoAlta
+    @ManyToOne
+    @JsonIgnore
+    public Presostato presostatoAlta;
+    // PresostatoBajo
+    @ManyToOne
+    @JsonIgnore
+    public Presostato presostatoBaja;
+
+
+    // list< TipoMotor >
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "equipo_tipo_motor", // Nombre de la tabla intermedia
+        joinColumns = @JoinColumn(name = "equipo_id"), // Columna de la tabla Equipo
+        inverseJoinColumns = @JoinColumn(name = "tipomotor_id") // Columna de la tabla TipoMotor
+    )
+    @JsonIgnore
+    public List<TipoMotor> tiposMotor;
+    // list< TipoCompresor >
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "equipo_tipo_compresor", 
+        joinColumns = @JoinColumn(name = "equipo_id"), 
+        inverseJoinColumns = @JoinColumn(name = "tipocompresor_id") 
+    )
+    @JsonIgnore
+    public List<TipoCompresor> tiposCompresor;
     // list< Baterias >
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -130,14 +142,6 @@ public class Equipo extends PanacheEntity {
     )
     @JsonIgnore
     public List<Bateria> baterias;
-    // PresostatoAlta
-    @ManyToOne
-    @JsonIgnore
-    public Presostato presostatoAlta;
-    // PresostatoBajo
-    @ManyToOne
-    @JsonIgnore
-    public Presostato presostatoBaja;
     // list< tags >
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -146,6 +150,7 @@ public class Equipo extends PanacheEntity {
         inverseJoinColumns = @JoinColumn(name = "tag_id") 
     )
     public List<Tag> tags;
+    
 
     @Override
     public boolean equals(Object o) {
