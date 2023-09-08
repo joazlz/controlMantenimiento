@@ -17,6 +17,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
 
 import org.acme.hibernate.search.elasticsearch.model.Actividad;
+import org.acme.hibernate.search.elasticsearch.model.Duracion;
 import org.acme.hibernate.search.elasticsearch.model.Estado;
 import org.acme.hibernate.search.elasticsearch.model.Limpieza;
 import org.acme.hibernate.search.elasticsearch.model.TipoDesperfecto;
@@ -243,15 +244,15 @@ public class ActividadResource {
     @Path("limpieza/{id}")
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void actualizarLimpieza(Long id, @RestForm Boolean realizada, @RestForm Long tipoLimpiedaId) {
+    public void actualizarLimpieza(Long id, @RestForm Boolean realizada, @RestForm Long tipoLimpiezaId) {
         Limpieza limpieza = Limpieza.findById(id);
-        TipoLimpieza tipoLimpieda = TipoLimpieza.findById(tipoLimpiedaId);
+        TipoLimpieza tipoLimpieza = TipoLimpieza.findById(tipoLimpiezaId);
 
-        if (limpieza == null || tipoLimpieda == null) {
+        if (limpieza == null || tipoLimpieza == null) {
             return;
         } else {
             limpieza.realizada = realizada;
-            limpieza.tipoLimpieza = tipoLimpieda;
+            limpieza.tipoLimpieza = tipoLimpieza;
             limpieza.persist();
         }
 
@@ -272,16 +273,16 @@ public class ActividadResource {
     @Path("limpieza")
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void agregarLimpieza(@RestForm Boolean realizada, @RestForm Long tipoLimpiedaId) {
+    public void agregarLimpieza(@RestForm Boolean realizada, @RestForm Long tipoLimpiezaId) {
         Limpieza limpieza = new Limpieza();
 
-        TipoLimpieza tipoLimpieda = TipoLimpieza.findById(tipoLimpiedaId);
+        TipoLimpieza tipoLimpieza = TipoLimpieza.findById(tipoLimpiezaId);
 
-        if (tipoLimpieda == null) {
+        if (tipoLimpieza == null) {
             return;
         } else {
             limpieza.realizada = realizada;
-            limpieza.tipoLimpieza = tipoLimpieda;
+            limpieza.tipoLimpieza = tipoLimpieza;
             limpieza.persist();
         }
     }
@@ -300,5 +301,56 @@ public class ActividadResource {
                 .fetchHits(size.orElse(20));
     }
 
+
+
+    @GET
+    @Path("duracion/buscar")
+    @Transactional
+    public List<Duracion> buscarDuracion() {
+        return searchSession.search(Duracion.class)
+                .where(f -> f.matchAll())
+                .fetchHits(10);
+    }
+    @PUT
+    @Path("duracion")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void agregarDuracion(
+    @RestForm Long horas,
+    @RestForm Long minutos,
+    @RestForm Long actividadId
+    ) {
+        Duracion duracion = new Duracion();
+
+        Actividad actividad = Actividad.findById(actividadId);
+
+        if (actividad == null) {
+            return;
+        } else {
+            duracion.horas = horas;
+            duracion.minutos = minutos;
+            duracion.actividad = actividad;
+            actividad.duracion = duracion;
+            actividad.persist();
+            duracion.persist();
+        }
+    }
+
+    @POST
+    @Path("duracion/{id}")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void actualizarDuracion(Long id,
+    @RestForm Long horas,
+    @RestForm Long minutos) {
+        Duracion duracion = Duracion.findById(id);
+        duracion.horas = horas;
+        duracion.minutos = minutos;
+        duracion.persist();
+
+        Actividad actividad = Actividad.findById(duracion.actividad.id);
+        actividad.duracion = duracion;
+        actividad.persist();
+    }
 
 }

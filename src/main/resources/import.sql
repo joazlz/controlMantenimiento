@@ -88,9 +88,9 @@ INSERT INTO equipo_tag(equipo_id, tag_id)
 VALUES (1, 1);
 
 
-INSERT INTO duracion(id, horas,minutos) VALUES (1, 43,10);
+-- INSERT INTO duracion(id, horas,minutos) VALUES (1, 43,10);
 
-INSERT INTO actividad(id, ordentrabajo,tipomantenimiento_id,fechainicioprogramado,fechaFinProgramado,equipo_id,fechaInicioActividad,fechaFinActividad,duracion_id,estado_id) VALUES (1, 'OT1385',2,'2023-09-07','2023-09-10',1,'2023-09-07','2023-09-12',1,1);
+INSERT INTO actividad(id, ordentrabajo,tipomantenimiento_id,fechainicioprogramado,fechaFinProgramado,equipo_id,fechaInicioActividad,fechaFinActividad,estado_id) VALUES (1, 'OT1385',2,'2023-09-07','2023-09-10',1,'2023-09-07','2023-09-12',1);
 ALTER SEQUENCE actividad_seq RESTART WITH 2;
 
 INSERT INTO actividad_tipo_desperfecto(actividad_id, desperfecto_id)

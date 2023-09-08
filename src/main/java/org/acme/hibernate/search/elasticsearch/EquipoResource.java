@@ -27,6 +27,7 @@ import org.acme.hibernate.search.elasticsearch.model.Material;
 import org.acme.hibernate.search.elasticsearch.model.PH;
 import org.acme.hibernate.search.elasticsearch.model.Presostato;
 import org.acme.hibernate.search.elasticsearch.model.RangoPresion;
+import org.acme.hibernate.search.elasticsearch.model.Tag;
 import org.acme.hibernate.search.elasticsearch.model.TipoCompresor;
 import org.acme.hibernate.search.elasticsearch.model.TipoDesperfecto;
 import org.acme.hibernate.search.elasticsearch.model.TipoFiltroDeshidratador;
@@ -915,6 +916,58 @@ public class EquipoResource {
         material.persist();
 
     }
+
+    // tag
+    @GET
+    @Path("tag/buscar")
+    @Transactional
+    public List<Tag> buscarTag(@RestQuery String pattern,
+            @RestQuery Optional<Integer> size) {
+        return searchSession.search(Tag.class)
+                .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
+                        : f.simpleQueryString()
+                                .fields("nombre").matching(pattern))
+                .sort(f -> f.field("nombre_ordenado"))
+                .fetchHits(size.orElse(20));
+    }
+
+    @POST
+    @Path("tag/{id}")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void actualizarTag(Long id, @RestForm String nombre) {
+        Tag tag = Tag.findById(id);
+        if (tag == null) {
+            return;
+        } else {
+            tag.nombre = nombre;
+            tag.persist();
+        }
+
+    }
+
+    @DELETE
+    @Path("tag/{id}")
+    @Transactional
+    public void eliminarTag(Long id) {
+        Tag tag = Tag.findById(id);
+        if (tag != null) {
+            tag.delete();
+        }
+    }
+
+    @PUT
+    @Path("tag")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void agregarTag(@RestForm String nombre) {
+        Tag tag = new Tag();
+
+        tag.nombre = nombre;
+        tag.persist();
+
+    }
+
 
     // equipo
     @GET
