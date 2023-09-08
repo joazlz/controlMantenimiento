@@ -4,12 +4,14 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -17,9 +19,9 @@ import jakarta.persistence.TemporalType;
 import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
@@ -68,9 +70,21 @@ public class Actividad extends PanacheEntity {
     @ManyToOne
     public Estado estado;
     // list< limpieza >
+    @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @IndexedEmbedded
+    public List<Limpieza> limpiezas;
+
     // ActualizacionEquipo(Equipo)
-    // public Equipo actualizacionEquipo ;
+
+    
     // list< Desperfecto >
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "actividad_tipo_desperfecto", // Nombre de la tabla intermedia
+        joinColumns = @JoinColumn(name = "actividad_id"), // Columna de la tabla Equipo
+        inverseJoinColumns = @JoinColumn(name = "desperfecto_id") // Columna de la tabla TipoMotor
+    )
+    public List<TipoDesperfecto> tiposDesperfecto;
 
     @Override
     public boolean equals(Object o) {

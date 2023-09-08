@@ -20,6 +20,10 @@ public class Limpieza extends PanacheEntity {
     @JsonIgnore
     public TipoLimpieza tipoLimpieza;
 
+    @ManyToOne
+    @JsonIgnore
+    public Actividad actividad;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

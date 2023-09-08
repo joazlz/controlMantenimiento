@@ -1,6 +1,6 @@
 package org.acme.hibernate.search.elasticsearch;
 
-import org.jboss.logging.Logger;
+//import org.jboss.logging.Logger;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,24 +17,10 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
 
 import org.acme.hibernate.search.elasticsearch.model.Actividad;
-import org.acme.hibernate.search.elasticsearch.model.Area;
-import org.acme.hibernate.search.elasticsearch.model.Bateria;
-import org.acme.hibernate.search.elasticsearch.model.CapacidadBTU;
-import org.acme.hibernate.search.elasticsearch.model.Equipo;
-import org.acme.hibernate.search.elasticsearch.model.TipoMotor;
 import org.acme.hibernate.search.elasticsearch.model.Estado;
 import org.acme.hibernate.search.elasticsearch.model.Limpieza;
-import org.acme.hibernate.search.elasticsearch.model.Marca;
-import org.acme.hibernate.search.elasticsearch.model.Material;
-import org.acme.hibernate.search.elasticsearch.model.PH;
-import org.acme.hibernate.search.elasticsearch.model.Presostato;
-import org.acme.hibernate.search.elasticsearch.model.RangoPresion;
-import org.acme.hibernate.search.elasticsearch.model.TipoCompresor;
 import org.acme.hibernate.search.elasticsearch.model.TipoDesperfecto;
-import org.acme.hibernate.search.elasticsearch.model.TipoFiltroDeshidratador;
-import org.acme.hibernate.search.elasticsearch.model.TipoGas;
 import org.acme.hibernate.search.elasticsearch.model.TipoLimpieza;
-import org.acme.hibernate.search.elasticsearch.model.TipoEquipo;
 import org.acme.hibernate.search.elasticsearch.model.TipoMantenimiento;
 import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.jboss.resteasy.reactive.RestForm;
@@ -48,7 +34,7 @@ public class ActividadResource {
 
     @Inject
     SearchSession searchSession;
-    private static final Logger LOG = Logger.getLogger(EquipoResource.class);
+    //private static final Logger LOG = Logger.getLogger(EquipoResource.class);
 
     @Transactional
     void onStart(@Observes StartupEvent ev) throws InterruptedException {

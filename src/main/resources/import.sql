@@ -47,10 +47,6 @@ INSERT INTO tipogas(id, nombre) VALUES (1, 'r-410');
 INSERT INTO tipogas(id, nombre) VALUES (2, 'r-417');
 ALTER SEQUENCE tipogas_seq RESTART WITH 3;
 
-INSERT INTO tipolimpieza(id, nombre) VALUES (1, 'condensador');
-INSERT INTO tipolimpieza(id, nombre) VALUES (2, 'evaporador');
-ALTER SEQUENCE tipolimpieza_seq RESTART WITH 3;
-
 INSERT INTO tipomotor(id, nombre,capacidad) VALUES (1, 'motormanejadora','1/2');
 INSERT INTO tipomotor(id, nombre, capacidad) VALUES (2, 'motorcondensador','3/4');
 ALTER SEQUENCE tipomotor_seq RESTART WITH 3;
@@ -67,9 +63,6 @@ ALTER SEQUENCE tipomantenimiento_seq RESTART WITH 5;
 
 INSERT INTO rangopresion(id, minimo,maximo) VALUES (1, 0,10);
 ALTER SEQUENCE rangopresion_seq RESTART WITH 2;
-
-INSERT INTO limpieza(id, realizada,tipolimpieza_id) VALUES (1, True,1);
-ALTER SEQUENCE limpieza_seq RESTART WITH 2;
 
 INSERT INTO material(id, nombre,codigosap) VALUES (1, 'tornillo','1ASDOFKN19802');
 ALTER SEQUENCE material_seq RESTART WITH 2;
@@ -99,3 +92,13 @@ INSERT INTO duracion(id, horas,minutos) VALUES (1, 43,10);
 
 INSERT INTO actividad(id, ordentrabajo,tipomantenimiento_id,fechainicioprogramado,fechaFinProgramado,equipo_id,fechaInicioActividad,fechaFinActividad,duracion_id,estado_id) VALUES (1, 'OT1385',2,'2023-09-07','2023-09-10',1,'2023-09-07','2023-09-12',1,1);
 ALTER SEQUENCE actividad_seq RESTART WITH 2;
+
+INSERT INTO actividad_tipo_desperfecto(actividad_id, desperfecto_id)
+VALUES (1, 1),(1, 2);
+
+INSERT INTO tipolimpieza(id, nombre) VALUES (1, 'condensador');
+INSERT INTO tipolimpieza(id, nombre) VALUES (2, 'evaporador');
+ALTER SEQUENCE tipolimpieza_seq RESTART WITH 3;
+
+INSERT INTO limpieza(id, realizada,tipolimpieza_id,actividad_id) VALUES (1, True,1,1),(2, False,1,1);
+ALTER SEQUENCE limpieza_seq RESTART WITH 3;
