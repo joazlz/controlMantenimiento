@@ -3,16 +3,19 @@ package org.acme.hibernate.search.elasticsearch.model;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,7 +70,6 @@ public class Equipo extends PanacheEntity {
     @KeywordField(name = "retardor_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String retardor;
 
-    
     
     // Area
     @ManyToOne
@@ -124,6 +126,12 @@ public class Equipo extends PanacheEntity {
     )
     @JsonIgnore
     public List<TipoMotor> tiposMotor;
+
+    // list< Activiad >
+    @OneToMany(mappedBy = "equipo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @IndexedEmbedded
+    public List<Actividad> actividades;
+
     // list< TipoCompresor >
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
