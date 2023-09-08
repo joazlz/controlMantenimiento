@@ -15,6 +15,8 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
+
+import org.acme.hibernate.search.elasticsearch.model.Actividad;
 import org.acme.hibernate.search.elasticsearch.model.Area;
 import org.acme.hibernate.search.elasticsearch.model.Bateria;
 import org.acme.hibernate.search.elasticsearch.model.CapacidadBTU;
@@ -296,6 +298,20 @@ public class ActividadResource {
             limpieza.tipoLimpieza = tipoLimpieda;
             limpieza.persist();
         }
+    }
+
+    // actividad
+    @GET
+    @Path("buscar")
+    @Transactional
+    public List<Actividad> buscarActividad(@RestQuery String pattern,
+            @RestQuery Optional<Integer> size) {
+        return searchSession.search(Actividad.class)
+                .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
+                        : f.simpleQueryString()
+                                .fields("ordenTrabajo").matching(pattern))
+                .sort(f -> f.field("ordenTrabajo_ordenado"))
+                .fetchHits(size.orElse(20));
     }
 
 

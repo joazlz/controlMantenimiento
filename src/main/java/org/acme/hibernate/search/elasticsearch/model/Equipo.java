@@ -130,6 +130,7 @@ public class Equipo extends PanacheEntity {
     // list< Activiad >
     @OneToMany(mappedBy = "equipo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @IndexedEmbedded
+    @JsonIgnore
     public List<Actividad> actividades;
 
     // list< TipoCompresor >

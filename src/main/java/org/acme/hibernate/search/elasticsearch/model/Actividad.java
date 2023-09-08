@@ -32,50 +32,47 @@ public class Actividad extends PanacheEntity {
 
     // ot(string)
     @FullTextField(analyzer = "nombre")
-    @KeywordField(name = "ordenTrabajo", sortable = Sortable.YES, normalizer = "ordenar")
+    @KeywordField(name = "ordenTrabajo_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String ordenTrabajo;
 
-// TipoMantenimiento
-@ManyToOne
-@JsonIgnore
-public TipoMantenimiento tipoMantenimiento;
+    // TipoMantenimiento
+    @ManyToOne
+    public TipoMantenimiento tipoMantenimiento;
 
-// FechaInicioProgramado (date)
-@Temporal(TemporalType.DATE)
-public Date FechaInicioProgramado;
+    // FechaInicioProgramado (date)
+    @Temporal(TemporalType.DATE)
+    public Date fechaInicioProgramado;
 
-// FechaFinProgramado (date)
-@Temporal(TemporalType.DATE)
-public Date fechaFinProgramado;
+    // FechaFinProgramado (date)
+    @Temporal(TemporalType.DATE)
+    public Date fechaFinProgramado;
 
-// Equipo
-@ManyToOne
-public Equipo equipo;
+    // Equipo
+    @ManyToOne
+    public Equipo equipo;
 
-// FechaInicioActividad (date)
-@Temporal(TemporalType.DATE)
-public Date fechaInicioActividad;
+    // FechaInicioActividad (date)
+    @Temporal(TemporalType.DATE)
+    public Date fechaInicioActividad;
 
-// FechaFinActividad (date)
-@Temporal(TemporalType.DATE)
-public Date fechaFinActividad;
+    // // FechaFinActividad (date)
+    // @Temporal(TemporalType.DATE)
+    // public Date fechaFinActividad;
 
-// duracionActividad (hora, minutos)
-// public Time duracionActividad;
+    // duracionActividad (hora, minutos)
+    // public Time duracionActividad;
 
-// list < usuarios >
+    // list < usuarios >
 
-// list < materias >
-// estado
-// @ManyToOne
-// @JsonIgnore
-// public Estado estado;
-// list< limpieza >
-// ActualizacionEquipo(Equipo)
-// public Equipo actualizacionEquipo ;
-// list< Desperfecto >
-
-   
+    // list < materias >
+    // estado
+    // @ManyToOne
+    // @JsonIgnore
+    // public Estado estado;
+    // list< limpieza >
+    // ActualizacionEquipo(Equipo)
+    // public Equipo actualizacionEquipo ;
+    // list< Desperfecto >
 
     @Override
     public boolean equals(Object o) {

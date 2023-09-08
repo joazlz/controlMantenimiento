@@ -91,3 +91,6 @@ ALTER SEQUENCE tag_seq RESTART WITH 2;
 
 INSERT INTO equipo_tag(equipo_id, tag_id)
 VALUES (1, 1);
+
+INSERT INTO actividad(id, ordentrabajo,tipomantenimiento_id,fechainicioprogramado,fechaFinProgramado,equipo_id,fechaInicioActividad) VALUES (1, 'OT1385',2,'2023-09-07','2023-09-10',1,'2023-09-07');
+ALTER SEQUENCE actividad_seq RESTART WITH 2;
