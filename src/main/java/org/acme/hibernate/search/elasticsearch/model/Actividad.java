@@ -65,10 +65,14 @@ public class Actividad extends PanacheEntity {
     // list < usuarios >
 
     // list < materias >
-    
+    @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @IndexedEmbedded
+    public List<ActividadMaterial> materiales;
+
     // estado
     @ManyToOne
     public Estado estado;
+
     // list< limpieza >
     @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @IndexedEmbedded

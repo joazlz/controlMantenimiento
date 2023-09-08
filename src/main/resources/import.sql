@@ -102,3 +102,6 @@ ALTER SEQUENCE tipolimpieza_seq RESTART WITH 3;
 
 INSERT INTO limpieza(id, realizada,tipolimpieza_id,actividad_id) VALUES (1, True,1,1),(2, False,1,1);
 ALTER SEQUENCE limpieza_seq RESTART WITH 3;
+
+INSERT INTO actividadmaterial(id,actividad_id,material_id,cantidad)VALUES(1,1,1,55);
+ALTER SEQUENCE actividadmaterial_seq RESTART WITH 2;
