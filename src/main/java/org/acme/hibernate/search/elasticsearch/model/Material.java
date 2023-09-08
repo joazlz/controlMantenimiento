@@ -23,6 +23,8 @@ public class Material extends PanacheEntity {
     @KeywordField(name = "codigosap_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String codigoSap;
 
+    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

@@ -80,11 +80,13 @@ ALTER SEQUENCE equipo_seq RESTART WITH 2;
 INSERT INTO equipo_tipo_motor(equipo_id, tipomotor_id)
 VALUES (1, 1);
 
+
 INSERT INTO equipo_tipo_compresor(equipo_id, tipocompresor_id)
 VALUES (1, 1);
 
 INSERT INTO equipo_bateria(equipo_id, bateria_id)
 VALUES (1, 1);
+
 
 INSERT INTO tag(id, nombre) VALUES (1, 'depaquete');
 ALTER SEQUENCE tag_seq RESTART WITH 2;
@@ -92,5 +94,8 @@ ALTER SEQUENCE tag_seq RESTART WITH 2;
 INSERT INTO equipo_tag(equipo_id, tag_id)
 VALUES (1, 1);
 
-INSERT INTO actividad(id, ordentrabajo,tipomantenimiento_id,fechainicioprogramado,fechaFinProgramado,equipo_id,fechaInicioActividad) VALUES (1, 'OT1385',2,'2023-09-07','2023-09-10',1,'2023-09-07');
+
+INSERT INTO duracion(id, horas,minutos) VALUES (1, 43,10);
+
+INSERT INTO actividad(id, ordentrabajo,tipomantenimiento_id,fechainicioprogramado,fechaFinProgramado,equipo_id,fechaInicioActividad,fechaFinActividad,duracion_id,estado_id) VALUES (1, 'OT1385',2,'2023-09-07','2023-09-10',1,'2023-09-07','2023-09-12',1,1);
 ALTER SEQUENCE actividad_seq RESTART WITH 2;
