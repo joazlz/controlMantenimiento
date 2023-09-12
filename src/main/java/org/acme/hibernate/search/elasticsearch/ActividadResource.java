@@ -17,6 +17,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
 
 import org.acme.hibernate.search.elasticsearch.model.Actividad;
+import org.acme.hibernate.search.elasticsearch.model.ActividadMaterial;
 import org.acme.hibernate.search.elasticsearch.model.Duracion;
 import org.acme.hibernate.search.elasticsearch.model.Estado;
 import org.acme.hibernate.search.elasticsearch.model.Limpieza;
@@ -289,7 +290,7 @@ public class ActividadResource {
 
     // actividad
     @GET
-    @Path("buscar")
+    @Path("actividad/buscar")
     @Transactional
     public List<Actividad> buscarActividad(@RestQuery String pattern,
             @RestQuery Optional<Integer> size) {
@@ -301,7 +302,19 @@ public class ActividadResource {
                 .fetchHits(size.orElse(20));
     }
 
-
+    // actividadmaterial
+    @GET
+    @Path("actividadmaterial/buscar")
+    @Transactional
+    public List<ActividadMaterial> buscarActividadMaterial(@RestQuery String pattern,
+            @RestQuery Optional<Integer> size) {
+        return searchSession.search(ActividadMaterial.class)
+                .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
+                        : f.simpleQueryString()
+                                .fields("cantidad").matching(pattern))
+                .sort(f -> f.field("cantidad_ordenado"))
+                .fetchHits(size.orElse(20));
+    }
 
     @GET
     @Path("duracion/buscar")
