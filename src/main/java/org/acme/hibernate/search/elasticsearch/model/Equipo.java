@@ -73,7 +73,6 @@ public class Equipo extends PanacheEntity {
     
     // Area
     @ManyToOne
-    @JsonIgnore
     public Area area;
     // TipoGas
     @ManyToOne

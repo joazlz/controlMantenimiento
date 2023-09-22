@@ -1,5 +1,7 @@
 package org.acme.hibernate.search.elasticsearch;
 
+import java.sql.Date;
+
 //import org.jboss.logging.Logger;
 
 import java.util.List;
@@ -18,16 +20,31 @@ import jakarta.ws.rs.core.MediaType;
 
 import org.acme.hibernate.search.elasticsearch.model.Actividad;
 import org.acme.hibernate.search.elasticsearch.model.ActividadMaterial;
+import org.acme.hibernate.search.elasticsearch.model.Area;
+import org.acme.hibernate.search.elasticsearch.model.CapacidadBTU;
 import org.acme.hibernate.search.elasticsearch.model.Duracion;
+import org.acme.hibernate.search.elasticsearch.model.Equipo;
 import org.acme.hibernate.search.elasticsearch.model.Estado;
 import org.acme.hibernate.search.elasticsearch.model.Limpieza;
+import org.acme.hibernate.search.elasticsearch.model.Marca;
+import org.acme.hibernate.search.elasticsearch.model.Material;
+import org.acme.hibernate.search.elasticsearch.model.Notificacion;
+import org.acme.hibernate.search.elasticsearch.model.PH;
+import org.acme.hibernate.search.elasticsearch.model.Presostato;
+import org.acme.hibernate.search.elasticsearch.model.RangoPresion;
 import org.acme.hibernate.search.elasticsearch.model.TipoDesperfecto;
+import org.acme.hibernate.search.elasticsearch.model.TipoEquipo;
+import org.acme.hibernate.search.elasticsearch.model.TipoFiltroDeshidratador;
+import org.acme.hibernate.search.elasticsearch.model.TipoGas;
 import org.acme.hibernate.search.elasticsearch.model.TipoLimpieza;
 import org.acme.hibernate.search.elasticsearch.model.TipoMantenimiento;
 import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.jboss.resteasy.reactive.RestForm;
 import org.jboss.resteasy.reactive.RestQuery;
 
+import com.arjuna.ats.internal.jdbc.drivers.modifiers.list;
+
+import io.quarkus.logging.Log;
 // import io.quarkus.logging.Log;
 import io.quarkus.runtime.StartupEvent;
 
@@ -36,7 +53,7 @@ public class ActividadResource {
 
     @Inject
     SearchSession searchSession;
-    //private static final Logger LOG = Logger.getLogger(EquipoResource.class);
+    // private static final Logger LOG = Logger.getLogger(EquipoResource.class);
 
     @Transactional
     void onStart(@Observes StartupEvent ev) throws InterruptedException {
@@ -89,7 +106,7 @@ public class ActividadResource {
                 .sort(f -> f.field("nombre_ordenado"))
                 .fetchHits(size.orElse(20));
     }
-    
+
     // estado
     @PUT
     @Path("estado")
@@ -290,16 +307,93 @@ public class ActividadResource {
 
     // actividad
     @GET
-    @Path("actividad/buscar")
+    @Path("buscar")
     @Transactional
     public List<Actividad> buscarActividad(@RestQuery String pattern,
             @RestQuery Optional<Integer> size) {
         return searchSession.search(Actividad.class)
                 .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
                         : f.simpleQueryString()
-                                .fields("ordenTrabajo").matching(pattern))
-                .sort(f -> f.field("ordenTrabajo_ordenado"))
+                                .fields("ordenTrabajo","descripcion").matching(pattern))
+                .sort(f -> f.field("ordenTrabajo_ordenado").then().field("descripcion_ordenado"))
                 .fetchHits(size.orElse(20));
+    }
+
+    @PUT
+    @Path("agregar")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void agregarActividad(
+            @RestForm String descripcion,
+            @RestForm String ordenTrabajo,
+            @RestForm Long tipoMantenimiento_id,
+            @RestForm Date fechaInicioProgramado,
+            @RestForm Date fechaFinProgramado,
+            @RestForm Long equipo_id,
+            @RestForm Date fechaInicioActividad,
+            @RestForm Date fechaFinActividad,
+            @RestForm Long estado_id) {
+        Actividad actividad = new Actividad();
+
+        TipoMantenimiento tipoMantenimiento = TipoMantenimiento.findById(tipoMantenimiento_id);
+        Equipo equipo = Equipo.findById(equipo_id);
+        Estado estado = Estado.findById(estado_id);
+
+        if (!tipoMantenimiento.equals(null) &
+                !equipo.equals(null) &
+                !estado.equals(null)) {
+            actividad.descripcion = descripcion;
+            actividad.ordenTrabajo = ordenTrabajo;
+            actividad.fechaInicioProgramado = fechaInicioProgramado;
+            actividad.fechaFinProgramado = fechaFinProgramado;
+            actividad.fechaInicioActividad = fechaInicioActividad;
+            actividad.fechaFinActividad = fechaFinActividad;
+
+            actividad.tipoMantenimiento = tipoMantenimiento;
+            actividad.equipo = equipo;
+            actividad.estado = estado;
+            actividad.persist();
+        }
+
+    }
+
+    @POST
+    @Path("actualizar/{id}")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void actualizarActividad(
+            Long id,
+            @RestForm String descripcion,
+            @RestForm String ordenTrabajo,
+            @RestForm Long tipoMantenimiento_id,
+            @RestForm Date fechaIncioProgramado,
+            @RestForm Date fechaFinProgramado,
+            @RestForm Long equipo_id,
+            @RestForm Date fechaInicioActividad,
+            @RestForm Date fechaFinActividad,
+            @RestForm Long estado_id) {
+
+        Actividad actividad = Actividad.findById(id);
+
+        TipoMantenimiento tipoMantenimiento = TipoMantenimiento.findById(tipoMantenimiento_id);
+        Equipo equipo = Equipo.findById(equipo_id);
+        Estado estado = Estado.findById(estado_id);
+
+        if (!actividad.equals(null) &
+                !tipoMantenimiento.equals(null) &
+                !estado.equals(null)) {
+            actividad.descripcion = descripcion;
+            actividad.ordenTrabajo = ordenTrabajo;
+            actividad.fechaFinProgramado = fechaIncioProgramado;
+            actividad.fechaFinProgramado = fechaFinProgramado;
+            actividad.fechaInicioActividad = fechaInicioActividad;
+            actividad.fechaFinActividad = fechaFinActividad;
+
+            actividad.tipoMantenimiento = tipoMantenimiento;
+            actividad.equipo = equipo;
+            actividad.estado = estado;
+            actividad.persist();
+        }
     }
 
     // actividadmaterial
@@ -312,10 +406,61 @@ public class ActividadResource {
                 .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
                         : f.simpleQueryString()
                                 .fields("cantidad").matching(pattern))
-                .sort(f -> f.field("cantidad_ordenado"))
                 .fetchHits(size.orElse(20));
     }
 
+    @POST
+    @Path("actividadmaterial/actulizar/{id}")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void actulizarActividadMaterial(Long id, @RestForm Long cantidad, @RestForm Long material_id) {
+
+        ActividadMaterial actividadMaterial = ActividadMaterial.findById(id);
+        Material material = Material.findById(material_id);
+        // Actividad actividad = actividadMaterial.actividad;
+        Log.info("cantidad es" + cantidad);
+        Log.info("la actividad_id es" + material_id);
+        if (actividadMaterial != null && material != null) {
+            actividadMaterial.cantidad = cantidad;
+            actividadMaterial.material = material;
+            actividadMaterial.persist();
+        }
+
+    }
+
+    @PUT
+    @Path("actividadmaterial/agregar")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void agregarActividadMaterial(@RestForm Long material_id,
+            @RestForm Long cantidad) {
+
+        ActividadMaterial actividadMaterial = new ActividadMaterial();
+        // Actividad actividad = Actividad.findById(actividad_id);
+        Material material = Material.findById(material_id);
+
+        if (!material.equals(null)) {
+            actividadMaterial.cantidad = cantidad;
+            actividadMaterial.material = material;
+
+            actividadMaterial.persist();
+        }
+
+    }
+
+    // @DELETE
+    // @Path("actividadmaterial/eliminar/{id}")
+    // @Transactional
+    // public void eliminarActividadMaterial(Long id) {
+
+    // ActividadMaterial actividadMaterial = ActividadMaterial.findById(id);
+    // Log.info("la actividad eliminada es "+id);
+    // if (actividadMaterial != null) {
+    // actividadMaterial.delete();
+    // }
+    // }
+
+    // Duracion
     @GET
     @Path("duracion/buscar")
     @Transactional
@@ -324,15 +469,15 @@ public class ActividadResource {
                 .where(f -> f.matchAll())
                 .fetchHits(10);
     }
+
     @PUT
     @Path("duracion")
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public void agregarDuracion(
-    @RestForm Long horas,
-    @RestForm Long minutos,
-    @RestForm Long actividadId
-    ) {
+            @RestForm Long horas,
+            @RestForm Long minutos,
+            @RestForm Long actividadId) {
         Duracion duracion = new Duracion();
 
         Actividad actividad = Actividad.findById(actividadId);
@@ -354,8 +499,8 @@ public class ActividadResource {
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public void actualizarDuracion(Long id,
-    @RestForm Long horas,
-    @RestForm Long minutos) {
+            @RestForm Long horas,
+            @RestForm Long minutos) {
         Duracion duracion = Duracion.findById(id);
         duracion.horas = horas;
         duracion.minutos = minutos;

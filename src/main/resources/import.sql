@@ -10,7 +10,11 @@ INSERT INTO capacidadbtu(id, nombre) VALUES (2, '24000');
 ALTER SEQUENCE capacidadbtu_seq RESTART WITH 3;
 
 INSERT INTO estado(id, nombre) VALUES (1, 'trabajando');
-ALTER SEQUENCE estado_seq RESTART WITH 2;
+INSERT INTO estado(id, nombre) VALUES (2, 'finalizado');
+INSERT INTO estado(id, nombre) VALUES (3, 'leido');
+INSERT INTO estado(id, nombre) VALUES (4, 'no leido');
+INSERT INTO estado(id, nombre) VALUES (5, 'asignado');
+ALTER SEQUENCE estado_seq RESTART WITH 6;
 
 INSERT INTO marca(id, nombre) VALUES (1, 'GoddMan');
 INSERT INTO marca(id, nombre) VALUES (2, 'YORK');
@@ -53,7 +57,9 @@ ALTER SEQUENCE tipomotor_seq RESTART WITH 3;
 
 INSERT INTO tiponotificacion(id, nombre) VALUES (1, 'asignado');
 INSERT INTO tiponotificacion(id, nombre) VALUES (2, 'completado');
-ALTER SEQUENCE tiponotificacion_seq RESTART WITH 3;
+ALTER SEQUENCE tipomantenimiento_seq RESTART WITH 3;
+
+
 
 INSERT INTO tipomantenimiento(id, nombre) VALUES (1, 'preventico');
 INSERT INTO tipomantenimiento(id, nombre) VALUES (2, 'programado');
@@ -65,7 +71,8 @@ INSERT INTO rangopresion(id, minimo,maximo) VALUES (1, 0,10);
 ALTER SEQUENCE rangopresion_seq RESTART WITH 2;
 
 INSERT INTO material(id, nombre,codigosap) VALUES (1, 'tornillo','1ASDOFKN19802');
-ALTER SEQUENCE material_seq RESTART WITH 2;
+INSERT INTO material(id, nombre,codigosap) VALUES (2, 'broca','75452popo');
+ALTER SEQUENCE material_seq RESTART WITH 3;
 
 INSERT INTO  equipo(id ,area_id ,tipogas_id ,capacidadbtu_id ,tipofiltrodeshidratador_id ,rangopresionalta_id ,rangopresionbaja_id ,marca_id ,ph_id ,tipoequipo_id ,modelo ,voltaje ,amperaje ,flipon ,cableAlimentacion ,tranformador ,contactor ,termostato ,tarjetaElectronica ,selectro ,retardor ,presostatoAlta_id ,presostatoBaja_id) VALUES (1,1,1,1,1,1,1,1,1,1,'modelo','voltaje','amperaje','flipon','cableAlimentacion','tranformador','contactor','termostato','tarjetaElectronica','selectro','retardor',1,1);
 ALTER SEQUENCE equipo_seq RESTART WITH 2;
@@ -90,7 +97,8 @@ VALUES (1, 1);
 
 -- INSERT INTO duracion(id, horas,minutos) VALUES (1, 43,10);
 
-INSERT INTO actividad(id, ordentrabajo,tipomantenimiento_id,fechainicioprogramado,fechaFinProgramado,equipo_id,fechaInicioActividad,fechaFinActividad,estado_id) VALUES (1, 'OT1385',2,'2023-09-07','2023-09-10',1,'2023-09-07','2023-09-12',1);
+INSERT INTO actividad(id, descripcion, ordentrabajo,tipomantenimiento_id,fechainicioprogramado,fechaFinProgramado,equipo_id,
+fechaInicioActividad,fechaFinActividad,estado_id) VALUES (1,'tiempo sin mantenimiento', 'OT1385',2,'2023-09-07','2023-09-10',1,'2023-09-07','2023-09-12',1);
 ALTER SEQUENCE actividad_seq RESTART WITH 2;
 
 INSERT INTO actividad_tipo_desperfecto(actividad_id, desperfecto_id)
@@ -105,3 +113,8 @@ ALTER SEQUENCE limpieza_seq RESTART WITH 3;
 
 INSERT INTO actividadmaterial(id,actividad_id,material_id,cantidad)VALUES(1,1,1,55);
 ALTER SEQUENCE actividadmaterial_seq RESTART WITH 2;
+
+INSERT INTO notificacion(id, estado_id,actividad_id, tiponotificacion_id ) VALUES (1, 1, 1, 1);
+ALTER SEQUENCE notificacion_seq RESTART WITH 2;
+
+

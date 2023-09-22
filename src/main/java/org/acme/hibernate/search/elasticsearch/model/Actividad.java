@@ -22,6 +22,7 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
@@ -34,9 +35,24 @@ public class Actividad extends PanacheEntity {
     @KeywordField(name = "ordenTrabajo_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String ordenTrabajo;
 
+    //Descripcion(string)
+    @FullTextField(analyzer = "nombre")
+    @KeywordField(name = "descripcion_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
+    public String descripcion;
+
+    @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @IndexedEmbedded
+    @JsonIgnore
+    public List<Notificacion> notificaciones;
+
     // TipoMantenimiento
     @ManyToOne
     public TipoMantenimiento tipoMantenimiento;
+
+    //Notificacion
+    // @OneToMany
+    // @JsonIgnore
+    // public Notificacion Notificaciones;
 
     // FechaInicioProgramado (date)
     @Temporal(TemporalType.DATE)
