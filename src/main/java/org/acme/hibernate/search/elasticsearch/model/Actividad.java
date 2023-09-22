@@ -40,12 +40,6 @@ public class Actividad extends PanacheEntity {
     @KeywordField(name = "descripcion_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String descripcion;
 
-    //Reserva(string)
-    @FullTextField(analyzer = "nombre")
-    @KeywordField(name = "reserva_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
-    public String reserva;
-    
-
     @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @IndexedEmbedded
     @JsonIgnore

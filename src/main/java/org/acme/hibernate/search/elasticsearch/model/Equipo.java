@@ -76,33 +76,43 @@ public class Equipo extends PanacheEntity {
     public Area area;
     // TipoGas
     @ManyToOne
+    @JsonIgnore
     public TipoGas tipoGas;
     // CapacidadBTU
     @ManyToOne
+    @JsonIgnore
     public CapacidadBTU capacidadBTU;
     // TipoFiltroDeshidratador
     @ManyToOne
+    @JsonIgnore
     public TipoFiltroDeshidratador tipoFiltroDeshidratador;
     // RangoPresionAlta
     @ManyToOne
+    @JsonIgnore
     public RangoPresion rangoPresionAlta;
     // RangoPresionBaja
     @ManyToOne
+    @JsonIgnore
     public RangoPresion rangoPresionBaja;
     // Marca
     @ManyToOne
+    @JsonIgnore
     public Marca marca;
     // PH
     @ManyToOne
+    @JsonIgnore
     public PH pH;
     // TipoEquipo
     @ManyToOne
+    @JsonIgnore
     public TipoEquipo tipoEquipo;
     // PresostatoAlta
     @ManyToOne
+    @JsonIgnore
     public Presostato presostatoAlta;
     // PresostatoBajo
     @ManyToOne
+    @JsonIgnore
     public Presostato presostatoBaja;
 
 
@@ -113,6 +123,7 @@ public class Equipo extends PanacheEntity {
         joinColumns = @JoinColumn(name = "equipo_id"), // Columna de la tabla Equipo
         inverseJoinColumns = @JoinColumn(name = "tipomotor_id") // Columna de la tabla TipoMotor
     )
+    @JsonIgnore
     public List<TipoMotor> tiposMotor;
 
     // list< Activiad >
@@ -128,6 +139,7 @@ public class Equipo extends PanacheEntity {
         joinColumns = @JoinColumn(name = "equipo_id"), 
         inverseJoinColumns = @JoinColumn(name = "tipocompresor_id") 
     )
+    @JsonIgnore
     public List<TipoCompresor> tiposCompresor;
     // list< Baterias >
     @ManyToMany(fetch = FetchType.EAGER)
@@ -136,6 +148,7 @@ public class Equipo extends PanacheEntity {
         joinColumns = @JoinColumn(name = "equipo_id"), 
         inverseJoinColumns = @JoinColumn(name = "bateria_id") 
     )
+    @JsonIgnore
     public List<Bateria> baterias;
     // list< tags >
     @ManyToMany(fetch = FetchType.EAGER)

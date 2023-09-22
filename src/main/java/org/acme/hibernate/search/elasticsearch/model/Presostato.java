@@ -14,8 +14,6 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 @Entity
@@ -28,12 +26,10 @@ public class Presostato extends PanacheEntity {
 
     @OneToMany(mappedBy = "presostatoAlta", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @IndexedEmbedded
-    @JsonIgnore
     public List<Equipo> equiposAlta;
 
     @OneToMany(mappedBy = "presostatoBaja", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @IndexedEmbedded
-    @JsonIgnore
     public List<Equipo> equiposBaja;
 
 
