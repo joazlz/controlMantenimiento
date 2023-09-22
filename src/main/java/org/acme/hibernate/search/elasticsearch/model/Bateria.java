@@ -13,6 +13,7 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
@@ -26,6 +27,7 @@ public class Bateria extends PanacheEntity {
 
     @ManyToMany(mappedBy = "baterias", fetch = FetchType.EAGER)
     @IndexedEmbedded
+    @JsonIgnore
     public List<Equipo> equipo;
 
     @Override
