@@ -14,7 +14,9 @@ INSERT INTO estado(id, nombre) VALUES (2, 'finalizado');
 INSERT INTO estado(id, nombre) VALUES (3, 'leido');
 INSERT INTO estado(id, nombre) VALUES (4, 'no leido');
 INSERT INTO estado(id, nombre) VALUES (5, 'asignado');
-ALTER SEQUENCE estado_seq RESTART WITH 6;
+INSERT INTO estado(id, nombre) VALUES (6, 'nuevo');
+INSERT INTO estado(id, nombre) VALUES (7, 'modificado');
+ALTER SEQUENCE estado_seq RESTART WITH 8;
 
 INSERT INTO marca(id, nombre) VALUES (1, 'GoddMan');
 INSERT INTO marca(id, nombre) VALUES (2, 'YORK');
@@ -57,13 +59,15 @@ ALTER SEQUENCE tipomotor_seq RESTART WITH 3;
 
 INSERT INTO tiponotificacion(id, nombre) VALUES (1, 'asignado');
 INSERT INTO tiponotificacion(id, nombre) VALUES (2, 'completado');
-ALTER SEQUENCE tipomantenimiento_seq RESTART WITH 3;
+INSERT INTO tiponotificacion(id, nombre) VALUES (3, 'actidad nueva');
+ALTER SEQUENCE tiponotificacion_seq RESTART WITH 4;
 
 
 
 INSERT INTO tipomantenimiento(id, nombre) VALUES (1, 'preventico');
 INSERT INTO tipomantenimiento(id, nombre) VALUES (2, 'programado');
 INSERT INTO tipomantenimiento(id, nombre) VALUES (3, 'correctivo');
+INSERT INTO tipomantenimiento(id, nombre) VALUES (4, 'Instalacion');
 ALTER SEQUENCE tipomantenimiento_seq RESTART WITH 5;
 
 INSERT INTO rangopresion(id, minimo,maximo) VALUES (1, 0,10);
@@ -73,7 +77,7 @@ INSERT INTO material(id, nombre,codigosap) VALUES (1, 'tornillo','1ASDOFKN19802'
 INSERT INTO material(id, nombre,codigosap) VALUES (2, 'broca','75452popo');
 ALTER SEQUENCE material_seq RESTART WITH 3;
 
-INSERT INTO  equipo(id ,area_id ,tipogas_id ,capacidadbtu_id ,tipofiltrodeshidratador_id ,rangopresionalta_id ,rangopresionbaja_id ,marca_id ,ph_id ,tipoequipo_id ,modelo ,voltaje ,amperaje ,flipon ,cableAlimentacion ,tranformador ,contactor ,termostato ,tarjetaElectronica ,selectro ,retardor ,presostatoAlta_id ,presostatoBaja_id) VALUES (1,1,1,1,1,1,1,1,1,1,'modelo','voltaje','amperaje','flipon','cableAlimentacion','tranformador','contactor','termostato','tarjetaElectronica','selectro','retardor',1,1);
+INSERT INTO  equipo(id ,area_id ,tipogas_id ,capacidadbtu_id ,tipofiltrodeshidratador_id ,rangopresionalta_id ,rangopresionbaja_id ,marca_id ,ph_id ,tipoequipo_id ,modelo ,voltaje ,amperaje ,flipon ,cableAlimentacion ,tranformador ,contactor ,termostato ,tarjetaElectronica ,selector ,retardor ,presostatoAlta_id ,presostatoBaja_id) VALUES (1,1,1,1,1,1,1,1,1,1,'modelo','voltaje','amperaje','flipon','cableAlimentacion','tranformador','contactor','termostato','tarjetaElectronica','selectro','retardor',1,1);
 ALTER SEQUENCE equipo_seq RESTART WITH 2;
 
 INSERT INTO equipo_tipo_motor(equipo_id, tipomotor_id)

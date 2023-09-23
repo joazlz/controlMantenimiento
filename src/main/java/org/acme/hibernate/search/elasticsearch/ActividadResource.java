@@ -315,40 +315,66 @@ public class ActividadResource {
     }
 
     @PUT
-    @Path("agregar")
+    @Path("agregarpreventiva")
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void agregarActividad(
-            @RestForm String descripcion,
-            @RestForm String ordenTrabajo,
-            @RestForm String reserva,
-            @RestForm Long tipoMantenimientoId,
-            @RestForm Date fechaInicioProgramado,
-            @RestForm Date fechaFinProgramado,
-            @RestForm Long equipoId,
-            @RestForm Date fechaInicioActividad,
-            @RestForm Date fechaFinActividad,
-            @RestForm Long estadoId) {
+    public void agregarActividadPreventiva(
+        @RestForm String ordenTrabajo,
+        @RestForm String descripcion,
+        @RestForm Date fechaInicioProgramado,
+        @RestForm Date fechaFinProgramado,
+        @RestForm Long tipoMantenimiento_id,
+        @RestForm Long equipo_id
+            ) {
         Actividad actividad = new Actividad();
 
-        TipoMantenimiento tipoMantenimiento = TipoMantenimiento.findById(tipoMantenimientoId);
-        Equipo equipo = Equipo.findById(equipoId);
-        Estado estado = Estado.findById(estadoId);
+        TipoMantenimiento tipoMantenimiento = TipoMantenimiento.findById(tipoMantenimiento_id);
+        Equipo equipo = Equipo.findById(equipo_id);
+        Estado estado = Estado.findById(5);
 
         if (!tipoMantenimiento.equals(null) &
                 !equipo.equals(null) &
                 !estado.equals(null)) {
             actividad.descripcion = descripcion;
             actividad.ordenTrabajo = ordenTrabajo;
-            actividad.reserva = reserva;
             actividad.fechaInicioProgramado = fechaInicioProgramado;
             actividad.fechaFinProgramado = fechaFinProgramado;
-            actividad.fechaInicioActividad = fechaInicioActividad;
-            actividad.fechaFinActividad = fechaFinActividad;
-
             actividad.tipoMantenimiento = tipoMantenimiento;
             actividad.equipo = equipo;
             actividad.estado = estado;
+            actividad.persist();
+        }
+
+    }
+
+    
+    @PUT
+    @Path("agregar-jefe")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void agregarActividad(
+        @RestForm String ordenTrabajo,
+        @RestForm String descripcion,
+        @RestForm String reserva,
+        @RestForm Date fechaInicioProgramado,
+        @RestForm Date fechaFinProgramado,
+        @RestForm Long tipoMantenimiento_id,
+        @RestForm Long equipo_id) {
+        Actividad actividad = new Actividad();
+        TipoMantenimiento tipoMantenimiento = TipoMantenimiento.findById(tipoMantenimiento_id);
+        Equipo equipo = Equipo.findById(equipo_id);
+
+        if (!tipoMantenimiento.equals(null) &
+                !equipo.equals(null) ){
+            actividad.descripcion = descripcion;
+            actividad.ordenTrabajo = ordenTrabajo;
+            actividad.reserva = reserva;
+            actividad.fechaInicioProgramado = fechaInicioProgramado;
+            actividad.fechaFinProgramado = fechaFinProgramado;
+
+            actividad.tipoMantenimiento = tipoMantenimiento;
+            actividad.equipo = equipo;
+            actividad.estado = Estado.findById(6);
             actividad.persist();
         }
 
@@ -399,9 +425,9 @@ public class ActividadResource {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public void actualizarActividad(
             Long id,
-            @RestForm Long estadoId) {
+            @RestForm Long estado_id) {
         Actividad actividad = Actividad.findById(id);
-        Estado estado = Estado.findById(estadoId);
+        Estado estado = Estado.findById(estado_id);
         if (!actividad.equals(null) & !estado.equals(null)) {
             actividad.estado = estado;
             // Obtén la fecha actual del servidor y conviértela a java.sql.Date
@@ -510,8 +536,14 @@ public class ActividadResource {
             duracion.minutos = minutos;
             duracion.actividad = actividad;
             actividad.duracion = duracion;
-            actividad.persist();
+            Calendar calendar = Calendar.getInstance();
+            java.util.Date fechaActual = calendar.getTime();
+            java.sql.Date fechaSql = new java.sql.Date(fechaActual.getTime());
+
             duracion.persist();
+            actividad.fechaFinActividad = fechaSql;
+            actividad.estado = Estado.findById(2);
+            actividad.persist();
         }
     }
 

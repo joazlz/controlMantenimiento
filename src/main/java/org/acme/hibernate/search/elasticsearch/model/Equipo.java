@@ -61,10 +61,10 @@ public class Equipo extends PanacheEntity {
     @FullTextField(analyzer = "nombre")
     @KeywordField(name = "tarjetaElectronica_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
     public String tarjetaElectronica;
-    // Selectro (string)
+    // selector (string)
     @FullTextField(analyzer = "nombre")
-    @KeywordField(name = "selectro_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
-    public String selectro;
+    @KeywordField(name = "selector_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
+    public String selector;
     // Retardor (string)
     @FullTextField(analyzer = "nombre")
     @KeywordField(name = "retardor_ordenado", sortable = Sortable.YES, normalizer = "ordenar")
@@ -74,6 +74,9 @@ public class Equipo extends PanacheEntity {
     // Area
     @ManyToOne
     public Area area;
+    // estado
+    @ManyToOne
+    public Estado estado;
     // TipoGas
     @ManyToOne
     public TipoGas tipoGas;
@@ -152,11 +155,11 @@ public class Equipo extends PanacheEntity {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Estado)) {
+        if (!(o instanceof Equipo)) {
             return false;
         }
 
-        Estado other = (Estado) o;
+        Equipo other = (Equipo) o;
 
         return Objects.equals(id, other.id);
     }

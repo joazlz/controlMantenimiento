@@ -34,6 +34,11 @@ public class Estado extends PanacheEntity {
     @OneToMany(mappedBy = "estado", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @IndexedEmbedded
     @JsonIgnore
+    public List<Equipo> equipos;
+
+    @OneToMany(mappedBy = "estado", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @IndexedEmbedded
+    @JsonIgnore
     public List<Notificacion> notificaciones;
 
     @Override
