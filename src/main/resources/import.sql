@@ -64,7 +64,6 @@ ALTER SEQUENCE tipomantenimiento_seq RESTART WITH 3;
 INSERT INTO tipomantenimiento(id, nombre) VALUES (1, 'preventico');
 INSERT INTO tipomantenimiento(id, nombre) VALUES (2, 'programado');
 INSERT INTO tipomantenimiento(id, nombre) VALUES (3, 'correctivo');
-INSERT INTO tipomantenimiento(id, nombre) VALUES (4, 'evaluacion');
 ALTER SEQUENCE tipomantenimiento_seq RESTART WITH 5;
 
 INSERT INTO rangopresion(id, minimo,maximo) VALUES (1, 0,10);
@@ -97,8 +96,8 @@ VALUES (1, 1);
 
 -- INSERT INTO duracion(id, horas,minutos) VALUES (1, 43,10);
 
-INSERT INTO actividad(id, descripcion, ordentrabajo,tipomantenimiento_id,fechainicioprogramado,fechaFinProgramado,equipo_id,
-fechaInicioActividad,fechaFinActividad,estado_id) VALUES (1,'tiempo sin mantenimiento', 'OT1385',2,'2023-09-07','2023-09-10',1,'2023-09-07','2023-09-12',1);
+INSERT INTO actividad(id, descripcion, ordentrabajo,reserva,tipomantenimiento_id,fechainicioprogramado,fechaFinProgramado,equipo_id,
+fechaInicioActividad,fechaFinActividad,estado_id) VALUES (1,'tiempo sin mantenimiento', 'OT1385','0124957',2,'2023-09-07','2023-09-10',1,'2023-09-07','2023-09-12',1);
 ALTER SEQUENCE actividad_seq RESTART WITH 2;
 
 INSERT INTO actividad_tipo_desperfecto(actividad_id, desperfecto_id)

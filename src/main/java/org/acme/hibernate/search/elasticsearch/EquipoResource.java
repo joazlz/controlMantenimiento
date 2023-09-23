@@ -21,7 +21,6 @@ import org.acme.hibernate.search.elasticsearch.model.CapacidadBTU;
 import org.acme.hibernate.search.elasticsearch.model.Equipo;
 import org.acme.hibernate.search.elasticsearch.model.TipoMotor;
 import org.acme.hibernate.search.elasticsearch.model.Estado;
-import org.acme.hibernate.search.elasticsearch.model.Limpieza;
 import org.acme.hibernate.search.elasticsearch.model.Marca;
 import org.acme.hibernate.search.elasticsearch.model.Material;
 import org.acme.hibernate.search.elasticsearch.model.PH;
@@ -32,7 +31,6 @@ import org.acme.hibernate.search.elasticsearch.model.TipoCompresor;
 import org.acme.hibernate.search.elasticsearch.model.TipoDesperfecto;
 import org.acme.hibernate.search.elasticsearch.model.TipoFiltroDeshidratador;
 import org.acme.hibernate.search.elasticsearch.model.TipoGas;
-import org.acme.hibernate.search.elasticsearch.model.TipoLimpieza;
 import org.acme.hibernate.search.elasticsearch.model.TipoEquipo;
 import org.acme.hibernate.search.elasticsearch.model.TipoMantenimiento;
 import org.hibernate.search.mapper.orm.session.SearchSession;
@@ -672,53 +670,6 @@ public class EquipoResource {
                 .fetchHits(size.orElse(20));
     }
 
-    // TipoLimpieza
-    @PUT
-    @Path("tipolimpieza")
-    @Transactional
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void agregarTipoLimpieza(@RestForm String nombre) {
-        TipoLimpieza tipoLimpieza = new TipoLimpieza();
-        tipoLimpieza.nombre = nombre;
-        tipoLimpieza.persist();
-    }
-
-    @POST
-    @Path("tipolimpieza/{id}")
-    @Transactional
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void actualizarTipoLimpieza(Long id, @RestForm String nombre) {
-        TipoLimpieza tipoLimpieza = TipoLimpieza.findById(id);
-        if (tipoLimpieza == null) {
-            return;
-        }
-        tipoLimpieza.nombre = nombre;
-        tipoLimpieza.persist();
-    }
-
-    @DELETE
-    @Path("tipolimpieza/{id}")
-    @Transactional
-    public void eliminarTipoLimpieza(Long id) {
-        TipoLimpieza tipoLimpieza = TipoLimpieza.findById(id);
-        if (tipoLimpieza != null) {
-            tipoLimpieza.delete();
-        }
-    }
-
-    @GET
-    @Path("tipolimpieza/buscar")
-    @Transactional
-    public List<TipoLimpieza> buscarTipoLimpieza(@RestQuery String pattern,
-            @RestQuery Optional<Integer> size) {
-        return searchSession.search(TipoLimpieza.class)
-                .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
-                        : f.simpleQueryString()
-                                .fields("nombre").matching(pattern))
-                .sort(f -> f.field("nombre_ordenado"))
-                .fetchHits(size.orElse(20));
-    }
-
     // TipoMantenimiento
     @PUT
     @Path("tipomantenimiento")
@@ -809,63 +760,6 @@ public class EquipoResource {
         rangoPresion.minimo = minimo;
         rangoPresion.maximo = maximo;
         rangoPresion.persist();
-    }
-
-    // limpieza
-    @GET
-    @Path("limpieza/buscar")
-    @Transactional
-    public List<Limpieza> buscarLimpieza() {
-        return searchSession.search(Limpieza.class)
-                .where(f -> f.matchAll())
-                .fetchHits(10);
-    }
-
-    @POST
-    @Path("limpieza/{id}")
-    @Transactional
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void actualizarLimpieza(Long id, @RestForm Boolean realizada, @RestForm Long tipoLimpiedaId) {
-        Limpieza limpieza = Limpieza.findById(id);
-        TipoLimpieza tipoLimpieda = TipoLimpieza.findById(tipoLimpiedaId);
-
-        if (limpieza == null || tipoLimpieda == null) {
-            return;
-        } else {
-            limpieza.realizada = realizada;
-            limpieza.tipoLimpieza = tipoLimpieda;
-            limpieza.persist();
-        }
-
-    }
-
-    @DELETE
-    @Path("limpieza/{id}")
-    @Transactional
-    public void eliminarLimpieza(Long id) {
-        Limpieza limpieza = Limpieza.findById(id);
-        if (limpieza != null) {
-            limpieza.tipoLimpieza.limpiezas.remove(limpieza);
-            limpieza.delete();
-        }
-    }
-
-    @PUT
-    @Path("limpieza")
-    @Transactional
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void agregarLimpieza(@RestForm Boolean realizada, @RestForm Long tipoLimpiedaId) {
-        Limpieza limpieza = new Limpieza();
-
-        TipoLimpieza tipoLimpieda = TipoLimpieza.findById(tipoLimpiedaId);
-
-        if (tipoLimpieda == null) {
-            return;
-        } else {
-            limpieza.realizada = realizada;
-            limpieza.tipoLimpieza = tipoLimpieda;
-            limpieza.persist();
-        }
     }
 
     // material

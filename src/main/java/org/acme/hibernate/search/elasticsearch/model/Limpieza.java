@@ -17,7 +17,6 @@ public class Limpieza extends PanacheEntity {
     public Boolean realizada;
 
     @ManyToOne
-    @JsonIgnore
     public TipoLimpieza tipoLimpieza;
 
     @ManyToOne
