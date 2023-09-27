@@ -342,7 +342,40 @@ public class ActividadResource {
             actividad.tipoMantenimiento = tipoMantenimiento;
             actividad.equipo = equipo;
             actividad.estado = estado;
-            actividad.persist();
+            if(!actividad.estado.nombre.equals("finalizado")){
+                actividad.persist();}
+        }
+
+    }
+
+    @PUT
+    @Path("agregarcorrectiva")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void agregarActividadCorrectiva(
+        @RestForm String ordenTrabajo,
+        @RestForm String descripcion,
+        @RestForm String reserva,
+        @RestForm Long tipoMantenimiento_id,
+        @RestForm Long equipo_id
+            ) {
+
+        Actividad actividad = new Actividad();
+        TipoMantenimiento tipoMantenimiento = TipoMantenimiento.findById(tipoMantenimiento_id);
+        Equipo equipo = Equipo.findById(equipo_id);
+        Estado estado = Estado.findById(5);
+
+        if (!tipoMantenimiento.equals(null) &
+                !equipo.equals(null) &
+                !estado.equals(null)) {
+            actividad.descripcion = descripcion;
+            actividad.ordenTrabajo = ordenTrabajo;
+            actividad.reserva = reserva;
+            actividad.tipoMantenimiento = tipoMantenimiento;
+            actividad.equipo = equipo;
+            actividad.estado = estado;
+            if(!actividad.estado.nombre.equals("finalizado")){
+                actividad.persist();}
         }
 
     }
@@ -375,7 +408,8 @@ public class ActividadResource {
             actividad.tipoMantenimiento = tipoMantenimiento;
             actividad.equipo = equipo;
             actividad.estado = Estado.findById(6);
-            actividad.persist();
+            if(!actividad.estado.nombre.equals("finalizado")){
+                actividad.persist();}
         }
 
     }
@@ -415,7 +449,8 @@ public class ActividadResource {
             actividad.tipoMantenimiento = tipoMantenimiento;
             actividad.equipo = equipo;
             actividad.estado = estado;
-            actividad.persist();
+            if(!actividad.estado.nombre.equals("finalizado")){
+                actividad.persist();}
         }
     }
 
@@ -436,7 +471,8 @@ public class ActividadResource {
             java.sql.Date fechaSql = new java.sql.Date(fechaActual.getTime());
 
             actividad.fechaInicioActividad = fechaSql;
-            actividad.persist();
+            if(!actividad.estado.nombre.equals("finalizado")){
+                actividad.persist();}
         }
     }
 
@@ -444,12 +480,13 @@ public class ActividadResource {
     @Path("actualizar/{id}/tipodesperfecto")
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void agregarTipoDesperfectoActividad(Long id,@RestForm Long tipoDesperfectoId) {
+    public void agregarTipoDesperfectoActividad(Long id,@RestForm Long tipoDesperfecto_id) {
         Actividad actividad = Actividad.findById(id);
-        TipoDesperfecto tipoDesperfecto = TipoDesperfecto.findById(tipoDesperfectoId);
+        TipoDesperfecto tipoDesperfecto = TipoDesperfecto.findById(tipoDesperfecto_id);
         if (!actividad.equals(null) & !tipoDesperfecto.equals(null)) {
             actividad.tiposDesperfecto.add(tipoDesperfecto);
-            actividad.persist();
+            if(!actividad.estado.nombre.equals("finalizado")){
+                actividad.persist();}
         }
     }
 
@@ -490,13 +527,13 @@ public class ActividadResource {
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public void agregarActividadMaterial(
-        @RestForm Long materialId,
-        @RestForm Long actividadId,
+        @RestForm Long material_id,
+        @RestForm Long actividad_id,
         @RestForm Long cantidad) {
-        Log.info( actividadId);
+        
         ActividadMaterial actividadMaterial = new ActividadMaterial();
-        Actividad actividad = Actividad.findById(actividadId);
-        Material material = Material.findById(materialId);
+        Actividad actividad = Actividad.findById(actividad_id);
+        Material material = Material.findById(material_id);
 
         if (!material.equals(null)&!actividad.equals(null)) {
             actividadMaterial.cantidad = cantidad;
@@ -524,10 +561,10 @@ public class ActividadResource {
     public void agregarDuracion(
             @RestForm Long horas,
             @RestForm Long minutos,
-            @RestForm Long actividadId) {
+            @RestForm Long actividad_id) {
         Duracion duracion = new Duracion();
 
-        Actividad actividad = Actividad.findById(actividadId);
+        Actividad actividad = Actividad.findById(actividad_id);
 
         if (actividad == null) {
             return;
@@ -543,7 +580,43 @@ public class ActividadResource {
             duracion.persist();
             actividad.fechaFinActividad = fechaSql;
             actividad.estado = Estado.findById(2);
-            actividad.persist();
+            if(!actividad.estado.nombre.equals("finalizado")){
+                actividad.persist();}
+        }
+    }
+
+    @PUT
+    @Path("duraciondesistalar")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void agregarDuracionDesistalar(
+            @RestForm Long horas,
+            @RestForm Long minutos,
+            @RestForm Long actividad_id) {
+        Duracion duracion = new Duracion();
+
+        Actividad actividad = Actividad.findById(actividad_id);
+
+        if (actividad == null) {
+            return;
+        } else {
+            duracion.horas = horas;
+            duracion.minutos = minutos;
+            duracion.actividad = actividad;
+            actividad.duracion = duracion;
+            Calendar calendar = Calendar.getInstance();
+            java.util.Date fechaActual = calendar.getTime();
+            java.sql.Date fechaSql = new java.sql.Date(fechaActual.getTime());
+
+            duracion.persist();
+            actividad.fechaFinActividad = fechaSql;
+            actividad.estado = Estado.findById(2);
+            if(!actividad.estado.nombre.equals("finalizado")){
+                Equipo equipo = actividad.equipo;
+                equipo.estado = Estado.findById(8);
+                equipo.persist();
+                actividad.equipo = equipo;
+                actividad.persist();}
         }
     }
 
@@ -561,7 +634,8 @@ public class ActividadResource {
 
         Actividad actividad = Actividad.findById(duracion.actividad.id);
         actividad.duracion = duracion;
-        actividad.persist();
+        if(!actividad.estado.nombre.equals("finalizado")){
+            actividad.persist();}
     }
 
 }

@@ -16,7 +16,8 @@ INSERT INTO estado(id, nombre) VALUES (4, 'no leido');
 INSERT INTO estado(id, nombre) VALUES (5, 'asignado');
 INSERT INTO estado(id, nombre) VALUES (6, 'nuevo');
 INSERT INTO estado(id, nombre) VALUES (7, 'modificado');
-ALTER SEQUENCE estado_seq RESTART WITH 8;
+INSERT INTO estado(id, nombre) VALUES (8, 'desistalado');
+ALTER SEQUENCE estado_seq RESTART WITH 9;
 
 INSERT INTO marca(id, nombre) VALUES (1, 'GoddMan');
 INSERT INTO marca(id, nombre) VALUES (2, 'YORK');
@@ -68,7 +69,8 @@ INSERT INTO tipomantenimiento(id, nombre) VALUES (1, 'preventico');
 INSERT INTO tipomantenimiento(id, nombre) VALUES (2, 'programado');
 INSERT INTO tipomantenimiento(id, nombre) VALUES (3, 'correctivo');
 INSERT INTO tipomantenimiento(id, nombre) VALUES (4, 'Instalacion');
-ALTER SEQUENCE tipomantenimiento_seq RESTART WITH 5;
+INSERT INTO tipomantenimiento(id, nombre) VALUES (5, 'Desistalar');
+ALTER SEQUENCE tipomantenimiento_seq RESTART WITH 6;
 
 INSERT INTO rangopresion(id, minimo,maximo) VALUES (1, 0,10);
 ALTER SEQUENCE rangopresion_seq RESTART WITH 2;

@@ -33,7 +33,7 @@ public class TipoMotor extends PanacheEntity {
     @ManyToMany(mappedBy = "tiposMotor", fetch = FetchType.EAGER)
     @IndexedEmbedded
     @JsonIgnore
-    public List<Equipo> equipo;
+    public List<Equipo> equipos;
     
     @Override
     public boolean equals(Object o) {

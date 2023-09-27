@@ -1048,6 +1048,26 @@ public class EquipoResource {
     }
 
     @POST
+    @Path("actualizar/{id}/area")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void actualizarEquipo(
+            Long id,
+            @RestForm Long area_id) {
+        
+        Equipo equipo = Equipo.findById(id);
+        Area area = Area.findById(area_id);
+        
+        if (!equipo.equals(null) &
+            !area.equals(null)) {
+            equipo.area = area;
+            equipo.persist();
+        }
+
+    }
+
+
+    @POST
     @Path("actualizarpreventivo/{id}")
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -1122,6 +1142,44 @@ public class EquipoResource {
             equipo.presostatoAlta= presostatoAlta;
             equipo.presostatoBaja= presostatoBaja;
             equipo.estado = Estado.findById(7);
+            equipo.persist();
+        }
+
+    }
+
+    @POST
+    @Path("actualizar/{id}/tiposmotores")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void actualizarEquipoTiposmotores(
+            Long id,
+            @RestForm Long tipomotor_id) {
+        
+        Equipo equipo = Equipo.findById(id);
+        TipoMotor tipoMotor =  TipoMotor.findById(tipomotor_id);
+
+        if (!equipo.equals(null) &
+            !tipoMotor.equals(null)) {
+            equipo.tiposMotor.add(tipoMotor);
+            equipo.persist();
+        }
+
+    }
+
+    @DELETE
+    @Path("actualizar/{id}/tiposmotores")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void eliminarEquipoTiposmotores(
+            Long id,
+            @RestForm Long tipomotor_id) {
+        
+        Equipo equipo = Equipo.findById(id);
+        TipoMotor tipoMotor =  TipoMotor.findById(tipomotor_id);
+
+        if (!equipo.equals(null) &
+            !tipoMotor.equals(null)) {
+            equipo.tiposMotor.remove(tipoMotor);
             equipo.persist();
         }
 

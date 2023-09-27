@@ -110,7 +110,7 @@ public class AlertaResource {
 
         Actividad actividad = Actividad.findById(actividad_id);
         TipoNotificacion tipoNotificacion = TipoNotificacion.findById(tiponotificacion_id);
-        Estado estado = Estado.findById(estado_id);
+        Estado estado = Estado.findById(4);
 
         if (!actividad.equals(null) &
                 !tiponotificacion_id.equals(null) &
