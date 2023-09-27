@@ -38,23 +38,30 @@ import org.jboss.resteasy.reactive.RestForm;
 import org.jboss.resteasy.reactive.RestQuery;
 
 // import io.quarkus.logging.Log;
-import io.quarkus.runtime.StartupEvent;
+// import io.quarkus.runtime.StartupEvent;
+import io.quarkus.security.Authenticated;
+import io.quarkus.security.identity.SecurityIdentity;
+
 
 @Path("/equipo")
+@Authenticated
 public class EquipoResource {
+
+    @Inject
+    SecurityIdentity identity;
 
     @Inject
     SearchSession searchSession;
     private static final Logger LOG = Logger.getLogger(EquipoResource.class);
 
-    @Transactional
-    void onStart(@Observes StartupEvent ev) throws InterruptedException {
-        // only reindex if we imported some content
-        // if (Area.count() > 0) {
-        // searchSession.massIndexer()
-        // .startAndWait();
-        // }
-    }
+    // @Transactional
+    // void onStart(@Observes StartupEvent ev) throws InterruptedException {
+    //     // only reindex if we imported some content
+    //     // if (Area.count() > 0) {
+    //     // searchSession.massIndexer()
+    //     // .startAndWait();
+    //     // }
+    // }
 
     // AREA
     @PUT
@@ -87,7 +94,9 @@ public class EquipoResource {
     public void eliminarArea(Long id) {
         Area area = Area.findById(id);
         if (area != null) {
-            area.delete();
+            if (identity.hasRole("admin")) {
+                area.delete();
+            }
         }
     }
 
