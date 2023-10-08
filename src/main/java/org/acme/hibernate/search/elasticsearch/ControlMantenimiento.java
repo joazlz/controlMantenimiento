@@ -12,9 +12,9 @@ import io.quarkus.security.Authenticated;
 import io.quarkus.security.identity.SecurityIdentity;
 
 
-@Path("/some-page")
+@Path("/controlmantenimiento")
 @Authenticated
-public class SomePage {
+public class ControlMantenimiento {
 
     @Inject
     Template page;

@@ -5,7 +5,6 @@ import org.jboss.logging.Logger;
 import java.util.List;
 import java.util.Optional;
 
-import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
@@ -54,25 +53,17 @@ public class EquipoResource {
     SearchSession searchSession;
     private static final Logger LOG = Logger.getLogger(EquipoResource.class);
 
-    // @Transactional
-    // void onStart(@Observes StartupEvent ev) throws InterruptedException {
-    //     // only reindex if we imported some content
-    //     // if (Area.count() > 0) {
-    //     // searchSession.massIndexer()
-    //     // .startAndWait();
-    //     // }
-    // }
-
     // AREA
     @PUT
     @Path("area")
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public void agregarArea(@RestForm String nombre) {
-        LOG.info(nombre);
-        Area area = new Area();
-        area.nombre = nombre;
-        area.persist();
+        if(nombre.length() > 0 ){
+            Area area = new Area();
+            area.nombre = nombre;
+            area.persist();
+        }
     }
 
     @POST
@@ -727,13 +718,15 @@ public class EquipoResource {
     }
 
     // RangoPresion
-    @GET
-    @Path("rangopresion/buscar")
+    @PUT
+    @Path("rangopresion")
     @Transactional
-    public List<RangoPresion> buscarRangoPresion() {
-        return searchSession.search(RangoPresion.class)
-                .where(f -> f.matchAll())
-                .fetchHits(10);
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void agregarRangoPresion(@RestForm Long minimo, @RestForm Long maximo) {
+        RangoPresion rangoPresion = new RangoPresion();
+        rangoPresion.minimo = minimo;
+        rangoPresion.maximo = maximo;
+        rangoPresion.persist();
     }
 
     @POST
@@ -760,25 +753,27 @@ public class EquipoResource {
         }
     }
 
-    @PUT
-    @Path("rangopresion")
+    @GET
+    @Path("rangopresion/buscar")
     @Transactional
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void agregarRangoPresion(@RestForm Long minimo, @RestForm Long maximo) {
-        RangoPresion rangoPresion = new RangoPresion();
-        rangoPresion.minimo = minimo;
-        rangoPresion.maximo = maximo;
-        rangoPresion.persist();
+    public List<RangoPresion> buscarRangoPresion() {
+        return searchSession.search(RangoPresion.class)
+                .where(f -> f.matchAll())
+                .fetchHits(10);
     }
 
     // material
-    @GET
-    @Path("material/buscar")
+    @PUT
+    @Path("material")
     @Transactional
-    public List<Material> buscarMaterial() {
-        return searchSession.search(Material.class)
-                .where(f -> f.matchAll())
-                .fetchHits(10);
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void agregarMaterial(@RestForm String nombre, @RestForm String codigoSap) {
+        Material material = new Material();
+
+        material.nombre = nombre;
+        material.codigoSap = codigoSap;
+        material.persist();
+
     }
 
     @POST
@@ -806,34 +801,33 @@ public class EquipoResource {
             material.delete();
         }
     }
-
-    @PUT
-    @Path("material")
-    @Transactional
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void agregarMaterial(@RestForm String nombre, @RestForm String codigoSap) {
-        Material material = new Material();
-
-        material.nombre = nombre;
-        material.codigoSap = codigoSap;
-        material.persist();
-
-    }
-
-    // tag
+    
     @GET
-    @Path("tag/buscar")
+    @Path("material/buscar")
     @Transactional
-    public List<Tag> buscarTag(@RestQuery String pattern,
+    public List<Material> buscarMaterial(@RestQuery String pattern,
             @RestQuery Optional<Integer> size) {
-        return searchSession.search(Tag.class)
+        return searchSession.search(Material.class)
                 .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
                         : f.simpleQueryString()
                                 .fields("nombre").matching(pattern))
-                .sort(f -> f.field("nombre_ordenado"))
+                .sort(f -> f.field("nombre_ordenado").then().field("codigosap_ordenado"))
                 .fetchHits(size.orElse(20));
     }
 
+    // tag
+    @PUT
+    @Path("tag")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void agregarTag(@RestForm String nombre) {
+        Tag tag = new Tag();
+
+        tag.nombre = nombre;
+        tag.persist();
+
+    }
+     
     @POST
     @Path("tag/{id}")
     @Transactional
@@ -859,18 +853,18 @@ public class EquipoResource {
         }
     }
 
-    @PUT
-    @Path("tag")
+    @GET
+    @Path("tag/buscar")
     @Transactional
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void agregarTag(@RestForm String nombre) {
-        Tag tag = new Tag();
-
-        tag.nombre = nombre;
-        tag.persist();
-
+    public List<Tag> buscarTag(@RestQuery String pattern,
+            @RestQuery Optional<Integer> size) {
+        return searchSession.search(Tag.class)
+                .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
+                        : f.simpleQueryString()
+                                .fields("nombre").matching(pattern))
+                .sort(f -> f.field("nombre_ordenado"))
+                .fetchHits(size.orElse(20));
     }
-
 
     // equipo
     @GET
@@ -1000,10 +994,10 @@ public class EquipoResource {
             @RestForm Long pH_id,
             @RestForm Long tipoEquipo_id,
             @RestForm Long presostatoAlta_id,
-            @RestForm Long presostatoBaja_id) {
+            @RestForm Long presostatoBaja_id,
+            @RestForm Long estado_id) {
         
         Equipo equipo = Equipo.findById(id);
-
         Area area = Area.findById(area_id);
         TipoGas tipoGas = TipoGas.findById(tipoGas_id);
         CapacidadBTU capacidadBTU = CapacidadBTU.findById(capacidadBTU_id);
@@ -1015,19 +1009,9 @@ public class EquipoResource {
         TipoEquipo tipoEquipo = TipoEquipo.findById(tipoEquipo_id);
         Presostato presostatoAlta = Presostato.findById(presostatoAlta_id);
         Presostato presostatoBaja = Presostato.findById(presostatoBaja_id);
+        Estado estado = Estado.findById(estado_id);
 
-        if (!equipo.equals(null) &
-            !area.equals(null) &
-                !tipoGas.equals(null) &
-                !capacidadBTU.equals(null) &
-                !tipoFiltroDeshidratador.equals(null) &
-                !rangoPresionAlta.equals(null) &
-                !rangoPresionBaja.equals(null) &
-                !marca.equals(null) &
-                !pH.equals(null) &
-                !tipoEquipo.equals(null) &
-                !presostatoAlta.equals(null) &
-                !presostatoBaja.equals(null)) {
+        if (!equipo.equals(null)) {
             equipo.modelo = modelo;
             equipo.voltaje = voltaje;
             equipo.amperaje = amperaje;
@@ -1039,7 +1023,6 @@ public class EquipoResource {
             equipo.tarjetaElectronica = tarjetaElectronica;
             equipo.selector = selector;
             equipo.retardor = retardor;
-
             equipo.area = area;
             equipo.tipoGas = tipoGas;
             equipo.capacidadBTU = capacidadBTU;
@@ -1051,116 +1034,16 @@ public class EquipoResource {
             equipo.tipoEquipo = tipoEquipo;
             equipo.presostatoAlta = presostatoAlta;
             equipo.presostatoBaja = presostatoBaja;
+            equipo.estado = estado;
             equipo.persist();
         }
-
-    }
-
-    @POST
-    @Path("actualizar/{id}/area")
-    @Transactional
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void actualizarEquipo(
-            Long id,
-            @RestForm Long area_id) {
-        
-        Equipo equipo = Equipo.findById(id);
-        Area area = Area.findById(area_id);
-        
-        if (!equipo.equals(null) &
-            !area.equals(null)) {
-            equipo.area = area;
-            equipo.persist();
-        }
-
-    }
-
-
-    @POST
-    @Path("actualizarpreventivo/{id}")
-    @Transactional
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void actualizarEquipoPreventivo(
-            Long id,
-            @RestForm String voltaje,
-            @RestForm String amperaje,
-            @RestForm String flipon,
-            @RestForm String cableAlimentacion,
-            @RestForm String tranformador,
-            @RestForm String contactor,
-            @RestForm String termostato,
-            @RestForm String tarjetaElectronica,
-            @RestForm String selector,
-            @RestForm String retardor,
-            @RestForm Long area_id,
-            @RestForm Long tipoGas_id,
-            @RestForm Long capacidadBTU_id,
-            @RestForm Long tipoFiltroDeshidratador_id,
-            @RestForm Long rangoPresionAlta_id,
-            @RestForm Long rangoPresionBaja_id,
-            @RestForm Long pH_id,
-            @RestForm Long tipoEquipo_id,
-            @RestForm Long presostatoAlta_id,
-            @RestForm Long presostatoBaja_id
-            ) {
-        
-        Equipo equipo = Equipo.findById(id);
-
-        Area area = Area.findById(area_id);
-        TipoGas tipoGas = TipoGas.findById(tipoGas_id);
-        CapacidadBTU capacidadBTU = CapacidadBTU.findById(capacidadBTU_id);
-        TipoFiltroDeshidratador tipoFiltroDeshidratador = TipoFiltroDeshidratador.findById(tipoFiltroDeshidratador_id);
-        RangoPresion rangoPresionAlta = RangoPresion.findById(rangoPresionAlta_id);
-        RangoPresion rangoPresionBaja = RangoPresion.findById(rangoPresionBaja_id);
-        PH pH = PH.findById(pH_id);
-        TipoEquipo tipoEquipo = TipoEquipo.findById(tipoEquipo_id);
-        Presostato presostatoAlta = Presostato.findById(presostatoAlta_id);
-        Presostato presostatoBaja = Presostato.findById(presostatoBaja_id);
-
-        if (
-            !area.equals(null)&
-            !tipoGas.equals(null)&
-            !capacidadBTU.equals(null)&
-            !tipoFiltroDeshidratador.equals(null)&
-            !rangoPresionAlta.equals(null)&
-            !rangoPresionBaja.equals(null)&
-            !pH.equals(null)&
-            !tipoEquipo.equals(null)&
-            !presostatoAlta.equals(null)&
-            !presostatoBaja.equals(null)&
-            !equipo.equals(null)
-        ) {
-            equipo.voltaje = voltaje;
-            equipo.amperaje = amperaje;
-            equipo.flipon = flipon;
-            equipo.cableAlimentacion = cableAlimentacion;
-            equipo.tranformador = tranformador;
-            equipo.contactor = contactor;
-            equipo.termostato = termostato;
-            equipo.tarjetaElectronica = tarjetaElectronica;
-            equipo.selector = selector;
-            equipo.retardor = retardor;
-            equipo.area= area;
-            equipo.tipoGas= tipoGas;
-            equipo.capacidadBTU= capacidadBTU;
-            equipo.tipoFiltroDeshidratador= tipoFiltroDeshidratador;
-            equipo.rangoPresionAlta= rangoPresionAlta;
-            equipo.rangoPresionBaja= rangoPresionBaja;
-            equipo.pH= pH;
-            equipo.tipoEquipo= tipoEquipo;
-            equipo.presostatoAlta= presostatoAlta;
-            equipo.presostatoBaja= presostatoBaja;
-            equipo.estado = Estado.findById(7);
-            equipo.persist();
-        }
-
     }
 
     @POST
     @Path("actualizar/{id}/tiposmotores")
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void actualizarEquipoTiposmotores(
+    public void actualizarEquipoTiposMotores(
             Long id,
             @RestForm Long tipomotor_id) {
         
@@ -1179,7 +1062,7 @@ public class EquipoResource {
     @Path("actualizar/{id}/tiposmotores")
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void eliminarEquipoTiposmotores(
+    public void eliminarEquipoTiposMotores(
             Long id,
             @RestForm Long tipomotor_id) {
         
