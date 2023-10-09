@@ -88,6 +88,7 @@
                 $('#contenidoInicio').show();
                 $('#contenidoAreas').hide();
                 $('#contenidoEquipos').hide();
+                $('#contenidoActividades').hide();
                 getAreas()
                 getEquipos()
                 getActividades()
@@ -99,11 +100,19 @@
                         $('#contenidoAreas').show();
                         $('#contenidoInicio').hide();
                         $('#contenidoEquipos').hide();
+                        $('#contenidoActividades').hide();
                         break;
                     case "equipos":
                         $('#contenidoEquipos').show();
                         $('#contenidoAreas').hide();
                         $('#contenidoInicio').hide();
+                        $('#contenidoActividades').show();
+                        break;
+                    case "actividades":
+                        $('#contenidoEquipos').hide();
+                        $('#contenidoAreas').hide();
+                        $('#contenidoInicio').hide();
+                        $('#contenidoActividades').show();
                         break;
                     default:
                         break;
@@ -112,6 +121,7 @@
             $scope.verInicio = function () {
                 $('#contenidoAreas').hide();
                 $('#contenidoEquipos').hide();
+                $('#contenidoActividades').hide();
                 $('#contenidoInicio').show();
             }
 
@@ -261,42 +271,64 @@
                 <div class="card" ng-repeat="equipo in equipos">
                     <div class="content">
                         <table class="ui celled table">
-  <tbody>
-    <tr><td>{{equipo.modelo}}</td></tr>
-    <tr><td>{{equipo.voltaje}}</td></tr>
-    <tr><td>{{equipo.amperaje}}</td></tr>
-    <tr><td>{{equipo.flipon}}</td></tr>
-    <tr><td>{{equipo.cableAlimentacion}}</td></tr>
-    <tr><td>{{equipo.tranformador}}</td></tr>
-    <tr><td>{{equipo.contactor}}</td></tr>
-    <tr><td>{{equipo.termostato}}</td></tr>
-    <tr><td>{{equipo.tarjetaElectronica}}</td></tr>
-    <tr><td>{{equipo.selector}}</td></tr>
-    <tr><td>{{equipo.retardor}}</td></tr>
-  </tbody>
-</table>
+                            <tbody>
+                                <tr>
+                                    <td>{{equipo.modelo}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{equipo.voltaje}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{equipo.amperaje}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{equipo.flipon}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{equipo.cableAlimentacion}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{equipo.tranformador}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{equipo.contactor}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{equipo.termostato}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{equipo.tarjetaElectronica}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{equipo.selector}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{equipo.retardor}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                            
-                        
-                             
-                            
-                            {! {{equipo.area}}
-                            {{equipo.estado}}
-                            {{equipo.tipoGas}}
-                            {{equipo.capacidadBTU}}
-                            {{equipo.tipoFiltroDeshidratador}}
-                            {{equipo.rangoPresionAlta}}
-                            {{equipo.rangoPresionBaja}}
-                            {{equipo.marca}}
-                            {{equipo.pH}}
-                            {{equipo.tipoEquipo}}
-                            {{equipo.presostatoAlta}}
-                            {{equipo.presostatoBaja}}
-                            {{equipo.tiposMotor}}
-                            {{equipo.tiposCompresor}}
-                            {{equipo.baterias}}
-                            {{equipo.tags}} !}
-                        
+
+
+
+
+                        {! {{equipo.area}}
+                        {{equipo.estado}}
+                        {{equipo.tipoGas}}
+                        {{equipo.capacidadBTU}}
+                        {{equipo.tipoFiltroDeshidratador}}
+                        {{equipo.rangoPresionAlta}}
+                        {{equipo.rangoPresionBaja}}
+                        {{equipo.marca}}
+                        {{equipo.pH}}
+                        {{equipo.tipoEquipo}}
+                        {{equipo.presostatoAlta}}
+                        {{equipo.presostatoBaja}}
+                        {{equipo.tiposMotor}}
+                        {{equipo.tiposCompresor}}
+                        {{equipo.baterias}}
+                        {{equipo.tags}} !}
+
 
                         <div class="extra content">
                             <div class="ui two buttons">
@@ -346,6 +378,73 @@
 
         </div>
     </div>
+
+    <!--CONTENIDO -->
+    <div id="contenidoActividades" class="ui container contenido">
+        <h2 class="ui right floated header">Actividades</h2>
+        <div class="ui clearing divider">
+            <div class="ui cards">
+                <div class="card" ng-repeat="actividad in actividades">
+                    <div class="content">
+                        <table class="ui celled table">
+                            <tbody>
+                                <tr>
+                                    <td>{{actividad.descripcion}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{actividad.ordenTrabajo}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{actividad.reserva}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{actividad.fechaInicioProgramado}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{actividad.fechaFinProgramado}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{actividad.fechaInicioActividad}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{actividad.fechaFinActividad}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                        {! {{actividad.tipoMantenimiento}}
+                        {{actividad.equipo}}
+                        {{actividad.estado}} !}
+
+
+                        <div class="extra content">
+                            <div class="ui two buttons">
+                                <button class="ui basic green button" ng-click="AreaModal('editar',area)"><i
+                                        class="pencil alternate icon"></i>
+                                    Editar</button>
+                                <button ng-if="{identity.roles.contains(" admin")}" class="ui basic red button"
+                                    ng-click="eliminar('area', area)"><i class="trash alternate outline icon"></i>
+                                    Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="content">
+                        <button class="ui blue labeled icon button" ng-click="AreaModal('agregar')"><i
+                                class="plus circle icon"></i>
+                            Agregar area</button>
+                        <button class="ui grey labeled icon button" ng-click="verInicio()"><i class="redo icon"></i>
+                            Resumenes</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    
 
     <!-- MODALES -->
     <div class="ui modal" id="modal-area">
