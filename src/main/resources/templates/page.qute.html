@@ -106,7 +106,7 @@
                         $('#contenidoEquipos').show();
                         $('#contenidoAreas').hide();
                         $('#contenidoInicio').hide();
-                        $('#contenidoActividades').show();
+                        $('#contenidoActividades').hide();
                         break;
                     case "actividades":
                         $('#contenidoEquipos').hide();
@@ -207,6 +207,8 @@
 </head>
 
 <body ng-app="InventarioManagement" ng-controller="InventarioManagementController">
+
+    {! MENU !}
     <div class="ui large top fixed hidden menu">
         <div class="ui container">
             <a class="header item" ng-click="verInicio()">
@@ -224,138 +226,228 @@
         </div>
     </div>
 
-    <!--CONTENIDO -->
+    <!--AREAS -->
     <div id="contenidoAreas" class="ui container contenido">
+        <div class="content">
+            <button class="ui blue labeled icon button" ng-click="AreaModal('agregar')"><i class="plus circle icon"></i>
+                Agregar area</button>
+            <button class="ui grey labeled icon button" ng-click="verInicio()"><i class="redo icon"></i>
+                Resumenes</button>
+        </div>
         <h2 class="ui right floated header">Areas</h2>
         <div class="ui clearing divider">
-            <div class="ui cards">
-                <div class="card" ng-repeat="area in areas">
-                    <div class="content">
-                        <div class="header">{{ area.nombre }}</div>
-                        <div class="meta">
-                            {{ area.equipos.length }}
-                            <!-- <button class="ui basic blue icon button mini right floated" ng-click="showBookModal(area)"><i class="plus circle icon"></i> Add book</button> -->
-                        </div>
-
-                        <div class="extra content">
-                            <div class="ui two buttons">
-                                <button class="ui basic green button" ng-click="AreaModal('editar',area)"><i
-                                        class="pencil alternate icon"></i>
-                                    Editar</button>
-                                <button ng-if="{identity.roles.contains(" admin")}" class="ui basic red button"
-                                    ng-click="eliminar('area', area)"><i class="trash alternate outline icon"></i>
-                                    Eliminar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="content">
-                        <button class="ui blue labeled icon button" ng-click="AreaModal('agregar')"><i
-                                class="plus circle icon"></i>
-                            Agregar area</button>
-                        <button class="ui grey labeled icon button" ng-click="verInicio()"><i class="redo icon"></i>
-                            Resumenes</button>
-                    </div>
-                </div>
-            </div>
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="area in areas">
+                        <td>{{area.nombre}}</td>
+                        <td>
+                            <button class="ui basic green button" ng-click="AreaModal('editar',area)"><i
+                                    class="pencil alternate icon"></i>
+                                Editar</button>
+                            <button ng-if="{identity.roles.contains(" admin")}" class="ui basic red button"
+                                ng-click="eliminar('area', area)"><i class="trash alternate outline icon"></i>
+                                Eliminar</button>
+                        </td>
+                    </tr>
+                    {! <tr class="error">
+                        <td>Jimmy</td>
+                        <td>Cannot pull data</td>
+                        <td>None</td>
+                        <td>
+                            <button class="ui basic green button" ng-click="AreaModal('editar',area)"><i
+                                    class="pencil alternate icon"></i>
+                                Editar</button>
+                            <button ng-if="{identity.roles.contains(" admin")}" class="ui basic red button"
+                                ng-click="eliminar('area', area)"><i class="trash alternate outline icon"></i>
+                                Eliminar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Jaime</td>
+                        <td>Aprobado</td>
+                        <td class="error"><i class="attention icon"></i> Clasificado</td>
+                        <td>
+                            <button class="ui basic green button" ng-click="AreaModal('editar',area)"><i
+                                    class="pencil alternate icon"></i>
+                                Editar</button>
+                            <button ng-if="{identity.roles.contains(" admin")}" class="ui basic red button"
+                                ng-click="eliminar('area', area)"><i class="trash alternate outline icon"></i>
+                                Eliminar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Juana</td>
+                        <td>Aprobado</td>
+                        <td>None</td>
+                        <td>
+                            <button class="ui basic green button" ng-click="AreaModal('editar',area)"><i
+                                    class="pencil alternate icon"></i>
+                                Editar</button>
+                            <button ng-if="{identity.roles.contains(" admin")}" class="ui basic red button"
+                                ng-click="eliminar('area', area)"><i class="trash alternate outline icon"></i>
+                                Eliminar</button>
+                        </td>
+                    </tr> !}
+                </tbody>
+            </table>
 
         </div>
     </div>
 
-    <!--CONTENIDO -->
+    <!--EQUIPOS -->
     <div id="contenidoEquipos" class="ui container contenido">
+        <div class="content">
+            <button class="ui blue labeled icon button" ng-click="EquipoModal('agregar')"><i
+                    class="plus circle icon"></i>
+                Agregar equipo</button>
+            <button class="ui grey labeled icon button" ng-click="verInicio()"><i class="redo icon"></i>
+                Resumenes</button>
+        </div>
         <h2 class="ui right floated header">Equipos</h2>
         <div class="ui clearing divider">
-            <div class="ui cards">
-                <div class="card" ng-repeat="equipo in equipos">
-                    <div class="content">
-                        <table class="ui celled table">
-                            <tbody>
-                                <tr>
-                                    <td>{{equipo.modelo}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{equipo.voltaje}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{equipo.amperaje}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{equipo.flipon}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{equipo.cableAlimentacion}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{equipo.tranformador}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{equipo.contactor}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{equipo.termostato}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{equipo.tarjetaElectronica}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{equipo.selector}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{equipo.retardor}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-
-
-
-
-                        {! {{equipo.area}}
-                        {{equipo.estado}}
-                        {{equipo.tipoGas}}
-                        {{equipo.capacidadBTU}}
-                        {{equipo.tipoFiltroDeshidratador}}
-                        {{equipo.rangoPresionAlta}}
-                        {{equipo.rangoPresionBaja}}
-                        {{equipo.marca}}
-                        {{equipo.pH}}
-                        {{equipo.tipoEquipo}}
-                        {{equipo.presostatoAlta}}
-                        {{equipo.presostatoBaja}}
-                        {{equipo.tiposMotor}}
-                        {{equipo.tiposCompresor}}
-                        {{equipo.baterias}}
-                        {{equipo.tags}} !}
-
-
-                        <div class="extra content">
-                            <div class="ui two buttons">
-                                <button class="ui basic green button" ng-click="AreaModal('editar',area)"><i
-                                        class="pencil alternate icon"></i>
-                                    Editar</button>
-                                <button ng-if="{identity.roles.contains(" admin")}" class="ui basic red button"
-                                    ng-click="eliminar('area', area)"><i class="trash alternate outline icon"></i>
-                                    Eliminar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="content">
-                        <button class="ui blue labeled icon button" ng-click="AreaModal('agregar')"><i
-                                class="plus circle icon"></i>
-                            Agregar area</button>
-                        <button class="ui grey labeled icon button" ng-click="verInicio()"><i class="redo icon"></i>
-                            Resumenes</button>
-                    </div>
-                </div>
-            </div>
-
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th>Modelo</th>
+                        <th>Voltaje</th>
+                        <th>Amperaje</th>
+                        <th>Flipon</th>
+                        <th>Cable Alimentacion</th>
+                        <th>Tranformador</th>
+                        <th>Contactor</th>
+                        <th>Termostato</th>
+                        <th>Tarjeta Electronica</th>
+                        <th>Selector</th>
+                        <th>Retardor</th>
+                        <th>Area</th>
+                        <th>Estado</th>
+                        <th>Tipo Gas</th>
+                        <th>Capacidad BTU</th>
+                        <th>Tipo Filtro Deshidratador</th>
+                        <th>Rango Presion Alta</th>
+                        <th>Rango Presion Baja</th>
+                        <th>marca</th>
+                        <th>pH</th>
+                        <th>Tipo Equipo</th>
+                        <th>Presostato Alta</th>
+                        <th>Presostato Baja</th>
+                        <th>Tipos Motor</th>
+                        <th>Tipos Compresor</th>
+                        <th>Baterias</th>
+                        <th>Tags</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="equipo in equipos">
+                        <td>{{equipo.modelo}}</td>
+                        <td>{{equipo.voltaje}}</td>
+                        <td>{{equipo.amperaje}}</td>
+                        <td>{{equipo.flipon}}</td>
+                        <td>{{equipo.cableAlimentacion}}</td>
+                        <td>{{equipo.tranformador}}</td>
+                        <td>{{equipo.contactor}}</td>
+                        <td>{{equipo.termostato}}</td>
+                        <td>{{equipo.tarjetaElectronica}}</td>
+                        <td>{{equipo.selector}}</td>
+                        <td>{{equipo.retardor}}</td>
+                        <td>{{equipo.area.nombre}}</td>
+                        <td>{{equipo.estado.nombre}}</td>
+                        <td>{{equipo.tipoGas.nombre}}</td>
+                        <td>{{equipo.capacidadBTU.nombre}}</td>
+                        <td>{{equipo.tipoFiltroDeshidratador.nombre}}</td>
+                        <td>
+                            minimo: {{equipo.rangoPresionAlta.minimo}}
+                            <br>
+                            maximo: {{equipo.rangoPresionAlta.maximo}}
+                        </td>
+                        <td>
+                            minimo: {{equipo.rangoPresionBaja.minimo}}
+                            <br>
+                            maximo: {{equipo.rangoPresionBaja.maximo}}
+                        </td>
+                        <td>{{equipo.marca.nombre}}</td>
+                        <td>{{equipo.pH.nombre}}</td>
+                        <td>{{equipo.tipoEquipo.nombre}}</td>
+                        <td>{{equipo.presostatoAlta.nombre}}</td>
+                        <td>{{equipo.presostatoBaja.nombre}}</td>
+                        <td>{{equipo.tiposMotor.length}}</td>
+                        <td>{{equipo.tiposCompresor.length}}</td>
+                        <td>{{equipo.baterias.length}}</td>
+                        <td>{{equipo.tags.length}}</td>
+                        <td>
+                            <button class="ui basic green button" ng-click="equipoModal('editar',equipo)"><i
+                                    class="pencil alternate icon"></i>
+                                Editar</button>
+                            <button ng-if="{identity.roles.contains(" admin")}" class="ui basic red button"
+                                ng-click="eliminar('equipo', equipo)"><i class="trash alternate outline icon"></i>
+                                Eliminar</button>
+                        </td>
+                    </tr>
+                    {! <tr class="error">
+                        <td>Jimmy</td>
+                        <td>Cannot pull data</td>
+                        <td>None</td>
+                        <td>
+                            <button class="ui basic green button" ng-click="AreaModal('editar',area)"><i
+                                    class="pencil alternate icon"></i>
+                                Editar</button>
+                            <button ng-if="{identity.roles.contains(" admin")}" class="ui basic red button"
+                                ng-click="eliminar('area', area)"><i class="trash alternate outline icon"></i>
+                                Eliminar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Jaime</td>
+                        <td>Aprobado</td>
+                        <td class="error"><i class="attention icon"></i> Clasificado</td>
+                        <td>
+                            <button class="ui basic green button" ng-click="AreaModal('editar',area)"><i
+                                    class="pencil alternate icon"></i>
+                                Editar</button>
+                            <button ng-if="{identity.roles.contains(" admin")}" class="ui basic red button"
+                                ng-click="eliminar('area', area)"><i class="trash alternate outline icon"></i>
+                                Eliminar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Juana</td>
+                        <td>Aprobado</td>
+                        <td>None</td>
+                        <td>
+                            <button class="ui basic green button" ng-click="AreaModal('editar',area)"><i
+                                    class="pencil alternate icon"></i>
+                                Editar</button>
+                            <button ng-if="{identity.roles.contains(" admin")}" class="ui basic red button"
+                                ng-click="eliminar('area', area)"><i class="trash alternate outline icon"></i>
+                                Eliminar</button>
+                        </td>
+                    </tr> !}
+                </tbody>
+            </table>
         </div>
     </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {! INICIO !}
     <div id="contenidoInicio" class="ui container contenido">
         <h2 class="ui right floated header">Resumenes</h2>
         <div class="ui clearing divider">
@@ -379,72 +471,50 @@
         </div>
     </div>
 
-    <!--CONTENIDO -->
+    <!-- ACTIVIDADES -->
     <div id="contenidoActividades" class="ui container contenido">
+        <div class="content">
+            <button class="ui blue labeled icon button" ng-click="AreaModal('agregar')"><i class="plus circle icon"></i>
+                Agregar Actividad</button>
+            <button class="ui grey labeled icon button" ng-click="verInicio()"><i class="redo icon"></i>
+                Resumenes</button>
+        </div>
         <h2 class="ui right floated header">Actividades</h2>
         <div class="ui clearing divider">
-            <div class="ui cards">
-                <div class="card" ng-repeat="actividad in actividades">
-                    <div class="content">
-                        <table class="ui celled table">
-                            <tbody>
-                                <tr>
-                                    <td>{{actividad.descripcion}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{actividad.ordenTrabajo}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{actividad.reserva}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{actividad.fechaInicioProgramado}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{actividad.fechaFinProgramado}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{actividad.fechaInicioActividad}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{actividad.fechaFinActividad}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-
-                        {! {{actividad.tipoMantenimiento}}
-                        {{actividad.equipo}}
-                        {{actividad.estado}} !}
-
-
-                        <div class="extra content">
-                            <div class="ui two buttons">
-                                <button class="ui basic green button" ng-click="AreaModal('editar',area)"><i
-                                        class="pencil alternate icon"></i>
-                                    Editar</button>
-                                <button ng-if="{identity.roles.contains(" admin")}" class="ui basic red button"
-                                    ng-click="eliminar('area', area)"><i class="trash alternate outline icon"></i>
-                                    Eliminar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="content">
-                        <button class="ui blue labeled icon button" ng-click="AreaModal('agregar')"><i
-                                class="plus circle icon"></i>
-                            Agregar area</button>
-                        <button class="ui grey labeled icon button" ng-click="verInicio()"><i class="redo icon"></i>
-                            Resumenes</button>
-                    </div>
-                </div>
-            </div>
-
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th>Descripcion</th>
+                        <th>Orden Trabajo</th>
+                        <th>Reserva</th>
+                        <th>Fecha Inicio Programado</th>
+                        <th>Fecha Fin Programado</th>
+                        <th>Fecha Inicio Actividad</th>
+                        <th>Fecha Fin Actividad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="actividad in actividades">
+                        <td>{{actividad.descripcion}}</td>
+                        <td>{{actividad.ordenTrabajo}}</td>
+                        <td>{{actividad.reserva}}</td>
+                        <td>{{actividad.fechaInicioProgramado}}</td>
+                        <td>{{actividad.fechaFinProgramado}}</td>
+                        <td>{{actividad.fechaInicioActividad}}</td>
+                        <td>{{actividad.fechaFinActividad}}</td>
+                        <td>
+                            <button class="ui basic green button" ng-click="actividadModal('editar',actividad)"><i
+                                    class="pencil alternate icon"></i>
+                                Editar</button>
+                            <button ng-if="{identity.roles.contains(" admin")}" class="ui basic red button"
+                                ng-click="eliminar('actividad', actividad)"><i class="trash alternate outline icon"></i>
+                                Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-
-    
 
     <!-- MODALES -->
     <div class="ui modal" id="modal-area">

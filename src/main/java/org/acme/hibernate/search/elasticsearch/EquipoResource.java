@@ -1,6 +1,6 @@
 package org.acme.hibernate.search.elasticsearch;
 
-import org.jboss.logging.Logger;
+// import org.jboss.logging.Logger;
 
 import java.util.List;
 import java.util.Optional;
@@ -51,7 +51,7 @@ public class EquipoResource {
 
     @Inject
     SearchSession searchSession;
-    private static final Logger LOG = Logger.getLogger(EquipoResource.class);
+    // private static final Logger LOG = Logger.getLogger(EquipoResource.class);
 
     // AREA
     @PUT
