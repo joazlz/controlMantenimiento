@@ -75,13 +75,14 @@ INSERT INTO tipomantenimiento(id, nombre) VALUES (5, 'Desistalar');
 ALTER SEQUENCE tipomantenimiento_seq RESTART WITH 6;
 
 INSERT INTO rangopresion(id, minimo,maximo) VALUES (1, 0,10);
-ALTER SEQUENCE rangopresion_seq RESTART WITH 2;
+INSERT INTO rangopresion(id, minimo,maximo) VALUES (2, 11,100);
+ALTER SEQUENCE rangopresion_seq RESTART WITH 3;
 
 INSERT INTO material(id, nombre,codigosap) VALUES (1, 'tornillo','1ASDOFKN19802');
 INSERT INTO material(id, nombre,codigosap) VALUES (2, 'broca','75452popo');
 ALTER SEQUENCE material_seq RESTART WITH 3;
 
-INSERT INTO  equipo(id ,area_id,estado_id ,tipogas_id ,capacidadbtu_id ,tipofiltrodeshidratador_id ,rangopresionalta_id ,rangopresionbaja_id ,marca_id ,ph_id ,tipoequipo_id ,modelo ,voltaje ,amperaje ,flipon ,cableAlimentacion ,tranformador ,contactor ,termostato ,tarjetaElectronica ,selector ,retardor ,presostatoAlta_id ,presostatoBaja_id) VALUES (1,2,6,1,1,1,1,1,1,1,1,'ckl60-cm3','220','21.7','3 polos*40amp','tsj 3*10','220','3 polos* 24v','digital','N/A','N/A','0.3-10*24V',1,1);
+INSERT INTO  equipo(id ,area_id,estado_id ,tipogas_id ,capacidadbtu_id ,tipofiltrodeshidratador_id ,rangopresionalta_id ,rangopresionbaja_id ,marca_id ,ph_id ,tipoequipo_id ,modelo ,voltaje ,amperaje ,flipon ,cableAlimentacion ,tranformador ,contactor ,termostato ,tarjetaElectronica ,selector ,retardor ,presostatoAlta_id ,presostatoBaja_id) VALUES (1,2,6,1,1,1,2,1,1,1,1,'ckl60-cm3','220','21.7','3 polos*40amp','tsj 3*10','220','3 polos* 24v','digital','N/A','N/A','0.3-10*24V',1,1);
 ALTER SEQUENCE equipo_seq RESTART WITH 2;
 
 INSERT INTO equipo_tipo_motor(equipo_id, tipomotor_id)
