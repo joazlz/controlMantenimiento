@@ -3,7 +3,9 @@ INSERT INTO area(id, nombre) VALUES (2, '3 marias');
 ALTER SEQUENCE area_seq RESTART WITH 3;
 
 INSERT INTO bateria(id, nombre) VALUES (1, 'aaa');
-ALTER SEQUENCE bateria_seq RESTART WITH 2;
+INSERT INTO bateria(id, nombre) VALUES (2, 'aa');
+INSERT INTO bateria(id, nombre) VALUES (3, 'a');
+ALTER SEQUENCE bateria_seq RESTART WITH 4;
 
 INSERT INTO capacidadbtu(id, nombre) VALUES (1, '60000');
 INSERT INTO capacidadbtu(id, nombre) VALUES (2, '24000');
@@ -79,25 +81,26 @@ INSERT INTO material(id, nombre,codigosap) VALUES (1, 'tornillo','1ASDOFKN19802'
 INSERT INTO material(id, nombre,codigosap) VALUES (2, 'broca','75452popo');
 ALTER SEQUENCE material_seq RESTART WITH 3;
 
-INSERT INTO  equipo(id ,area_id ,tipogas_id ,capacidadbtu_id ,tipofiltrodeshidratador_id ,rangopresionalta_id ,rangopresionbaja_id ,marca_id ,ph_id ,tipoequipo_id ,modelo ,voltaje ,amperaje ,flipon ,cableAlimentacion ,tranformador ,contactor ,termostato ,tarjetaElectronica ,selector ,retardor ,presostatoAlta_id ,presostatoBaja_id) VALUES (1,1,1,1,1,1,1,1,1,1,'ckl60-cm3','220','21.7','3 polos*40amp','tsj 3*10','220','3 polos* 24v','digital','N/A','N/A','0.3-10*24V',1,1);
+INSERT INTO  equipo(id ,area_id,estado_id ,tipogas_id ,capacidadbtu_id ,tipofiltrodeshidratador_id ,rangopresionalta_id ,rangopresionbaja_id ,marca_id ,ph_id ,tipoequipo_id ,modelo ,voltaje ,amperaje ,flipon ,cableAlimentacion ,tranformador ,contactor ,termostato ,tarjetaElectronica ,selector ,retardor ,presostatoAlta_id ,presostatoBaja_id) VALUES (1,2,6,1,1,1,1,1,1,1,1,'ckl60-cm3','220','21.7','3 polos*40amp','tsj 3*10','220','3 polos* 24v','digital','N/A','N/A','0.3-10*24V',1,1);
 ALTER SEQUENCE equipo_seq RESTART WITH 2;
 
 INSERT INTO equipo_tipo_motor(equipo_id, tipomotor_id)
-VALUES (1, 1);
+VALUES (1, 1),(1, 2);
 
 
 INSERT INTO equipo_tipo_compresor(equipo_id, tipocompresor_id)
-VALUES (1, 1);
+VALUES (1, 1),(1, 2);
 
 INSERT INTO equipo_bateria(equipo_id, bateria_id)
-VALUES (1, 1);
+VALUES (1, 1),(1, 2);
 
 
 INSERT INTO tag(id, nombre) VALUES (1, 'depaquete');
-ALTER SEQUENCE tag_seq RESTART WITH 2;
+INSERT INTO tag(id, nombre) VALUES (2, 'xxx');
+ALTER SEQUENCE tag_seq RESTART WITH 3;
 
 INSERT INTO equipo_tag(equipo_id, tag_id)
-VALUES (1, 1);
+VALUES (1, 1),(1, 2);
 
 
 -- INSERT INTO duracion(id, horas,minutos) VALUES (1, 43,10);
