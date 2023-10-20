@@ -36,6 +36,7 @@ import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.jboss.resteasy.reactive.RestForm;
 import org.jboss.resteasy.reactive.RestQuery;
 
+import io.quarkus.logging.Log;
 // import io.quarkus.logging.Log;
 // import io.quarkus.runtime.StartupEvent;
 import io.quarkus.security.Authenticated;
@@ -722,11 +723,12 @@ public class EquipoResource {
     @Path("rangopresion")
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void agregarRangoPresion(@RestForm Long minimo, @RestForm Long maximo) {
+    public RangoPresion agregarRangoPresion(@RestForm Long minimo, @RestForm Long maximo) {
         RangoPresion rangoPresion = new RangoPresion();
         rangoPresion.minimo = minimo;
         rangoPresion.maximo = maximo;
         rangoPresion.persist();
+        return rangoPresion;
     }
 
     @POST
@@ -926,6 +928,13 @@ public class EquipoResource {
         Presostato presostatoAlta = Presostato.findById(presostatoAlta_id);
         Presostato presostatoBaja = Presostato.findById(presostatoBaja_id);
 
+        if(presostatoAlta.equals(null)){
+            presostatoAlta.persist();
+        }
+        if(presostatoBaja.equals(null)){
+            presostatoBaja.persist();
+        }
+
         if(
         !area.equals(null)&
         !tipoGas.equals(null)&
@@ -935,9 +944,7 @@ public class EquipoResource {
         !rangoPresionBaja.equals(null)&
         !marca.equals(null)&
         !pH.equals(null)&
-        !tipoEquipo.equals(null)&
-        !presostatoAlta.equals(null)&
-        !presostatoBaja.equals(null)
+        !tipoEquipo.equals(null)
         ){
             equipo.area = area;
             equipo.tipoGas = tipoGas;
@@ -994,9 +1001,8 @@ public class EquipoResource {
             @RestForm Long pH_id,
             @RestForm Long tipoEquipo_id,
             @RestForm Long presostatoAlta_id,
-            @RestForm Long presostatoBaja_id,
-            @RestForm Long estado_id) {
-        
+            @RestForm Long presostatoBaja_id) {
+                
         Equipo equipo = Equipo.findById(id);
         Area area = Area.findById(area_id);
         TipoGas tipoGas = TipoGas.findById(tipoGas_id);
@@ -1009,8 +1015,6 @@ public class EquipoResource {
         TipoEquipo tipoEquipo = TipoEquipo.findById(tipoEquipo_id);
         Presostato presostatoAlta = Presostato.findById(presostatoAlta_id);
         Presostato presostatoBaja = Presostato.findById(presostatoBaja_id);
-        Estado estado = Estado.findById(estado_id);
-
         if (!equipo.equals(null)) {
             equipo.modelo = modelo;
             equipo.voltaje = voltaje;
@@ -1034,7 +1038,6 @@ public class EquipoResource {
             equipo.tipoEquipo = tipoEquipo;
             equipo.presostatoAlta = presostatoAlta;
             equipo.presostatoBaja = presostatoBaja;
-            equipo.estado = estado;
             equipo.persist();
         }
     }

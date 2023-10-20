@@ -93,7 +93,7 @@ public class Equipo extends PanacheEntity {
     @ManyToOne
     public RangoPresion rangoPresionBaja;
     // Marca
-    @ManyToOne
+    @ManyToOne  
     public Marca marca;
     // PH
     @ManyToOne
