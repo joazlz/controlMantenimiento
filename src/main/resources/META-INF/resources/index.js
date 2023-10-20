@@ -17,6 +17,9 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
     $scope.tags = [];
     $scope.equipos = [];
     $scope.actividades = [];
+    $scope.tiposNotificacion = [];
+    $scope.tiposMantenimientos = [];
+    $scope.tiposLimpieza = [];
     $scope.pattern = '';
     $scope.nuevoTipo = '';
     $scope.esAgregarTipoMotor = false;
@@ -199,10 +202,42 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
             console.log(response.statusText);
         });
     }
+    function getTiposLimpieza() {
+        $http({
+            method: 'GET',
+            url: '/actividad/tipolimpieza/buscar?pattern=' + $scope.pattern
+        }).then(function successCallback(response) {
+            $scope.tiposLimpieza = response.data;
+        }, function errorCallback(response) {
+            console.log(response.statusText);
+        });
+    }
+    function getTiposMantenimiento() {
+        $http({
+            method: 'GET',
+            url: '/actividad/tipomantenimiento/buscar?pattern=' + $scope.pattern
+        }).then(function successCallback(response) {
+            $scope.tiposMantenimiento = response.data;
+        }, function errorCallback(response) {
+            console.log(response.statusText);
+        });
+    }
+    function getTiposNotificacion() {
+        $http({
+            method: 'GET',
+            url: '/alerta/tiponotificacion/buscar?pattern=' + $scope.pattern
+        }).then(function successCallback(response) {
+            $scope.tiposNotificacion = response.data;
+        }, function errorCallback(response) {
+            console.log(response.statusText);
+        });
+    }
     function _actualizarDatos() {
         getEquipos();
         getActividades();
-
+        getTiposNotificacion();
+        getTiposLimpieza();
+        getTiposMantenimiento();
         getArea();
         getEstado();
         getTipoGas();
@@ -231,11 +266,17 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
         $("#ph").hide()
         $("#presostato").hide()
         $("#rangoPresion").hide()
-        $("#tipoCompresos").hide()
+        $("#tipoCompresor").hide()
         $("#tipoEquipo").hide()
         $("#tipoFiltroDeshidratador").hide()
         $("#tipoGas").hide()
         $("#tipoMotor").hide()
+        $("#tipoLimpieza").hide()
+        $("#tipoMantenimiento").hide()
+        $("#tipoNotificacion").hide()
+        $("#tipoLimpieza").hide()
+        $("#tipoMantenimiento").hide()
+        $("#tipoNotificacion").hide()
         $('#contenidoInicio').show();
         $('#rangoPresion').dropdown();
         _actualizarDatos()
@@ -251,7 +292,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
         $('#contenidoEquipos').hide();
         $('#contenidoInicio').show();
     }
-    function httpMetodo(method,url,data){
+    function httpMetodo(method, url, data) {
         $http({
             method: method,
             url: url,
@@ -411,11 +452,14 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#ph").hide()
                         $("#presostato").hide()
                         $("#rangoPresion").hide()
-                        $("#tipoCompresos").hide()
+                        $("#tipoCompresor").hide()
                         $("#tipoEquipo").hide()
                         $("#tipoFiltroDeshidratador").hide()
                         $("#tipoGas").hide()
                         $("#tipoMotor").hide()
+                        $("#tipoLimpieza").hide()
+                        $("#tipoMantenimiento").hide()
+                        $("#tipoNotificacion").hide()
                         $scope.catalogoSeleccionado = 'area'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').addClass('active');
@@ -430,6 +474,9 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoFiltroDeshidratador').removeClass('active')
                         $('#itemTipoGas').removeClass('active')
                         $('#itemTipoMotor').removeClass('active')
+                        $('#itemTipoLimpieza').removeClass('active')
+                        $('#itemTipoMantenimiento').removeClass('active')
+                        $('#itemTipoNotificacion').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -461,11 +508,14 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#ph").hide()
                         $("#presostato").hide()
                         $("#rangoPresion").hide()
-                        $("#tipoCompresos").hide()
+                        $("#tipoCompresor").hide()
                         $("#tipoEquipo").hide()
                         $("#tipoFiltroDeshidratador").hide()
                         $("#tipoGas").hide()
                         $("#tipoMotor").hide()
+                        $("#tipoLimpieza").hide()
+                        $("#tipoMantenimiento").hide()
+                        $("#tipoNotificacion").hide()
                         $scope.catalogoSeleccionado = 'bateria'
                         $('#itemBateria').addClass('active');
                         $('#itemArea').removeClass('active');
@@ -480,6 +530,9 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoFiltroDeshidratador').removeClass('active')
                         $('#itemTipoGas').removeClass('active')
                         $('#itemTipoMotor').removeClass('active')
+                        $('#itemTipoLimpieza').removeClass('active')
+                        $('#itemTipoMantenimiento').removeClass('active')
+                        $('#itemTipoNotificacion').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -511,11 +564,14 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#ph").hide()
                         $("#presostato").hide()
                         $("#rangoPresion").hide()
-                        $("#tipoCompresos").hide()
+                        $("#tipoCompresor").hide()
                         $("#tipoEquipo").hide()
                         $("#tipoFiltroDeshidratador").hide()
                         $("#tipoGas").hide()
                         $("#tipoMotor").hide()
+                        $("#tipoLimpieza").hide()
+                        $("#tipoMantenimiento").hide()
+                        $("#tipoNotificacion").hide()
                         $scope.catalogoSeleccionado = 'capacidadbtu'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -530,6 +586,9 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoFiltroDeshidratador').removeClass('active')
                         $('#itemTipoGas').removeClass('active')
                         $('#itemTipoMotor').removeClass('active')
+                        $('#itemTipoLimpieza').removeClass('active')
+                        $('#itemTipoMantenimiento').removeClass('active')
+                        $('#itemTipoNotificacion').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -559,11 +618,14 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#ph").hide()
                         $("#presostato").hide()
                         $("#rangoPresion").hide()
-                        $("#tipoCompresos").hide()
+                        $("#tipoCompresor").hide()
                         $("#tipoEquipo").hide()
                         $("#tipoFiltroDeshidratador").hide()
                         $("#tipoGas").hide()
                         $("#tipoMotor").hide()
+                        $("#tipoLimpieza").hide()
+                        $("#tipoMantenimiento").hide()
+                        $("#tipoNotificacion").hide()
                         $scope.catalogoSeleccionado = 'estado'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -578,6 +640,9 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoFiltroDeshidratador').removeClass('active')
                         $('#itemTipoGas').removeClass('active')
                         $('#itemTipoMotor').removeClass('active')
+                        $('#itemTipoLimpieza').removeClass('active')
+                        $('#itemTipoMantenimiento').removeClass('active')
+                        $('#itemTipoNotificacion').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -607,11 +672,14 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#ph").hide()
                         $("#presostato").hide()
                         $("#rangoPresion").hide()
-                        $("#tipoCompresos").hide()
+                        $("#tipoCompresor").hide()
                         $("#tipoEquipo").hide()
                         $("#tipoFiltroDeshidratador").hide()
                         $("#tipoGas").hide()
                         $("#tipoMotor").hide()
+                        $("#tipoLimpieza").hide()
+                        $("#tipoMantenimiento").hide()
+                        $("#tipoNotificacion").hide()
                         $scope.catalogoSeleccionado = 'marca'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -626,6 +694,9 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoFiltroDeshidratador').removeClass('active')
                         $('#itemTipoGas').removeClass('active')
                         $('#itemTipoMotor').removeClass('active')
+                        $('#itemTipoLimpieza').removeClass('active')
+                        $('#itemTipoMantenimiento').removeClass('active')
+                        $('#itemTipoNotificacion').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -655,11 +726,14 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#ph").show()
                         $("#presostato").hide()
                         $("#rangoPresion").hide()
-                        $("#tipoCompresos").hide()
+                        $("#tipoCompresor").hide()
                         $("#tipoEquipo").hide()
                         $("#tipoFiltroDeshidratador").hide()
                         $("#tipoGas").hide()
                         $("#tipoMotor").hide()
+                        $("#tipoLimpieza").hide()
+                        $("#tipoMantenimiento").hide()
+                        $("#tipoNotificacion").hide()
                         $scope.catalogoSeleccionado = 'ph'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -674,6 +748,9 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoFiltroDeshidratador').removeClass('active')
                         $('#itemTipoGas').removeClass('active')
                         $('#itemTipoMotor').removeClass('active')
+                        $('#itemTipoLimpieza').removeClass('active')
+                        $('#itemTipoMantenimiento').removeClass('active')
+                        $('#itemTipoNotificacion').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -703,11 +780,14 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#ph").hide()
                         $("#presostato").show()
                         $("#rangoPresion").hide()
-                        $("#tipoCompresos").hide()
+                        $("#tipoCompresor").hide()
                         $("#tipoEquipo").hide()
                         $("#tipoFiltroDeshidratador").hide()
                         $("#tipoGas").hide()
                         $("#tipoMotor").hide()
+                        $("#tipoLimpieza").hide()
+                        $("#tipoMantenimiento").hide()
+                        $("#tipoNotificacion").hide()
                         $scope.catalogoSeleccionado = 'presostato'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -722,6 +802,9 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoFiltroDeshidratador').removeClass('active')
                         $('#itemTipoGas').removeClass('active')
                         $('#itemTipoMotor').removeClass('active')
+                        $('#itemTipoLimpieza').removeClass('active')
+                        $('#itemTipoMantenimiento').removeClass('active')
+                        $('#itemTipoNotificacion').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -751,11 +834,14 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#ph").hide()
                         $("#presostato").hide()
                         $("#rangoPresion").show()
-                        $("#tipoCompresos").hide()
+                        $("#tipoCompresor").hide()
                         $("#tipoEquipo").hide()
                         $("#tipoFiltroDeshidratador").hide()
                         $("#tipoGas").hide()
                         $("#tipoMotor").hide()
+                        $("#tipoLimpieza").hide()
+                        $("#tipoMantenimiento").hide()
+                        $("#tipoNotificacion").hide()
                         $scope.catalogoSeleccionado = 'rangopresion'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -770,8 +856,11 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoFiltroDeshidratador').removeClass('active')
                         $('#itemTipoGas').removeClass('active')
                         $('#itemTipoMotor').removeClass('active')
+                        $('#itemTipoLimpieza').removeClass('active')
+                        $('#itemTipoMantenimiento').removeClass('active')
+                        $('#itemTipoNotificacion').removeClass('active')
                         break;
-                        
+
                     case "agregar":
                         $scope.metodo = metodo
                         if (item === 'agregar') {
@@ -779,17 +868,19 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         } else {
                             $scope.formulario = item
                         }
-                        $("#tituloModal_editar_agregar_presostato").text("Agregar Presostato");
-                        $('#editar_agregar_presostato').modal('show');
+                        $("#tituloModal_editar_agregar_rangoPresion").text("Agregar Rango Presion");
+                        $('#editar_agregar_rangoPresion').modal('show');
 
                         break;
 
                     case "editar":
-
+                        $scope.formulario.rangoPresion = item
+                        $("#tituloModal_editar_agregar_rangoPresion").text("Agregar Rango Presion");
+                        $('#editar_agregar_rangoPresion').modal('show');
                         break;
                 }
                 break;
-            case "tipoCompresor":
+            case "tipocompresor":
                 switch (metodo) {
                     case "ver":
                         $("#capacidadBtu").hide();
@@ -800,12 +891,15 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#ph").hide()
                         $("#presostato").hide()
                         $("#rangoPresion").hide()
-                        $("#tipoCompresos").show()
+                        $("#tipoCompresor").show()
                         $("#tipoEquipo").hide()
                         $("#tipoFiltroDeshidratador").hide()
                         $("#tipoGas").hide()
                         $("#tipoMotor").hide()
-                        $scope.catalogoSeleccionado = 'tipoCompresor'
+                        $("#tipoLimpieza").hide()
+                        $("#tipoMantenimiento").hide()
+                        $("#tipoNotificacion").hide()
+                        $scope.catalogoSeleccionado = 'tipocompresor'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
                         $('#itemCapacidadBtu').removeClass('active')
@@ -819,10 +913,31 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoFiltroDeshidratador').removeClass('active')
                         $('#itemTipoGas').removeClass('active')
                         $('#itemTipoMotor').removeClass('active')
+                        $('#itemTipoLimpieza').removeClass('active')
+                        $('#itemTipoMantenimiento').removeClass('active')
+                        $('#itemTipoNotificacion').removeClass('active')
+                        break;
+
+                    case "agregar":
+                        $scope.metodo = metodo
+                        if (item === 'agregar') {
+                            $scope.formulario = {}
+                        } else {
+                            $scope.formulario = item
+                        }
+                        $("#tituloModal_editar_agregar_tipocompresor").text("Agregar Tipo Compresor");
+                        $('#editar_agregar_tipocompresor').modal('show');
+
+                        break;
+
+                    case "editar":
+                        $scope.formulario.tipoCompresor = item
+                        $("#tituloModal_editar_agregar_tipocompresor").text("Agregar Tipo Compresor");
+                        $('#editar_agregar_tipocompresor').modal('show');
                         break;
                 }
                 break;
-            case "tipoEquipo":
+            case "tipoequipo":
                 switch (metodo) {
                     case "ver":
                         $("#capacidadBtu").hide();
@@ -833,12 +948,15 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#ph").hide()
                         $("#presostato").hide()
                         $("#rangoPresion").hide()
-                        $("#tipoCompresos").hide()
+                        $("#tipoCompresor").hide()
                         $("#tipoEquipo").show()
                         $("#tipoFiltroDeshidratador").hide()
                         $("#tipoGas").hide()
                         $("#tipoMotor").hide()
-                        $scope.catalogoSeleccionado = 'tipoEquipo'
+                        $("#tipoLimpieza").hide()
+                        $("#tipoMantenimiento").hide()
+                        $("#tipoNotificacion").hide()
+                        $scope.catalogoSeleccionado = 'tipoequipo'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
                         $('#itemCapacidadBtu').removeClass('active')
@@ -852,10 +970,31 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoFiltroDeshidratador').removeClass('active')
                         $('#itemTipoGas').removeClass('active')
                         $('#itemTipoMotor').removeClass('active')
+                        $('#itemTipoLimpieza').removeClass('active')
+                        $('#itemTipoMantenimiento').removeClass('active')
+                        $('#itemTipoNotificacion').removeClass('active')
+                        break;
+
+                    case "agregar":
+                        $scope.metodo = metodo
+                        if (item === 'agregar') {
+                            $scope.formulario = {}
+                        } else {
+                            $scope.formulario = item
+                        }
+                        $("#tituloModal_editar_agregar_tipoequipo").text("Agregar Tipo Equipo");
+                        $('#editar_agregar_tipoequipo').modal('show');
+
+                        break;
+
+                    case "editar":
+                        $scope.formulario.tipoEquipo = item
+                        $("#tituloModal_editar_agregar_tipoequipo").text("Agregar Tipo Equipo");
+                        $('#editar_agregar_tipoequipo').modal('show');
                         break;
                 }
                 break;
-            case "tipoFiltroDeshidratador":
+            case "tipofiltrodeshidratador":
                 switch (metodo) {
                     case "ver":
                         $("#capacidadBtu").hide();
@@ -866,12 +1005,15 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#ph").hide()
                         $("#presostato").hide()
                         $("#rangoPresion").hide()
-                        $("#tipoCompresos").hide()
+                        $("#tipoCompresor").hide()
                         $("#tipoEquipo").hide()
                         $("#tipoFiltroDeshidratador").show()
                         $("#tipoGas").hide()
                         $("#tipoMotor").hide()
-                        $scope.catalogoSeleccionado = 'tipoFiltroDeshidratador'
+                        $("#tipoLimpieza").hide()
+                        $("#tipoMantenimiento").hide()
+                        $("#tipoNotificacion").hide()
+                        $scope.catalogoSeleccionado = 'tipofiltrodeshidratador'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
                         $('#itemCapacidadBtu').removeClass('active')
@@ -885,10 +1027,30 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoFiltroDeshidratador').addClass('active')
                         $('#itemTipoGas').removeClass('active')
                         $('#itemTipoMotor').removeClass('active')
+                        $('#itemTipoLimpieza').removeClass('active')
+                        $('#itemTipoMantenimiento').removeClass('active')
+                        $('#itemTipoNotificacion').removeClass('active')
+                        break;
+                    case "agregar":
+                        $scope.metodo = metodo
+                        if (item === 'agregar') {
+                            $scope.formulario = {}
+                        } else {
+                            $scope.formulario = item
+                        }
+                        $("#tituloModal_editar_agregar_tipofiltrodeshidratador").text("Agregar Tipo Equipo");
+                        $('#editar_agregar_tipofiltrodeshidratador').modal('show');
+
+                        break;
+
+                    case "editar":
+                        $scope.formulario.tipoFiltroDeshidratador = item
+                        $("#tituloModal_editar_agregar_tipofiltrodeshidratador").text("Agregar Tipo Equipo");
+                        $('#editar_agregar_tipofiltrodeshidratador').modal('show');
                         break;
                 }
                 break;
-            case "tipoGas":
+            case "tipogas":
                 switch (metodo) {
                     case "ver":
                         $("#capacidadBtu").hide();
@@ -899,12 +1061,15 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#ph").hide()
                         $("#presostato").hide()
                         $("#rangoPresion").hide()
-                        $("#tipoCompresos").hide()
+                        $("#tipoCompresor").hide()
                         $("#tipoEquipo").hide()
                         $("#tipoFiltroDeshidratador").hide()
                         $("#tipoGas").show()
                         $("#tipoMotor").hide()
-                        $scope.catalogoSeleccionado = 'tipoGas'
+                        $("#tipoLimpieza").hide()
+                        $("#tipoMantenimiento").hide()
+                        $("#tipoNotificacion").hide()
+                        $scope.catalogoSeleccionado = 'tipogas'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
                         $('#itemCapacidadBtu').removeClass('active')
@@ -918,10 +1083,30 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoFiltroDeshidratador').removeClass('active')
                         $('#itemTipoGas').addClass('active')
                         $('#itemTipoMotor').removeClass('active')
+                        $('#itemTipoLimpieza').removeClass('active')
+                        $('#itemTipoMantenimiento').removeClass('active')
+                        $('#itemTipoNotificacion').removeClass('active')
+                        break;
+                    case "agregar":
+                        $scope.metodo = metodo
+                        if (item === 'agregar') {
+                            $scope.formulario = {}
+                        } else {
+                            $scope.formulario = item
+                        }
+                        $("#tituloModal_editar_agregar_tipogas").text("Agregar Tipo Equipo");
+                        $('#editar_agregar_tipogas').modal('show');
+
+                        break;
+
+                    case "editar":
+                        $scope.formulario.tipoGas = item
+                        $("#tituloModal_editar_agregar_tipogas").text("Agregar Tipo Equipo");
+                        $('#editar_agregar_tipogas').modal('show');
                         break;
                 }
                 break;
-            case "tipoMotor":
+            case "tipomotor":
                 switch (metodo) {
                     case "ver":
                         $("#capacidadBtu").hide();
@@ -932,12 +1117,15 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#ph").hide()
                         $("#presostato").hide()
                         $("#rangoPresion").hide()
-                        $("#tipoCompresos").hide()
+                        $("#tipoCompresor").hide()
                         $("#tipoEquipo").hide()
                         $("#tipoFiltroDeshidratador").hide()
                         $("#tipoGas").hide()
                         $("#tipoMotor").show()
-                        $scope.catalogoSeleccionado = 'tipoMotor'
+                        $("#tipoLimpieza").hide()
+                        $("#tipoMantenimiento").hide()
+                        $("#tipoNotificacion").hide()
+                        $scope.catalogoSeleccionado = 'tipomotor'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
                         $('#itemCapacidadBtu').removeClass('active')
@@ -951,6 +1139,198 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoFiltroDeshidratador').removeClass('active')
                         $('#itemTipoGas').removeClass('active')
                         $('#itemTipoMotor').addClass('active')
+                        $('#itemTipoLimpieza').removeClass('active')
+                        $('#itemTipoMantenimiento').removeClass('active')
+                        $('#itemTipoNotificacion').removeClass('active')
+                        break
+                    case "agregar":
+                        $scope.metodo = metodo
+                        if (item === 'agregar') {
+                            $scope.formulario = {}
+                        } else {
+                            $scope.formulario = item
+                        }
+                        $("#tituloModal_editar_agregar_tipomotor").text("Agregar Tipo Motor");
+                        $('#editar_agregar_tipomotor').modal('show');
+
+                        break;
+
+                    case "editar":
+                        $scope.formulario.tipoMotor = item
+                        $("#tituloModal_editar_agregar_tipomotor").text("Agregar Tipo Motor");
+                        $('#editar_agregar_tipomotor').modal('show');
+                        break;
+                }
+                break;
+
+            case "tipolimpieza":
+                switch (metodo) {
+                    case "ver":
+                        $("#capacidadBtu").hide();
+                        $("#areas").hide();
+                        $("#baterias").hide();
+                        $("#estado").hide()
+                        $("#marca").hide()
+                        $("#ph").hide()
+                        $("#presostato").hide()
+                        $("#rangoPresion").hide()
+                        $("#tipoCompresor").hide()
+                        $("#tipoEquipo").hide()
+                        $("#tipoFiltroDeshidratador").hide()
+                        $("#tipoGas").hide()
+                        $("#tipoMotor").hide()
+                        $("#tipoLimpieza").show()
+                        $("#tipoMantenimiento").hide()
+                        $("#tipoNotificacion").hide()
+
+                        $scope.catalogoSeleccionado = 'tipolimpieza'
+                        $('#itemBateria').removeClass('active');
+                        $('#itemArea').removeClass('active');
+                        $('#itemCapacidadBtu').removeClass('active')
+                        $('#itemEstado').removeClass('active')
+                        $('#itemMarca').removeClass('active')
+                        $('#itemPh').removeClass('active')
+                        $('#itemPresostato').removeClass('active')
+                        $('#itemRangoPresion').removeClass('active')
+                        $('#itemTipoCompresor').removeClass('active')
+                        $('#itemTipoEquipo').removeClass('active')
+                        $('#itemTipoFiltroDeshidratador').removeClass('active')
+                        $('#itemTipoGas').removeClass('active')
+                        $('#itemTipoMotor').removeClass('active')
+                        $('#itemTipoLimpieza').addClass('active')
+                        $('#itemTipoMantenimiento').removeClass('active')
+                        $('#itemTipoNotificacion').removeClass('active')
+                        break
+                    case "agregar":
+                        $scope.metodo = metodo
+                        if (item === 'agregar') {
+                            $scope.formulario = {}
+                        } else {
+                            $scope.formulario = item
+                        }
+                        $("#tituloModal_editar_agregar_tipolimpieza").text("Agregar Tipo Limpieza");
+                        $('#editar_agregar_tipolimpieza').modal('show');
+
+                        break;
+
+                    case "editar":
+                        $scope.formulario.tipoLimpieza = item
+                        $("#tituloModal_editar_agregar_tipolimpieza").text("Agregar Tipo Limpieza");
+                        $('#editar_agregar_tipolimpieza').modal('show');
+                        break;
+                }
+                break;
+            case "tipomantenimiento":
+                switch (metodo) {
+                    case "ver":
+                        $("#capacidadBtu").hide();
+                        $("#areas").hide();
+                        $("#baterias").hide();
+                        $("#estado").hide()
+                        $("#marca").hide()
+                        $("#ph").hide()
+                        $("#presostato").hide()
+                        $("#rangoPresion").hide()
+                        $("#tipoCompresor").hide()
+                        $("#tipoEquipo").hide()
+                        $("#tipoFiltroDeshidratador").hide()
+                        $("#tipoGas").hide()
+                        $("#tipoMotor").hide()
+                        $("#tipoLimpieza").hide()
+                        $("#tipoMantenimiento").show()
+                        $("#tipoNotificacion").hide()
+
+                        $scope.catalogoSeleccionado = 'tipomantenimiento'
+                        $('#itemBateria').removeClass('active');
+                        $('#itemArea').removeClass('active');
+                        $('#itemCapacidadBtu').removeClass('active')
+                        $('#itemEstado').removeClass('active')
+                        $('#itemMarca').removeClass('active')
+                        $('#itemPh').removeClass('active')
+                        $('#itemPresostato').removeClass('active')
+                        $('#itemRangoPresion').removeClass('active')
+                        $('#itemTipoCompresor').removeClass('active')
+                        $('#itemTipoEquipo').removeClass('active')
+                        $('#itemTipoFiltroDeshidratador').removeClass('active')
+                        $('#itemTipoGas').removeClass('active')
+                        $('#itemTipoMotor').removeClass('active')
+                        $('#itemTipoLimpieza').removeClass('active')
+                        $('#itemTipoMantenimiento').addClass('active')
+                        $('#itemTipoNotificacion').removeClass('active')
+                        break
+                    case "agregar":
+                        $scope.metodo = metodo
+                        if (item === 'agregar') {
+                            $scope.formulario = {}
+                        } else {
+                            $scope.formulario = item
+                        }
+                        $("#tituloModal_editar_agregar_tipomantenimiento").text("Agregar Tipo Mantenimiento");
+                        $('#editar_agregar_tipomantenimiento').modal('show');
+
+                        break;
+
+                    case "editar":
+                        $scope.formulario.tipoMantenimiento = item
+                        $("#tituloModal_editar_agregar_tipomantenimiento").text("Agregar Tipo Mantenimiento");
+                        $('#editar_agregar_tipomantenimiento').modal('show');
+                        break;
+                }
+                break;
+            case "tiponotificacion":
+                switch (metodo) {
+                    case "ver":
+                        $("#capacidadBtu").hide();
+                        $("#areas").hide();
+                        $("#baterias").hide();
+                        $("#estado").hide()
+                        $("#marca").hide()
+                        $("#ph").hide()
+                        $("#presostato").hide()
+                        $("#rangoPresion").hide()
+                        $("#tipoCompresor").hide()
+                        $("#tipoEquipo").hide()
+                        $("#tipoFiltroDeshidratador").hide()
+                        $("#tipoGas").hide()
+                        $("#tipoMotor").hide()
+                        $("#tipoLimpieza").hide()
+                        $("#tipoMantenimiento").hide()
+                        $("#tipoNotificacion").show()
+
+                        $scope.catalogoSeleccionado = 'tiponotificacion'
+                        $('#itemBateria').removeClass('active');
+                        $('#itemArea').removeClass('active');
+                        $('#itemCapacidadBtu').removeClass('active')
+                        $('#itemEstado').removeClass('active')
+                        $('#itemMarca').removeClass('active')
+                        $('#itemPh').removeClass('active')
+                        $('#itemPresostato').removeClass('active')
+                        $('#itemRangoPresion').removeClass('active')
+                        $('#itemTipoCompresor').removeClass('active')
+                        $('#itemTipoEquipo').removeClass('active')
+                        $('#itemTipoFiltroDeshidratador').removeClass('active')
+                        $('#itemTipoGas').removeClass('active')
+                        $('#itemTipoMotor').removeClass('active')
+                        $('#itemTipoLimpieza').removeClass('active')
+                        $('#itemTipoMantenimiento').removeClass('active')
+                        $('#itemTipoNotificacion').addClass('active')
+                        break
+                    case "agregar":
+                        $scope.metodo = metodo
+                        if (item === 'agregar') {
+                            $scope.formulario = {}
+                        } else {
+                            $scope.formulario = item
+                        }
+                        $("#tituloModal_editar_agregar_tiponotificacion").text("Agregar Tipo Notificacion");
+                        $('#editar_agregar_tiponotificacion').modal('show');
+
+                        break;
+
+                    case "editar":
+                        $scope.formulario.tipoNotificacion = item
+                        $("#tituloModal_editar_agregar_tiponotificacion").text("Agregar Tipo Notificacion");
+                        $('#editar_agregar_tiponotificacion').modal('show');
                         break;
                 }
                 break;
@@ -1006,105 +1386,243 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                 if ($scope.formulario.area.id == -1 || $scope.formulario.area.id === undefined) {
                     data = {};
                     method = 'PUT';
-                    url = '/equipo/'+tipo;
+                    url = '/equipo/' + tipo;
                     data.nombre = formulario.area.nombre;
-                    httpMetodo(method,url,data)
+                    httpMetodo(method, url, data)
                 } else {
                     data = {};
                     method = 'POST';
-                    url = '/equipo/'+tipo+'/' + formulario.area.id;
+                    url = '/equipo/' + tipo + '/' + formulario.area.id;
                     data.nombre = formulario.area.nombre;
-                    httpMetodo(method,url,data)
+                    httpMetodo(method, url, data)
                 }
                 break;
             case "bateria":
                 if ($scope.formulario.bateria.id == -1 || $scope.formulario.bateria.id === undefined) {
                     data = {};
                     method = 'PUT';
-                    url = '/equipo/'+tipo;
+                    url = '/equipo/' + tipo;
                     data.nombre = formulario.bateria.nombre;
-                    httpMetodo(method,url,data)
+                    httpMetodo(method, url, data)
                 } else {
                     data = {};
                     method = 'POST';
-                    url = '/equipo/'+tipo+'/' + formulario.bateria.id;
+                    url = '/equipo/' + tipo + '/' + formulario.bateria.id;
                     data.nombre = formulario.bateria.nombre;
-                    httpMetodo(method,url,data)
+                    httpMetodo(method, url, data)
                 }
                 break;
             case "capacidadbtu":
                 if ($scope.formulario.capacidadBtu.id == -1 || $scope.formulario.capacidadBtu.id === undefined) {
                     data = {};
                     method = 'PUT';
-                    url = '/equipo/'+tipo;
+                    url = '/equipo/' + tipo;
                     data.nombre = formulario.capacidadBtu.nombre;
-                    httpMetodo(method,url,data)
+                    httpMetodo(method, url, data)
                 } else {
                     data = {};
                     method = 'POST';
-                    url = '/equipo/'+tipo+'/' + formulario.capacidadBtu.id;
+                    url = '/equipo/' + tipo + '/' + formulario.capacidadBtu.id;
                     data.nombre = formulario.capacidadBtu.nombre;
-                    httpMetodo(method,url,data)
+                    httpMetodo(method, url, data)
                 }
                 break;
             case "estado":
                 if ($scope.formulario.estado.id == -1 || $scope.formulario.estado.id === undefined) {
                     data = {};
                     method = 'PUT';
-                    url = '/equipo/'+tipo;
+                    url = '/equipo/' + tipo;
                     data.nombre = formulario.estado.nombre;
-                    httpMetodo(method,url,data)
+                    httpMetodo(method, url, data)
                 } else {
                     data = {};
                     method = 'POST';
-                    url = '/equipo/'+tipo+'/' + formulario.estado.id;
+                    url = '/equipo/' + tipo + '/' + formulario.estado.id;
                     data.nombre = formulario.estado.nombre;
-                    httpMetodo(method,url,data)
+                    httpMetodo(method, url, data)
                 }
                 break;
             case "marca":
                 if ($scope.formulario.marca.id == -1 || $scope.formulario.marca.id === undefined) {
                     data = {};
                     method = 'PUT';
-                    url = '/equipo/'+tipo;
+                    url = '/equipo/' + tipo;
                     data.nombre = formulario.marca.nombre;
-                    httpMetodo(method,url,data)
+                    httpMetodo(method, url, data)
                 } else {
                     data = {};
                     method = 'POST';
-                    url = '/equipo/'+tipo+'/' + formulario.marca.id;
+                    url = '/equipo/' + tipo + '/' + formulario.marca.id;
                     data.nombre = formulario.marca.nombre;
-                    httpMetodo(method,url,data)
+                    httpMetodo(method, url, data)
                 }
                 break;
             case "ph":
                 if ($scope.formulario.ph.id == -1 || $scope.formulario.ph.id === undefined) {
                     data = {};
                     method = 'PUT';
-                    url = '/equipo/'+tipo;
+                    url = '/equipo/' + tipo;
                     data.nombre = formulario.ph.nombre;
-                    httpMetodo(method,url,data)
+                    httpMetodo(method, url, data)
                 } else {
                     data = {};
                     method = 'POST';
-                    url = '/equipo/'+tipo+'/' + formulario.ph.id;
+                    url = '/equipo/' + tipo + '/' + formulario.ph.id;
                     data.nombre = formulario.ph.nombre;
-                    httpMetodo(method,url,data)
+                    httpMetodo(method, url, data)
                 }
                 break;
             case "presostato":
                 if ($scope.formulario.presostato.id == -1 || $scope.formulario.presostato.id === undefined) {
                     data = {};
                     method = 'PUT';
-                    url = '/equipo/'+tipo;
+                    url = '/equipo/' + tipo;
                     data.nombre = formulario.presostato.nombre;
-                    httpMetodo(method,url,data)
+                    httpMetodo(method, url, data)
                 } else {
                     data = {};
                     method = 'POST';
-                    url = '/equipo/'+tipo+'/' + formulario.presostato.id;
+                    url = '/equipo/' + tipo + '/' + formulario.presostato.id;
                     data.nombre = formulario.presostato.nombre;
-                    httpMetodo(method,url,data)
+                    httpMetodo(method, url, data)
+                }
+                break;
+            case "rangopresion":
+                if ($scope.formulario.rangoPresion.id == -1 || $scope.formulario.rangoPresion.id === undefined) {
+                    data = {};
+                    method = 'PUT';
+                    url = '/equipo/' + tipo;
+                    data.minimo = formulario.rangoPresion.minimo;
+                    data.maximo = formulario.rangoPresion.maximo;
+                    httpMetodo(method, url, data)
+                } else {
+                    data = {};
+                    method = 'POST';
+                    url = '/equipo/' + tipo + '/' + formulario.rangoPresion.id;
+                    data.minimo = formulario.rangoPresion.minimo;
+                    data.maximo = formulario.rangoPresion.maximo;
+                    httpMetodo(method, url, data)
+                }
+                break;
+            
+            case "tipocompresor":
+                if ($scope.formulario.tipoCompresor.id == -1 || $scope.formulario.tipoCompresor.id === undefined) {
+                    data = {};
+                    method = 'PUT';
+                    url = '/equipo/' + tipo;
+                    data.nombre = formulario.tipoCompresor.nombre;
+                    httpMetodo(method, url, data)
+                } else {
+                    data = {};
+                    method = 'POST';
+                    url = '/equipo/' + tipo + '/' + formulario.tipoCompresor.id;
+                    data.nombre = formulario.tipoCompresor.nombre;
+                    httpMetodo(method, url, data)
+                }
+                break;
+            case "tipoequipo":
+                if ($scope.formulario.tipoEquipo.id == -1 || $scope.formulario.tipoEquipo.id === undefined) {
+                    data = {};
+                    method = 'PUT';
+                    url = '/equipo/' + tipo;
+                    data.nombre = formulario.tipoEquipo.nombre;
+                    httpMetodo(method, url, data)
+                } else {
+                    data = {};
+                    method = 'POST';
+                    url = '/equipo/' + tipo + '/' + formulario.tipoEquipo.id;
+                    data.nombre = formulario.tipoEquipo.nombre;
+                    httpMetodo(method, url, data)
+                }
+                break;
+            case "tipofiltrodeshidratador":
+                if ($scope.formulario.tipoFiltroDeshidratador.id == -1 || $scope.formulario.tipoFiltroDeshidratador.id === undefined) {
+                    data = {};
+                    method = 'PUT';
+                    url = '/equipo/' + tipo;
+                    data.nombre = formulario.tipoFiltroDeshidratador.nombre;
+                    httpMetodo(method, url, data)
+                } else {
+                    data = {};
+                    method = 'POST';
+                    url = '/equipo/' + tipo + '/' + formulario.tipoFiltroDeshidratador.id;
+                    data.nombre = formulario.tipoFiltroDeshidratador.nombre;
+                    httpMetodo(method, url, data)
+                }
+                break;
+            case "tipogas":
+                if ($scope.formulario.tipoGas.id == -1 || $scope.formulario.tipoGas.id === undefined) {
+                    data = {};
+                    method = 'PUT';
+                    url = '/equipo/' + tipo;
+                    data.nombre = formulario.tipoGas.nombre;
+                    httpMetodo(method, url, data)
+                } else {
+                    data = {};
+                    method = 'POST';
+                    url = '/equipo/' + tipo + '/' + formulario.tipoGas.id;
+                    data.nombre = formulario.tipoGas.nombre;
+                    httpMetodo(method, url, data)
+                }
+                break;
+            case "tipomotor":
+                if ($scope.formulario.tipoMotor.id == -1 || $scope.formulario.tipoMotor.id === undefined) {
+                    data = {};
+                    method = 'PUT';
+                    url = '/equipo/' + tipo;
+                    data.nombre = formulario.tipoMotor.nombre;
+                    httpMetodo(method, url, data)
+                } else {
+                    data = {};
+                    method = 'POST';
+                    url = '/equipo/' + tipo + '/' + formulario.tipoMotor.id;
+                    data.nombre = formulario.tipoMotor.nombre;
+                    httpMetodo(method, url, data)
+                }
+                break;
+            case "tipolimpieza":
+                if ($scope.formulario.tipoLimpieza.id == -1 || $scope.formulario.tipoLimpieza.id === undefined) {
+                    data = {};
+                    method = 'PUT';
+                    url = '/actividad/' + tipo;
+                    data.nombre = formulario.tipoLimpieza.nombre;
+                    httpMetodo(method, url, data)
+                } else {
+                    data = {};
+                    method = 'POST';
+                    url = '/actividad/' + tipo + '/' + formulario.tipoLimpieza.id;
+                    data.nombre = formulario.tipoLimpieza.nombre;
+                    httpMetodo(method, url, data)
+                }
+                break;
+            case "tipomantenimiento":
+                if ($scope.formulario.tipoMantenimiento.id == -1 || $scope.formulario.tipoMantenimiento.id === undefined) {
+                    data = {};
+                    method = 'PUT';
+                    url = '/equipo/' + tipo;
+                    data.nombre = formulario.tipoMantenimiento.nombre;
+                    httpMetodo(method, url, data)
+                } else {
+                    data = {};
+                    method = 'POST';
+                    url = '/equipo/' + tipo + '/' + formulario.tipoMantenimiento.id;
+                    data.nombre = formulario.tipoMantenimiento.nombre;
+                    httpMetodo(method, url, data)
+                }
+                break;
+            case "tiponotificacion":
+                if ($scope.formulario.tipoNotificacion.id == -1 || $scope.formulario.tipoNotificacion.id === undefined) {
+                    data = {};
+                    method = 'PUT';
+                    url = '/alerta/' + tipo;
+                    data.nombre = formulario.tipoNotificacion.nombre;
+                    httpMetodo(method, url, data)
+                } else {
+                    data = {};
+                    method = 'POST';
+                    url = '/alerta/' + tipo + '/' + formulario.tipoNotificacion.id;
+                    data.nombre = formulario.tipoNotificacion.nombre;
+                    httpMetodo(method, url, data)
                 }
                 break;
             default:
@@ -1114,11 +1632,11 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
     }
     $scope.eliminar = function (tipo, formulario) {
         switch (tipo) {
-            case "area","bateria","capacidadbtu","estado","marca","ph","presostato":
+            case "area", "bateria", "capacidadbtu", "estado", "marca", "ph", "presostato","rangopresion","tipocompresor","tipoequipo","tipofiltrodeshidratador","tipogas","tipomotor","tipolimpieza","tipomantenimiento","tiponotificacion":
                 data = {};
                 method = 'DELETE';
-                url = '/equipo/'+tipo+'/' + formulario.id;
-                httpMetodo(method,url,data)
+                url = '/equipo/' + tipo + '/' + formulario.id;
+                httpMetodo(method, url, data)
                 break;
 
             default:
