@@ -36,9 +36,6 @@ import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.jboss.resteasy.reactive.RestForm;
 import org.jboss.resteasy.reactive.RestQuery;
 
-import io.quarkus.logging.Log;
-// import io.quarkus.logging.Log;
-// import io.quarkus.runtime.StartupEvent;
 import io.quarkus.security.Authenticated;
 import io.quarkus.security.identity.SecurityIdentity;
 
