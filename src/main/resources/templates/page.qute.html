@@ -81,13 +81,13 @@
                         <div class="menu">
                             <a id="itemArea" class="item" ng-click="ver('','area','ver')">Area</a>
                             <a id="itemBateria" class="item" ng-click="ver('','bateria','ver')">Bateria</a>
-                            <a id="itemCapacidadBtu" class="item" ng-click="ver('','capacidadBTU','ver')">Capacidad
+                            <a id="itemCapacidadBtu" class="item" ng-click="ver('','capacidadbtu','ver')">Capacidad
                                 Btu</a>
                             <a id="itemEstado" class="item" ng-click="ver('','estado','ver')">Estado</a>
                             <a id="itemMarca" class="item" ng-click="ver('','marca','ver')">Marca</a>
                             <a id="itemPh" class="item" ng-click="ver('','ph','ver')">PH</a>
-                            <a id="itemPresostato" class="item" ng-click="ver('','presostado','ver')">Presostato</a>
-                            <a id="itemRangoPresion" class="item" ng-click="ver('','rangoPresion','ver')">Rango
+                            <a id="itemPresostato" class="item" ng-click="ver('','presostato','ver')">Presostato</a>
+                            <a id="itemRangoPresion" class="item" ng-click="ver('','rangopresion','ver')">Rango
                                 Presion</a>
                             <a id="itemTipoCompresor" class="item" ng-click="ver('','tipoCompresor','ver')">Tipo
                                 Compresor</a>
@@ -191,11 +191,11 @@
                                 </td>
                                 <td>
                                     <button class="ui small basic green button"
-                                        ng-click="ver(capacidadBTU,'capacidadBTU','editar')"><i
+                                        ng-click="ver(capacidadBTU,'capacidadbtu','editar')"><i
                                             class="pencil alternate icon"></i>
                                         Editar</button>
                                     <button ng-if="{identity.roles.contains('admin')}" class="ui small basic red button"
-                                        ng-click="eliminar('capacidadBTU', capacidadBTU)"><i
+                                        ng-click="eliminar('capacidadbtu', capacidadBTU)"><i
                                             class="trash alternate outline icon"></i>
                                         Eliminar</button>
                                 </td>
@@ -275,11 +275,11 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <button class="ui small basic green button" ng-click="ver(pH,'pH','editar')"><i
+                                    <button class="ui small basic green button" ng-click="ver(pH,'ph','editar')"><i
                                             class="pencil alternate icon"></i>
                                         Editar</button>
                                     <button ng-if="{identity.roles.contains('admin')}" class="ui small basic red button"
-                                        ng-click="eliminar('pH', pH)"><i class="trash alternate outline icon"></i>
+                                        ng-click="eliminar('ph', pH)"><i class="trash alternate outline icon"></i>
                                         Eliminar</button>
                                 </td>
                             </tr>
@@ -336,11 +336,11 @@
                                 </td>
                                 <td>
                                     <button class="ui small basic green button"
-                                        ng-click="ver(rangoPresion,'rangoPresion','editar')"><i
+                                        ng-click="ver(rangoPresion,'rangopresion','editar')"><i
                                             class="pencil alternate icon"></i>
                                         Editar</button>
                                     <button ng-if="{identity.roles.contains('admin')}" class="ui small basic red button"
-                                        ng-click="eliminar('rangoPresion', rangoPresion)"><i
+                                        ng-click="eliminar('rangopresion', rangoPresion)"><i
                                             class="trash alternate outline icon"></i>
                                         Eliminar</button>
                                 </td>
@@ -535,14 +535,126 @@
                     </tbody>
                 </table>
             </form>
-            <div class="actions">
-                <button type="submit" class="ui positive right labeled icon button" form="author-form"
-                    ng-click="guardar('bateria',formulario)">
-                    <i class="checkmark icon"></i>
-                    Guardar
-                </button>
-            </div>
+            <div class="actions"><button type="submit" class="ui positive right labeled icon button" form="author-form"
+                    ng-click="guardar('bateria',formulario)"><i class="checkmark icon"></i>Guardar</button></div>
         </div>
+
+        <div class="ui modal" id="editar_agregar_capacidadBtu">
+            <h4 id="tituloModal_editar_agregar_capacidadBtu" class="ui horizontal divider header"><i
+                    class="bar chart icon"></i></h4>
+            <form class="ui form" id="capacidadBtu-formulario-ver">
+                <table class="ui definition table">
+                    <tbody>
+                        <tr>
+                            <td class="four wide column"><b>Capacida BTU :</b></td>
+                            <td><input type="text" name="nombre" placeholder="nombre"
+                                    ng-model="formulario.capacidadBtu.nombre" required></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            <div class="actions"><button type="submit" class="ui positive right labeled icon button" form="author-form"
+                    ng-click="guardar('capacidadbtu',formulario)"><i class="checkmark icon"></i>Guardar</button></div>
+        </div>
+
+        <div class="ui modal" id="editar_agregar_estado">
+            <h4 id="tituloModal_editar_agregar_estado" class="ui horizontal divider header"><i
+                    class="bar chart icon"></i></h4>
+            <form class="ui form" id="estado-formulario-ver">
+                <table class="ui definition table">
+                    <tbody>
+                        <tr>
+                            <td class="four wide column"><b>Estado :</b></td>
+                            <td><input type="text" name="nombre" placeholder="nombre"
+                                    ng-model="formulario.estado.nombre" required></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            <div class="actions"><button type="submit" class="ui positive right labeled icon button" form="author-form"
+                    ng-click="guardar('estado',formulario)"><i class="checkmark icon"></i>Guardar</button></div>
+        </div>
+
+
+        <div class="ui modal" id="editar_agregar_marca">
+            <h4 id="tituloModal_editar_agregar_marca" class="ui horizontal divider header"><i
+                    class="bar chart icon"></i></h4>
+            <form class="ui form" id="marca-formulario-ver">
+                <table class="ui definition table">
+                    <tbody>
+                        <tr>
+                            <td class="four wide column"><b>Marca :</b></td>
+                            <td><input type="text" name="nombre" placeholder="nombre" ng-model="formulario.marca.nombre"
+                                    required></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            <div class="actions"><button type="submit" class="ui positive right labeled icon button" form="author-form"
+                    ng-click="guardar('marca',formulario)"><i class="checkmark icon"></i>Guardar</button></div>
+        </div>
+
+        <div class="ui modal" id="editar_agregar_ph">
+            <h4 id="tituloModal_editar_agregar_ph" class="ui horizontal divider header"><i class="bar chart icon"></i>
+            </h4>
+            <form class="ui form" id="ph-formulario-ver">
+                <table class="ui definition table">
+                    <tbody>
+                        <tr>
+                            <td class="four wide column"><b>PH :</b></td>
+                            <td><input type="text" name="nombre" placeholder="nombre" ng-model="formulario.ph.nombre"
+                                    required></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            <div class="actions"><button type="submit" class="ui positive right labeled icon button" form="author-form"
+                    ng-click="guardar('ph',formulario)"><i class="checkmark icon"></i>Guardar</button></div>
+        </div>
+
+
+        <div class="ui modal" id="editar_agregar_presostato">
+            <h4 id="tituloModal_editar_agregar_presostato" class="ui horizontal divider header"><i
+                    class="bar chart icon"></i></h4>
+            <form class="ui form" id="presostato-formulario-ver">
+                <table class="ui definition table">
+                    <tbody>
+                        <tr>
+                            <td class="four wide column"><b>Presostato :</b></td>
+                            <td><input type="text" name="nombre" placeholder="nombre"
+                                    ng-model="formulario.presostato.nombre" required></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            <div class="actions"><button type="submit" class="ui positive right labeled icon button" form="author-form"
+                    ng-click="guardar('presostato',formulario)"><i class="checkmark icon"></i>Guardar</button></div>
+        </div>
+
+        <div class="ui modal" id="editar_agregar_rangoPresion">
+            <h4 id="tituloModal_editar_agregar_rangoPresion" class="ui horizontal divider header"><i
+                    class="bar chart icon"></i></h4>
+            <form class="ui form" id="rangoPresion-formulario-ver">
+                <table class="ui definition table">
+                    <tbody>
+                        <tr>
+                            <td class="four wide column"><b>Minimo :</b></td>
+                            <td><input type="text" name="minimo" placeholder="minimo"
+                                    ng-model="formulario.rangoPresion.minimo" required></td>
+                        </tr>
+                        <tr>
+                            <td class="four wide column"><b>Maximo :</b></td>
+                            <td><input type="text" name="maximo" placeholder="maximo"
+                                    ng-model="formulario.rangoPresion.maximo" required></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            <div class="actions"><button type="submit" class="ui positive right labeled icon button" form="author-form"
+                    ng-click="guardar('rangoPresion',formulario)"><i class="checkmark icon"></i>Guardar</button></div>
+        </div>
+
+
 
         {! <div class="ui modal" id="editar_agregar_area">
             <h4 id="tituloModal_editar_agregar_area" class="ui horizontal divider header"><i class="bar chart icon"></i>
