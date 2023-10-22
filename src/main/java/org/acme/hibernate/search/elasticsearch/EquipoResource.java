@@ -36,6 +36,7 @@ import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.jboss.resteasy.reactive.RestForm;
 import org.jboss.resteasy.reactive.RestQuery;
 
+import io.quarkus.logging.Log;
 import io.quarkus.security.Authenticated;
 import io.quarkus.security.identity.SecurityIdentity;
 
@@ -869,7 +870,9 @@ public class EquipoResource {
     @GET
     @Path("buscar")
     @Transactional
-    public List<Equipo> buscarEquipo(@RestForm String pattern, @RestForm Optional<Integer> size) {
+    public List<Equipo> buscarEquipo(@RestQuery String pattern,
+            @RestQuery Optional<Integer> size) {
+        Log.info(pattern);
         return searchSession.search(Equipo.class)
                 .where(f -> pattern == null || pattern.trim().isEmpty() ? f.matchAll()
                         : f.simpleQueryString()

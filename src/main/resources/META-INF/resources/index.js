@@ -305,7 +305,6 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
     $scope.actualizar = function () {
         _actualizarDatos();
     }
-
     $scope.editar = function (tipo, formulario) {
         data = {};
         // if ($scope.formulario.id == -1 || $scope.formulario.id === undefined) {
@@ -1608,6 +1607,16 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                 break;
         }
     }
+    $scope.buscar=function(tipo) {
+        switch (tipo) {
+            case 'equipo':
+                getEquipos()
+                break;
+        
+            default:
+                break;
+        }
+    } 
     $scope.guardar = function (tipo, formulario) {
         switch (tipo) {
             case "equipo":
