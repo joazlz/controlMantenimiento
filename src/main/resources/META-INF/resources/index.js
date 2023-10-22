@@ -4,7 +4,8 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
     $scope.lista = [
         { "nombre": "equipos", "cantidad": 0 },
         { "nombre": "actividades", "cantidad": 0 },
-        { "nombre": "catalogos", "cantidad": 0 }
+        { "nombre": "catalogos", "cantidad": 0 },
+        { "nombre": "reportes", "cantidad": 0 }
     ];
     $scope.areas = [];
     $scope.estados = [];
@@ -619,6 +620,34 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         break;
                 }
 
+                break;
+            case "actividad":
+                switch (metodo) {
+                    case "ver":
+                        $scope.metodo = metodo
+                        $scope.formulario = item
+                        $("#modalHeaderVerActividad").text("Ver Actividad");
+                        $('#modal-verActividad').modal('show');
+                        break;
+                    case "agregar":
+                        $scope.metodo = metodo
+                        if (item === 'agregar') {
+                            $scope.formulario = {}
+                        } else {
+                            $scope.formulario = item
+                        }
+                        $("#modalHeaderAgregar").text("Agregar Equipo");
+                        $('#modal-agregar').modal('show');
+                        break;
+                    case "editar":
+                        $scope.metodo = metodo
+                        $scope.formulario = item;
+                        $("#modalHeaderEditar").text("Editar Equipo");
+                        $('#modal-editar').modal('show');
+                        break;
+                    default:
+                        break;
+                }
                 break;
             case "equipo":
                 switch (metodo) {
@@ -1957,10 +1986,16 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
     }
     $scope.eliminar = function (tipo, formulario) {
         switch (tipo) {
-            case "area", "bateria", "capacidadbtu", "estado", "marca", "ph", "presostato", "rangopresion", "tipocompresor", "tipoequipo", "tipofiltrodeshidratador", "tipogas", "tipomotor", "tipolimpieza", "tipomantenimiento", "tiponotificacion":
+            case "area", "bateria", "capacidadbtu", "estado", "marca", "ph", "presostato", "rangopresion", "tipocompresor", "tipoequipo", "tipofiltrodeshidratador", "tipogas", "tipomotor", "tipomantenimiento","tag":
                 data = {};
                 method = 'DELETE';
                 url = '/equipo/' + tipo + '/' + formulario.id;
+                httpMetodo(method, url, data)
+                break;
+            case "equipo":
+                data = {};
+                method = 'DELETE';
+                url = 'equipo/eliminar/' + formulario.id;
                 httpMetodo(method, url, data)
                 break;
 

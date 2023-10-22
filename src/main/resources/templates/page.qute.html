@@ -70,7 +70,6 @@
                 </div>
             </div>
         </div>
-
         {! configuraciones !}
         <div class="ui modal" id="contenidoConfiguracion">
             <i class="close icon"></i>
@@ -103,7 +102,6 @@
             <div class="actions">
             </div>
         </div>
-
         {! ACTIVIDADES !}
         <div id="contenidoActividades" class="ui segment" style="width: 100%; height: 85vh; overflow-y: auto;">
             <h2 class="ui left floated header">Actividades</h2>
@@ -134,7 +132,8 @@
                             <td>{{actividad.tipoMantenimiento.nombre}}</td>
                             <td>{{actividad.fechaInicioProgramado}}</td>
                             <td>{{actividad.fechaFinProgramado}}</td>
-                            <td>{{actividad.equipo.modelo}} <button class="ui small basic blue button" ng-click="ver(actividad.equipo,'equipo','ver')">
+                            <td>{{actividad.equipo.modelo}} <button class="ui small basic blue button"
+                                    ng-click="ver(actividad.equipo,'equipo','ver')">
                                     <i class="eye icon"></i> Ver</button></td>
                             <td class="warning"><i class="cogs icon"></i>{{actividad.estado.nombre}}</td>
                             <td>
@@ -142,7 +141,8 @@
                                         class="pencil alternate icon"></i>
                                     Editar</button>
                                 <button ng-if="{identity.roles.contains('admin')}" class="ui basic red button"
-                                    ng-click="eliminar('actividad', actividad)"><i class="trash alternate outline icon"></i>
+                                    ng-click="eliminar('actividad', actividad)"><i
+                                        class="trash alternate outline icon"></i>
                                     Eliminar</button>
                                 <button class="ui basic blue button" ng-click="ver(actividad,'actividad','ver')">
                                     <i class="eye icon"></i> Ver</button>
@@ -150,6 +150,98 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+        <div class="ui modal" id="modal-verActividad">
+            <i class="close icon"></i>
+            <div id="modalHeaderVerActividad" class="header"></div>
+            <div class="content">
+                <div class="description">
+                    <h4 class="ui horizontal divider header"><i class="bar chart icon"></i> Especificaciones </h4>
+                    <form class="ui form" id="actividad-formulario-ver">
+                        <table class="ui definition table">
+                            <tbody>
+                                <tr>
+                                    <td class="four wide column"><b>Orden Trabajo :</b></td>
+                                    <td>{{formulario.ordenTrabajo}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="four wide column"><b>Equipo :</b></td>
+                                    <td>{{formulario.equipo.modelo}}
+                                        <button class="ui basic blue button"
+                                            ng-click="ver(formulario.equipo,'equipo','ver')"><i class="eye icon"></i>
+                                            Ver</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Estado :</b></td>
+                                    <td class="warning"><i class="cogs icon"></i>{{formulario.estado.nombre}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Descripcionn :</b></td>
+                                    <td>{{formulario.descripcion}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Reserva :</b></td>
+                                    <td>{{formulario.reserva}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Tipo Mantenimiento :</b></td>
+                                    <td>{{formulario.tipoMantenimiento.nombre}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Fecha Inicio Programado :</b></td>
+                                    <td>{{formulario.fechaInicioProgramado}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Fecha Fin Programado :</b></td>
+                                    <td>{{formulario.fechaFinProgramado}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Fecha Inicio Actividad :</b></td>
+                                    <td>{{formulario.fechaInicioActividad}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Fecha Fin Actividad :</b></td>
+                                    <td>{{formulario.fechaFinActividad}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Duracion :</b></td>
+                                    <td>{{formulario.duracion}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Limpiezas :</b></td>
+                                    <td>
+                                        <a ng-class="{'ui red label': !limpieza.realizada, 'ui teal label': limpieza.realizada}"
+                                            ng-repeat="limpieza in formulario.limpiezas">
+                                            {{limpieza.tipoLimpieza.nombre}}
+                                            <div class="detail">{{limpieza.realizada}}</div>
+                                        </a>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Tipos Desperfectos :</b></td>
+                                    <td>
+                                        <a class="ui blue label" ng-repeat="tipoDesperfecto in formulario.tiposDesperfecto">
+                                            {{tipoDesperfecto.nombre}}
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Materiales :</b></td>
+                                    <td>
+                                        <a class="ui blue label" ng-repeat="material in formulario.materiales">
+                                            {{material.material.nombre}}
+                                            <div class="detail">{{material.cantidad}}</div>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
             </div>
         </div>
         {! EQUIPOS !}
@@ -191,8 +283,9 @@
                                 <button class="ui basic green button" ng-click="ver(equipo,'equipo','editar')"><i
                                         class="pencil alternate icon"></i>
                                     Editar</button>
-                                <button ng-if="{identity.roles.contains('admin')}" class="ui basic red button"
-                                    ng-click="eliminar('equipo', equipo)"><i class="trash alternate outline icon"></i>
+                                <button ng-if="{identity.roles.contains('admin')} && equipo.estado.id !== 10"
+                                    class="ui basic red button" ng-click="eliminar('equipo', equipo)"><i
+                                        class="trash alternate outline icon"></i>
                                     Eliminar</button>
                                 <button class="ui basic blue button" ng-click="ver(equipo,'equipo','ver')">
                                     <i class="eye icon"></i> Ver</button>
@@ -436,6 +529,10 @@
                                 <tr>
                                     <td class="four wide column"><b>Area :</b></td>
                                     <td>{{formulario.area.nombre}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Marca :</b></td>
+                                    <td>{{formulario.marca.nombre}}</td>
                                 </tr>
                                 <tr>
                                     <td class="four wide column"><b>Estado :</b></td>
@@ -767,7 +864,6 @@
                 </button>
             </div>
         </div>
-
         {! CATALOGOS !}
         <div id="contenidoCatalogos">
             <div class="ui segment" style="width: 100%; height: 80vh; overflow-y: auto;">
@@ -1309,7 +1405,6 @@
                 </div>
             </div>
         </div>
-
         <div class="ui modal" id="editar_agregar_area">
             <h4 id="tituloModal_editar_agregar_area" class="ui horizontal divider header"><i class="bar chart icon"></i>
             </h4>

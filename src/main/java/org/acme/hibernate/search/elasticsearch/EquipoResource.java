@@ -1041,6 +1041,18 @@ public class EquipoResource {
             equipo.persist();
         }
     }
+    @DELETE
+    @Path("eliminar/{id}")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void eliminarEquipo(
+            Long id) {
+        Equipo equipo = Equipo.findById(id);
+        if (!equipo.equals(null)) {
+            equipo.estado = Estado.findById(10);
+            equipo.persist();
+        }
+    }
 
     @POST
     @Path("actualizar/{id}/tiposmotores")

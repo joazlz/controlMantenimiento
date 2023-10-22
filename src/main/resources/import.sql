@@ -33,7 +33,8 @@ INSERT INTO estado(id, nombre) VALUES (6, 'nuevo');
 INSERT INTO estado(id, nombre) VALUES (7, 'modificado');
 INSERT INTO estado(id, nombre) VALUES (8, 'desistalado');
 INSERT INTO estado(id, nombre) VALUES (9, 'activo');
-ALTER SEQUENCE estado_seq RESTART WITH 10;
+INSERT INTO estado(id, nombre) VALUES (10, 'inactivo');
+ALTER SEQUENCE estado_seq RESTART WITH 11;
 
 INSERT INTO marca(id, nombre) VALUES (1, 'GoddMan');
 INSERT INTO marca(id, nombre) VALUES (2, 'YORK');
