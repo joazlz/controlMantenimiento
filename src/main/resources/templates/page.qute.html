@@ -208,7 +208,16 @@
                                 </tr>
                                 <tr>
                                     <td class="four wide column"><b>Duracion :</b></td>
-                                    <td>{{formulario.duracion}}</td>
+                                    <td>
+                                        <div class="ui label">
+                                            Horas
+                                            <div class="detail">{{formulario.duracion.horas}}</div>
+                                        </div>
+                                        <div class="ui label">
+                                            Minutos
+                                            <div class="detail">{{formulario.duracion.minutos}}</div>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="four wide column"><b>Limpiezas :</b></td>
@@ -224,7 +233,8 @@
                                 <tr>
                                     <td class="four wide column"><b>Tipos Desperfectos :</b></td>
                                     <td>
-                                        <a class="ui blue label" ng-repeat="tipoDesperfecto in formulario.tiposDesperfecto">
+                                        <a class="ui blue label"
+                                            ng-repeat="tipoDesperfecto in formulario.tiposDesperfecto">
                                             {{tipoDesperfecto.nombre}}
                                         </a>
                                     </td>
@@ -237,6 +247,58 @@
                                             <div class="detail">{{material.cantidad}}</div>
                                         </a>
                                     </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="ui modal" id="modal-editarActividad">
+            <i class="close icon"></i>
+            <div id="modalHeaderEditarActividad" class="header"></div>
+            <div class="content">
+                <div class="description">
+                    <h4 class="ui horizontal divider header"><i class="bar chart icon"></i> Especificaciones </h4>
+                    <form class="ui form" id="actividad-formulario-editar">
+                        <table class="ui definition table">
+                            <tbody>
+                                <tr>
+                                    <td class="four wide column"><b>Orden Trabajo: </b></td>
+                                    <td><input type="text" name="ordenTrabajo" placeholder="ordenTrabajo"
+                                            ng-model="formulario.ordenTrabajo" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Descripcion: </b></td>
+                                    <td><input type="text" name="descripcion" placeholder="descripcion"
+                                            ng-model="formulario.descripcion" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Reserva: </b></td>
+                                    <td><input type="text" name="reserva" placeholder="reserva"
+                                            ng-model="formulario.reserva" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Fecha Inicio Programado: </b></td>
+                                    <td><input type="date" name="fechaInicioProgramado"
+                                            placeholder="fechaInicioProgramado"
+                                            ng-model="formulario.fechaInicioProgramado" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Fecha Fin Programado: </b></td>
+                                    <td><input type="date" name="fechaFinProgramado" placeholder="fechaFinProgramado"
+                                            ng-model="formulario.fechaFinProgramado" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Fecha Inicio Actividad: </b></td>
+                                    <td><input type="date" name="fechaInicioActividad"
+                                            placeholder="fechaInicioActividad"
+                                            ng-model="formulario.fechaInicioActividad" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Fecha Fin Actividad: </b></td>
+                                    <td><input type="date" name="fechaFinActividad" placeholder="fechaFinActividad"
+                                            ng-model="formulario.fechaFinActividad" required></td>
                                 </tr>
                             </tbody>
                         </table>

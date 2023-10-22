@@ -152,10 +152,10 @@ INSERT INTO equipo_tag(equipo_id, tag_id)
 VALUES (1, 1),(1, 2);
 
 
--- INSERT INTO duracion(id, horas,minutos) VALUES (1, 43,10);
+INSERT INTO duracion(id, horas,minutos) VALUES (1, 43,10);
 
 INSERT INTO actividad(id, descripcion, ordentrabajo,reserva,tipomantenimiento_id,fechainicioprogramado,fechaFinProgramado,equipo_id,
-fechaInicioActividad,fechaFinActividad,estado_id) VALUES (1,'tiempo sin mantenimiento', 'OT1385','0124957',2,'2023-09-07','2023-09-10',1,'2023-09-07','2023-09-12',1);
+fechaInicioActividad,fechaFinActividad,estado_id,duracion_id) VALUES (1,'tiempo sin mantenimiento', 'OT1385','0124957',2,'2023-09-07','2023-09-10',1,'2023-09-07','2023-09-12',1,1);
 ALTER SEQUENCE actividad_seq RESTART WITH 2;
 
 INSERT INTO actividad_tipo_desperfecto(actividad_id, desperfecto_id)
