@@ -1,15 +1,14 @@
 INSERT INTO area(id, nombre) VALUES (1, 'ccm tachos bacht');
 INSERT INTO area(id, nombre) VALUES (2, 'ccm tachos 1ra cristal ');
-INSERT INTO area(id, nombre) VALUES (2, 'ccm continua 1ra crudo');
-INSERT INTO area(id, nombre) VALUES (2, 'ccm continua 2da crudo');
-INSERT INTO area(id, nombre) VALUES (2, 'ccm clarificacion');
-INSERT INTO area(id, nombre) VALUES (2, 'ccm crudo lado A');
-INSERT INTO area(id, nombre) VALUES (2, 'ccm crudo lado B');
-INSERT INTO area(id, nombre) VALUES (2, 'ccm envasado del A');
-INSERT INTO area(id, nombre) VALUES (2, 'ccm continuas 2da crudo');
-INSERT INTO area(id, nombre) VALUES (2, 'ccm bba Cristal');
-
-ALTER SEQUENCE area_seq RESTART WITH 3;
+INSERT INTO area(id, nombre) VALUES (3, 'ccm continua 1ra crudo ');
+INSERT INTO area(id, nombre) VALUES (4, 'ccm continua 2da crudo');
+INSERT INTO area(id, nombre) VALUES (5, 'ccm clarificacion');
+INSERT INTO area(id, nombre) VALUES (6, 'ccm crudo lado A');
+INSERT INTO area(id, nombre) VALUES (7, 'ccm crudo lado B');
+INSERT INTO area(id, nombre) VALUES (8, 'ccm envasado del A');
+INSERT INTO area(id, nombre) VALUES (9, 'ccm continuas 2da crudo');
+INSERT INTO area(id, nombre) VALUES (10, 'ccm bba Cristal');
+ALTER SEQUENCE area_seq RESTART WITH 11;
 
 INSERT INTO bateria(id, nombre) VALUES (1, 'aaa');
 INSERT INTO bateria(id, nombre) VALUES (2, 'aa');
@@ -18,9 +17,9 @@ ALTER SEQUENCE bateria_seq RESTART WITH 4;
 
 INSERT INTO capacidadbtu(id, nombre) VALUES (1, '60000');
 INSERT INTO capacidadbtu(id, nombre) VALUES (2, '24000');
-INSERT INTO capacidadbtu(id, nombre) VALUES (2, '36000');
-INSERT INTO capacidadbtu(id, nombre) VALUES (2, '18000');
-ALTER SEQUENCE capacidadbtu_seq RESTART WITH 3;
+INSERT INTO capacidadbtu(id, nombre) VALUES (3, '36000');
+INSERT INTO capacidadbtu(id, nombre) VALUES (4, '18000');
+ALTER SEQUENCE capacidadbtu_seq RESTART WITH 5;
 
 INSERT INTO estado(id, nombre) VALUES (1, 'trabajando');
 INSERT INTO estado(id, nombre) VALUES (2, 'finalizado');
@@ -57,8 +56,8 @@ ALTER SEQUENCE tipodesperfecto_seq RESTART WITH 4;
 INSERT INTO tipoequipo(id, nombre) VALUES (1, 'split');
 INSERT INTO tipoequipo(id, nombre) VALUES (2, 'mini-split');
 INSERT INTO tipoequipo(id, nombre) VALUES (3, 'paquete');
-INSERT INTO tipoequipo(id, nombre) VALUES (3, 'ventana');
-ALTER SEQUENCE tipoequipo_seq RESTART WITH 4;
+INSERT INTO tipoequipo(id, nombre) VALUES (4, 'ventana');
+ALTER SEQUENCE tipoequipo_seq RESTART WITH 5;
 
 INSERT INTO tipofiltrodeshidratador(id, nombre) VALUES (1, 'c-164');
 INSERT INTO tipofiltrodeshidratador(id, nombre) VALUES (2, 'c-163');
@@ -70,8 +69,8 @@ ALTER SEQUENCE tipogas_seq RESTART WITH 3;
 
 INSERT INTO tipomotor(id, nombre,capacidad) VALUES (1, 'motormanejadora','1/2ph');
 INSERT INTO tipomotor(id, nombre, capacidad) VALUES (2, 'motorcondensador','3/4 ph');
-INSERT INTO tipomotor(id, nombre, capacidad) VALUES (2, 'motorcondensador','1 ph');
-ALTER SEQUENCE tipomotor_seq RESTART WITH 3;
+INSERT INTO tipomotor(id, nombre, capacidad) VALUES (3, 'motorcondensador','1 ph');
+ALTER SEQUENCE tipomotor_seq RESTART WITH 4;
 
 INSERT INTO tiponotificacion(id, nombre) VALUES (1, 'asignado');
 INSERT INTO tiponotificacion(id, nombre) VALUES (2, 'completado');
