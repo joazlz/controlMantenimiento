@@ -105,8 +105,8 @@
         </div>
 
         {! ACTIVIDADES !}
-        <div id="contenidoACTIVIDADES" class="ui segment" style="width: 100%; height: 85vh; overflow-y: auto;">
-            <h2 class="ui left floated header">ACTIVIDADES</h2>
+        <div id="contenidoActividades" class="ui segment" style="width: 100%; height: 85vh; overflow-y: auto;">
+            <h2 class="ui left floated header">Actividades</h2>
             <div class="segment right">
                 <div class="ui icon input right floated labeled">
                     <input type="text" placeholder="Buscar..." ng-model="pattern">
@@ -120,7 +120,6 @@
                 <table class="ui celled table">
                     <thead>
                         <tr>
-                            <th>Modelo</th>
                             <th>orden Trabajo</th>
                             <th>tipo Mantenimiento</th>
                             <th>fecha Inicio Programado</th>
@@ -135,9 +134,9 @@
                             <td>{{actividad.tipoMantenimiento.nombre}}</td>
                             <td>{{actividad.fechaInicioProgramado}}</td>
                             <td>{{actividad.fechaFinProgramado}}</td>
-                            <td>{{actividad.equipo.modelos}} <button class="ui small basic blue button" ng-click="ver(actividad.equipo,'equipo','ver')">
+                            <td>{{actividad.equipo.modelo}} <button class="ui small basic blue button" ng-click="ver(actividad.equipo,'equipo','ver')">
                                     <i class="eye icon"></i> Ver</button></td>
-                            <td class="warning"><i class="attention icon"></i>{{actividad.estado.nombre}}</td>
+                            <td class="warning"><i class="cogs icon"></i>{{actividad.estado.nombre}}</td>
                             <td>
                                 <button class="ui basic green button" ng-click="ver(actividad,'actividad','editar')"><i
                                         class="pencil alternate icon"></i>
