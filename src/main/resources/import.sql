@@ -106,7 +106,12 @@ ALTER SEQUENCE equipo_seq RESTART WITH 5;
 
 INSERT INTO equipo_tipo_motor(equipo_id, tipomotor_id)
 VALUES (1, 1),(1, 2);
-
+INSERT INTO equipo_tipo_motor(equipo_id, tipomotor_id)
+VALUES (2, 1),(2, 2);
+INSERT INTO equipo_tipo_motor(equipo_id, tipomotor_id)
+VALUES (3, 1),(3, 2);
+INSERT INTO equipo_tipo_motor(equipo_id, tipomotor_id)
+VALUES (4, 1),(4, 2);
 
 INSERT INTO equipo_tipo_compresor(equipo_id, tipocompresor_id)
 VALUES (1, 1),(1, 2);
