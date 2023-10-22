@@ -1,6 +1,11 @@
 var app = angular.module("InventarioManagement", []);
 app.controller("InventarioManagementController", ['$scope', '$http', '$httpParamSerializerJQLike', function ($scope, $http, $httpParamSerializerJQLike) {
-    $scope.lista = [{ "nombre": "equipos", "cantidad": 0 }, { "nombre": "actividades", "cantidad": 0 }, { "nombre": "catalogos", "cantidad": 0 }];
+
+    $scope.lista = [
+        { "nombre": "equipos", "cantidad": 0 },
+        { "nombre": "actividades", "cantidad": 0 },
+        { "nombre": "catalogos", "cantidad": 0 }
+    ];
     $scope.areas = [];
     $scope.estados = [];
     $scope.tiposGas = [];
@@ -29,7 +34,9 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
     $scope.formulario = {};
     $scope.metodo = '';
     $scope.catalogoSeleccionado = '';
+
     iniciar()
+
     function getArea() {
         $http({
             method: 'GET',
@@ -274,23 +281,15 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
         $("#tipoLimpieza").hide()
         $("#tipoMantenimiento").hide()
         $("#tipoNotificacion").hide()
+                $("#tag").hide()
         $("#tipoLimpieza").hide()
         $("#tipoMantenimiento").hide()
         $("#tipoNotificacion").hide()
+                $("#tag").hide()
         $('#contenidoInicio').show();
         $('#rangoPresion').dropdown();
         _actualizarDatos()
 
-    }
-    $scope.actualizar = function () {
-        _actualizarDatos();
-    }
-    $scope.verConfiguracion = function () {
-        $('#contenidoConfiguracion').modal('show');
-    }
-    $scope.verInicio = function () {
-        $('#contenidoEquipos').hide();
-        $('#contenidoInicio').show();
     }
     function httpMetodo(method, url, data) {
         $http({
@@ -301,6 +300,10 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         }).then($scope._correcto, $scope._error)
+    }
+
+    $scope.actualizar = function () {
+        _actualizarDatos();
     }
 
     $scope.editar = function (tipo, formulario) {
@@ -339,6 +342,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
             }
         }).then($scope._correcto, $scope._error)
 
+        // ELIMINAR
         if (!Array.isArray(formulario.eliminarMotores)) {
             formulario.eliminarMotores = [];
         }
@@ -358,7 +362,27 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                 }).then($scope._correcto, $scope._error)
             }
         });
+        if (!Array.isArray(formulario.eliminarCompresores)) {
+            formulario.eliminarCompresores = [];
+        }
+        formulario.eliminarCompresores.forEach(function (tipoCompresor) {
+            if (tipoCompresor.id > 0) {
+                data = {};
+                method = 'DELETE';
+                url = 'equipo/actualizar/' + formulario.id + '/tiposcompresores';
+                data.tipoCompresor_id = tipoCompresor.id;
+                $http({
+                    method: method,
+                    url: url,
+                    data: $httpParamSerializerJQLike(data),
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                }).then($scope._correcto, $scope._error)
+            }
+        });
 
+        // AGREGAR
         if (!Array.isArray(formulario.agregarMotores)) {
             formulario.agregarMotores = [];
         }
@@ -376,12 +400,17 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         'Content-Type': 'application/x-www-form-urlencoded'
                     }
                 }).then($scope._correcto, $scope._error)
-            } else if (tipoMotor.id === undefined) {
+            }
+        });
+        if (!Array.isArray(formulario.agregarCompresores)) {
+            formulario.agregarCompresores = [];
+        }
+        formulario.agregarCompresores.forEach(function (tipoCompresor) {
+            if (tipoCompresor.id > 0) {
                 data = {};
-                method = 'PUT';
-                url = 'equipo/tipomotor';
-                data.nombre = tipoMotor.nombre
-                data.capacidad = tipoMotor.capacidad;
+                method = 'POST';
+                url = 'equipo/actualizar/' + formulario.id + '/tiposcompresores';
+                data.tipoCompresor_id = tipoCompresor.id;
                 $http({
                     method: method,
                     url: url,
@@ -392,23 +421,137 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                 }).then($scope._correcto, $scope._error)
             }
         });
+        if (!Array.isArray(formulario.agregarBaterias)) {
+            formulario.agregarBaterias = [];
+        }
+        formulario.agregarBaterias.forEach(function (bateria) {
+            if (bateria.id > 0) {
+                data = {};
+                method = 'POST';
+                url = 'equipo/actualizar/' + formulario.id + '/baterias';
+                data.bateria_id = bateria.id;
+                $http({
+                    method: method,
+                    url: url,
+                    data: $httpParamSerializerJQLike(data),
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                }).then($scope._correcto, $scope._error)
+            }
+        });
+        if (!Array.isArray(formulario.agregarTags)) {
+            formulario.agregarTags = [];
+        }
+        formulario.agregarTags.forEach(function (tag) {
+            if (tag.id > 0) {
+                data = {};
+                method = 'POST';
+                url = 'equipo/actualizar/' + formulario.id + '/tags';
+                data.tag_id = tag.id;
+                $http({
+                    method: method,
+                    url: url,
+                    data: $httpParamSerializerJQLike(data),
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                }).then($scope._correcto, $scope._error)
+            }
+        });
+
     }
     $scope.ver = function (item, tipo, metodo) {
-
         switch (tipo) {
             case "contenido":
                 switch (item.nombre) {
                     case "equipos":
-                        // $('#contenidoEquipos').show();
-                        // $('#contenidoInicio').hide();
-                        // $('#contenidoCatalogos').hide();
+                        $('#contenidoEquipos').show();
+                        $('#contenidoInicio').hide();
+                        $('#contenidoCatalogos').hide();
+                        $("#areas").hide();
+                        $("#baterias").hide();
+                        $("#capacidadBtu").hide();
+                        $("#estado").hide()
+                        $("#marca").hide()
+                        $("#ph").hide()
+                        $("#presostato").hide()
+                        $("#rangoPresion").hide()
+                        $("#tipoCompresor").hide()
+                        $("#tipoEquipo").hide()
+                        $("#tipoFiltroDeshidratador").hide()
+                        $("#tipoGas").hide()
+                        $("#tipoMotor").hide()
+                        $("#tipoLimpieza").hide()
+                        $("#tipoMantenimiento").hide()
+                        $("#tipoNotificacion").hide()
+                                $("#tag").hide()
                         break;
                     case "catalogos":
-                        // $('#contenidoEquipos').hide();
+                        $('#contenidoEquipos').hide();
                         $('#contenidoInicio').hide();
                         $('#contenidoCatalogos').show();
+                        $('#contenidoEquipos').hide();
+                        $("#areas").hide();
+                        $("#baterias").hide();
+                        $("#capacidadBtu").hide();
+                        $("#estado").hide()
+                        $("#marca").hide()
+                        $("#ph").hide()
+                        $("#presostato").hide()
+                        $("#rangoPresion").hide()
+                        $("#tipoCompresor").hide()
+                        $("#tipoEquipo").hide()
+                        $("#tipoFiltroDeshidratador").hide()
+                        $("#tipoGas").hide()
+                        $("#tipoMotor").hide()
+                        $("#tipoLimpieza").hide()
+                        $("#tipoMantenimiento").hide()
+                        $("#tipoNotificacion").hide()
+                                $("#tag").hide()
                         break;
                     default:
+                        break;
+                }
+                switch (item) {
+                    case "inicio":
+                        $('#contenidoInicio').show();
+                        $('#contenidoCatalogos').hide();
+                        $("#areas").hide();
+                        $("#baterias").hide();
+                        $("#capacidadBtu").hide();
+                        $("#estado").hide()
+                        $("#marca").hide()
+                        $("#ph").hide()
+                        $("#presostato").hide()
+                        $("#rangoPresion").hide()
+                        $("#tipoCompresor").hide()
+                        $("#tipoEquipo").hide()
+                        $("#tipoFiltroDeshidratador").hide()
+                        $("#tipoGas").hide()
+                        $("#tipoMotor").hide()
+                        $("#tipoLimpieza").hide()
+                        $("#tipoMantenimiento").hide()
+                        $("#tipoNotificacion").hide()
+                                $("#tag").hide()
+                        break;
+                    case "configuracion":
+                        $('#contenidoConfiguracion').modal('show');
+                        break;
+                    case "notificacion":
+                        $('#contenidoNotificacion').modal('show');
+                        break;
+                    case "modal-tipoMotor":
+                        $('#modal-tipoMotor').modal('show');
+                        break;
+                    case "modal-tipoCompresor":
+                        $('#modal-tipoCompresor').modal('show');
+                        break;
+                    case "modal-bateria":
+                        $('#modal-bateria').modal('show');
+                        break;
+                    case "modal-tag":
+                        $('#modal-tag').modal('show');
                         break;
                 }
 
@@ -460,6 +603,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoLimpieza").hide()
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
+                                $("#tag").hide()
                         $scope.catalogoSeleccionado = 'area'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').addClass('active');
@@ -477,6 +621,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
+                        $('itemTag').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -516,6 +661,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoLimpieza").hide()
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
+                                $("#tag").hide()
                         $scope.catalogoSeleccionado = 'bateria'
                         $('#itemBateria').addClass('active');
                         $('#itemArea').removeClass('active');
@@ -533,6 +679,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
+                        $('itemTag').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -572,6 +719,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoLimpieza").hide()
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
+                                $("#tag").hide()
                         $scope.catalogoSeleccionado = 'capacidadbtu'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -589,6 +737,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
+                        $('itemTag').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -626,6 +775,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoLimpieza").hide()
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
+                                $("#tag").hide()
                         $scope.catalogoSeleccionado = 'estado'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -643,6 +793,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
+                        $('itemTag').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -680,6 +831,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoLimpieza").hide()
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
+                                $("#tag").hide()
                         $scope.catalogoSeleccionado = 'marca'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -697,6 +849,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
+                        $('itemTag').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -734,6 +887,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoLimpieza").hide()
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
+                                $("#tag").hide()
                         $scope.catalogoSeleccionado = 'ph'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -751,6 +905,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
+                        $('itemTag').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -788,6 +943,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoLimpieza").hide()
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
+                                $("#tag").hide()
                         $scope.catalogoSeleccionado = 'presostato'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -805,6 +961,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
+                        $('itemTag').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -842,6 +999,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoLimpieza").hide()
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
+                                $("#tag").hide()
                         $scope.catalogoSeleccionado = 'rangopresion'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -859,6 +1017,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
+                        $('itemTag').removeClass('active')
                         break;
 
                     case "agregar":
@@ -899,6 +1058,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoLimpieza").hide()
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
+                                $("#tag").hide()
                         $scope.catalogoSeleccionado = 'tipocompresor'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -916,6 +1076,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
+                        $('itemTag').removeClass('active')
                         break;
 
                     case "agregar":
@@ -956,6 +1117,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoLimpieza").hide()
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
+                                $("#tag").hide()
                         $scope.catalogoSeleccionado = 'tipoequipo'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -973,6 +1135,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
+                        $('itemTag').removeClass('active')
                         break;
 
                     case "agregar":
@@ -1013,6 +1176,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoLimpieza").hide()
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
+                                $("#tag").hide()
                         $scope.catalogoSeleccionado = 'tipofiltrodeshidratador'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -1030,6 +1194,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
+                        $('itemTag').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -1069,6 +1234,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoLimpieza").hide()
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
+                                $("#tag").hide()
                         $scope.catalogoSeleccionado = 'tipogas'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -1086,6 +1252,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
+                        $('itemTag').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -1094,14 +1261,13 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         } else {
                             $scope.formulario = item
                         }
-                        $("#tituloModal_editar_agregar_tipogas").text("Agregar Tipo Equipo");
+                        $("#tituloModal_editar_agregar_tipogas").text("Agregar Tipo Gas");
                         $('#editar_agregar_tipogas').modal('show');
 
                         break;
-
                     case "editar":
                         $scope.formulario.tipoGas = item
-                        $("#tituloModal_editar_agregar_tipogas").text("Agregar Tipo Equipo");
+                        $("#tituloModal_editar_agregar_tipogas").text("Agregar Tipo Gas");
                         $('#editar_agregar_tipogas').modal('show');
                         break;
                 }
@@ -1125,6 +1291,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoLimpieza").hide()
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
+                                $("#tag").hide()
                         $scope.catalogoSeleccionado = 'tipomotor'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -1142,6 +1309,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
+                        $('itemTag').removeClass('active')
                         break
                     case "agregar":
                         $scope.metodo = metodo
@@ -1162,7 +1330,6 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         break;
                 }
                 break;
-
             case "tipolimpieza":
                 switch (metodo) {
                     case "ver":
@@ -1182,6 +1349,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoLimpieza").show()
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
+                        $("#tag").hide()
 
                         $scope.catalogoSeleccionado = 'tipolimpieza'
                         $('#itemBateria').removeClass('active');
@@ -1200,6 +1368,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').addClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
+                        $('itemTag').removeClass('active')
                         break
                     case "agregar":
                         $scope.metodo = metodo
@@ -1239,6 +1408,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoLimpieza").hide()
                         $("#tipoMantenimiento").show()
                         $("#tipoNotificacion").hide()
+                        $("#tag").hide()
 
                         $scope.catalogoSeleccionado = 'tipomantenimiento'
                         $('#itemBateria').removeClass('active');
@@ -1257,6 +1427,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').addClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
+                        $('itemTag').removeClass('active')
                         break
                     case "agregar":
                         $scope.metodo = metodo
@@ -1296,6 +1467,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoLimpieza").hide()
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").show()
+                        $("#tag").hide()
 
                         $scope.catalogoSeleccionado = 'tiponotificacion'
                         $('#itemBateria').removeClass('active');
@@ -1314,6 +1486,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').addClass('active')
+                        $('itemTag').removeClass('active')
                         break
                     case "agregar":
                         $scope.metodo = metodo
@@ -1331,6 +1504,65 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $scope.formulario.tipoNotificacion = item
                         $("#tituloModal_editar_agregar_tiponotificacion").text("Agregar Tipo Notificacion");
                         $('#editar_agregar_tiponotificacion').modal('show');
+                        break;
+                }
+                break;
+            case "tag":
+                switch (metodo) {
+                    case "ver":
+                        $("#capacidadBtu").hide();
+                        $("#areas").hide();
+                        $("#baterias").hide();
+                        $("#estado").hide()
+                        $("#marca").hide()
+                        $("#ph").hide()
+                        $("#presostato").hide()
+                        $("#rangoPresion").hide()
+                        $("#tipoCompresor").hide()
+                        $("#tipoEquipo").hide()
+                        $("#tipoFiltroDeshidratador").hide()
+                        $("#tipoGas").hide()
+                        $("#tipoMotor").hide()
+                        $("#tipoLimpieza").hide()
+                        $("#tipoMantenimiento").hide()
+                        $("#tipoNotificacion").hide()
+                        $("#tag").show()
+
+                        $scope.catalogoSeleccionado = 'tag'
+                        $('#itemBateria').removeClass('active');
+                        $('#itemArea').removeClass('active');
+                        $('#itemCapacidadBtu').removeClass('active')
+                        $('#itemEstado').removeClass('active')
+                        $('#itemMarca').removeClass('active')
+                        $('#itemPh').removeClass('active')
+                        $('#itemPresostato').removeClass('active')
+                        $('#itemRangoPresion').removeClass('active')
+                        $('#itemTipoCompresor').removeClass('active')
+                        $('#itemTipoEquipo').removeClass('active')
+                        $('#itemTipoFiltroDeshidratador').removeClass('active')
+                        $('#itemTipoGas').removeClass('active')
+                        $('#itemTipoMotor').removeClass('active')
+                        $('#itemTipoLimpieza').removeClass('active')
+                        $('#itemTipoMantenimiento').removeClass('active')
+                        $('#itemTipoNotificacion').removeClass('active')
+                        $('#itemTag').addClass('active')
+                        break
+                    case "agregar":
+                        $scope.metodo = metodo
+                        if (item === 'agregar') {
+                            $scope.formulario = {}
+                        } else {
+                            $scope.formulario = item
+                        }
+                        $("#tituloModal_editar_agregar_tag").text("Agregar Tag");
+                        $('#editar_agregar_tag').modal('show');
+
+                        break;
+
+                    case "editar":
+                        $scope.formulario.tipoNotificacion = item
+                        $("#tituloModal_editar_agregar_tag").text("Agregar Tag");
+                        $('#editar_agregar_tag').modal('show');
                         break;
                 }
                 break;
@@ -1504,7 +1736,6 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                     httpMetodo(method, url, data)
                 }
                 break;
-            
             case "tipocompresor":
                 if ($scope.formulario.tipoCompresor.id == -1 || $scope.formulario.tipoCompresor.id === undefined) {
                     data = {};
@@ -1571,12 +1802,14 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                     method = 'PUT';
                     url = '/equipo/' + tipo;
                     data.nombre = formulario.tipoMotor.nombre;
+                    data.capacidad = formulario.tipoMotor.capacidad;
                     httpMetodo(method, url, data)
                 } else {
                     data = {};
                     method = 'POST';
                     url = '/equipo/' + tipo + '/' + formulario.tipoMotor.id;
                     data.nombre = formulario.tipoMotor.nombre;
+                    data.capacidad = formulario.tipoMotor.capacidad;
                     httpMetodo(method, url, data)
                 }
                 break;
@@ -1625,6 +1858,21 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                     httpMetodo(method, url, data)
                 }
                 break;
+            case "tag":
+                if ($scope.formulario.tag.id == -1 || $scope.formulario.tag.id === undefined) {
+                    data = {};
+                    method = 'PUT';
+                    url = '/equipo/' + tipo;
+                    data.nombre = formulario.tag.nombre;
+                    httpMetodo(method, url, data)
+                } else {
+                    data = {};
+                    method = 'POST';
+                    url = '/equipo/' + tipo + '/' + formulario.tag.id;
+                    data.nombre = formulario.tag.nombre;
+                    httpMetodo(method, url, data)
+                }
+                break;
             default:
                 break;
         }
@@ -1632,7 +1880,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
     }
     $scope.eliminar = function (tipo, formulario) {
         switch (tipo) {
-            case "area", "bateria", "capacidadbtu", "estado", "marca", "ph", "presostato","rangopresion","tipocompresor","tipoequipo","tipofiltrodeshidratador","tipogas","tipomotor","tipolimpieza","tipomantenimiento","tiponotificacion":
+            case "area", "bateria", "capacidadbtu", "estado", "marca", "ph", "presostato", "rangopresion", "tipocompresor", "tipoequipo", "tipofiltrodeshidratador", "tipogas", "tipomotor", "tipolimpieza", "tipomantenimiento", "tiponotificacion":
                 data = {};
                 method = 'DELETE';
                 url = '/equipo/' + tipo + '/' + formulario.id;
@@ -1644,241 +1892,343 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
         }
 
     }
-    $scope.agregarRangoPresion = function (rangoPresion, tipo) {
-        $('#modal-rangoPresion').modal('show');
-        if (!$scope.formulario.rangoPresion || typeof $scope.formulario.rangoPresion !== 'object') {
-            $scope.formulario.rangoPresion = {};
-        }
-        if (!rangoPresion || typeof rangoPresion !== 'object') {
-            rangoPresion = {};
-        }
+    $scope.existe = function (tipo, clase) {
+        switch (tipo) {
+            case "tipomotor":
+                if ($scope.formulario.tiposMotor && Array.isArray($scope.formulario.tiposMotor)) {
+                    var index = $scope.formulario.tiposMotor.findIndex(function (elemento) {
+                        return elemento.id === clase.id;
+                    });
+                    if (index !== -1) {
+                        return false
+                    }
+                }
+                return true
+            case "tipocompresor":
+                if ($scope.formulario.tiposCompresor && Array.isArray($scope.formulario.tiposCompresor)) {
+                    var index = $scope.formulario.tiposCompresor.findIndex(function (elemento) {
+                        return elemento.id === clase.id;
+                    });
+                    if (index !== -1) {
+                        return false
+                    }
+                }
+                return true
+            case "bateria":
+                if ($scope.formulario.baterias && Array.isArray($scope.formulario.baterias)) {
+                    var index = $scope.formulario.baterias.findIndex(function (elemento) {
+                        return elemento.id === clase.id;
+                    });
+                    if (index !== -1) {
+                        return false
+                    }
+                }
+                return true
+            case "tag":
+                if ($scope.formulario.tags && Array.isArray($scope.formulario.tags)) {
+                    var index = $scope.formulario.tags.findIndex(function (elemento) {
+                        return elemento.id === clase.id;
+                    });
+                    if (index !== -1) {
+                        return false
+                    }
+                }
+                return true
 
-        $scope.formulario.rangoPresion = rangoPresion;
-        if (tipo == 'rangoPresionAlta') {
-            $scope.formulario.rangoPresion.id = -1
-            $scope.formulario.rangoPresionAlta = rangoPresion;
-            $scope.formulario.rangoPresion.tipo = 'alta';
-        } else {
-            $scope.formulario.rangoPresion.id = -2
-            $scope.formulario.rangoPresionBaja = rangoPresion;
-            $scope.formulario.rangoPresion.tipo = 'baja';
+            default:
+                break;
         }
     }
-    $scope.guardarRangoPresion = function () {
-        var nuevoRango = $scope.formulario.rangoPresion;
-        if ($scope.formulario.rangoPresion.id == -1) {
-            $scope.formulario.rangoPresionAlta = nuevoRango;
+    $scope.seleccionar = function (tipo, elemento) {
+        switch (tipo) {
+            case "tipomotor":
+                if (!Array.isArray($scope.formulario.tiposMotor)) {
+                    $scope.formulario.tiposMotor = [];
+                }
+                if (!Array.isArray($scope.formulario.agregarMotores)) {
+                    $scope.formulario.agregarMotores = [];
+                }
+                $scope.formulario.agregarMotores.push(elemento);
+                $scope.formulario.tiposMotor.push(elemento);
+                $scope.ver($scope.formulario, 'equipo', $scope.metodo)
+                break;
+            case "tipocompresor":
+                if (!Array.isArray($scope.formulario.tiposCompresor)) {
+                    $scope.formulario.tiposCompresor = [];
+                }
+                if (!Array.isArray($scope.formulario.agregarCompresores)) {
+                    $scope.formulario.agregarCompresores = [];
+                }
+                $scope.formulario.agregarCompresores.push(elemento);
+                $scope.formulario.tiposCompresor.push(elemento);
+                $scope.ver($scope.formulario, 'equipo', $scope.metodo)
+                break;
+            case "bateria":
+                if (!Array.isArray($scope.formulario.baterias)) {
+                    $scope.formulario.baterias = [];
+                }
+                if (!Array.isArray($scope.formulario.agregarBaterias)) {
+                    $scope.formulario.agregarBaterias = [];
+                }
+                $scope.formulario.agregarBaterias.push(elemento);
+                $scope.formulario.baterias.push(elemento);
+                $scope.ver($scope.formulario, 'equipo', $scope.metodo)
+                break;
+            case "tag":
+                if (!Array.isArray($scope.formulario.tags)) {
+                    $scope.formulario.tags = [];
+                }
+                if (!Array.isArray($scope.formulario.agregarTags)) {
+                    $scope.formulario.agregarTags = [];
+                }
+                $scope.formulario.agregarTags.push(elemento);
+                $scope.formulario.tags.push(elemento);
+                $scope.ver($scope.formulario, 'equipo', $scope.metodo)
+                break;
+
+            default:
+                break;
         }
-        if ($scope.formulario.rangoPresion.id == -2) {
-            $scope.formulario.rangoPresionAlta = nuevoRango;
-        }
-        $scope.rangosPresion.push(nuevoRango)
-        $scope.ver($scope.formulario, 'equipo', $scope.metodo)
     }
-    $scope.mostrarModalTipoMotor = function () {
-        $('#modal-tipoMotor').modal('show');
-    }
-    $scope.agregarTipoMotor = function () {
-        $scope.esAgregarTipoMotor = !$scope.esAgregarTipoMotor
-    }
-    $scope.guardarTipoMotor = function () {
-        if (!Array.isArray($scope.formulario.tiposMotor)) {
-            $scope.formulario.tiposMotor = [];
-        }
+    $scope.unSeleccionar = function (tipo, elemento) {
+        switch (tipo) {
+            case "tipomotor":
+                if (!Array.isArray($scope.formulario.tiposMotor)) {
+                    $scope.formulario.tiposMotor = [];
+                }
+                if (!Array.isArray($scope.formulario.eliminarMotores)) {
+                    $scope.formulario.eliminarMotores = [];
+                }
+                $scope.formulario.eliminarMotores.push(elemento);
+                // eliminar
+                // $scope.formulario.tiposMotor.push(elemento);
+                $scope.ver($scope.formulario, 'equipo', $scope.metodo)
+                break;
+            case "tipocompresor":
+                break;
+            case "bateria":
+                break;
+            case "tag":
+                break;
 
-        if (!Array.isArray($scope.formulario.agregarMotores)) {
-            $scope.formulario.agregarMotores = [];
+            default:
+                break;
         }
-
-        $scope.formulario.agregarMotores.push($scope.formulario.tipoMotor);
-        $scope.formulario.tiposMotor.push($scope.formulario.tipoMotor);
-        $scope.formulario.tipoMotor = {}
-        $scope.ver($scope.formulario, 'equipo', $scope.metodo)
-    }
-    $scope.seleccionarTipoMotor = function (tipoMotor) {
-        if (!Array.isArray($scope.formulario.tiposMotor)) {
-            $scope.formulario.tiposMotor = [];
-        }
-        if (!Array.isArray($scope.formulario.agregarMotores)) {
-            $scope.formulario.agregarMotores = [];
-        }
-        $scope.formulario.agregarMotores.push(tipoMotor);
-        $scope.formulario.tiposMotor.push(tipoMotor);
-        $scope.ver($scope.formulario, 'equipo', $scope.metodo)
-    }
-    $scope.existeTipoMotor = function (tipoMotor) {
-        if ($scope.formulario.tiposMotor && Array.isArray($scope.formulario.tiposMotor)) {
-
-            var index = $scope.formulario.tiposMotor.findIndex(function (elemento) {
-                return elemento.id === tipoMotor.id;
-            });
-            if (index !== -1) {
-                return false
-            }
-        }
-        return true
-    }
-    $scope.eliminarTipoMotor = function (tipoMotor) {
-        if ($scope.formulario.tiposMotor && Array.isArray($scope.formulario.tiposMotor)) {
-
-            var index = $scope.formulario.tiposMotor.findIndex(function (elemento) {
-                return elemento.id === tipoMotor.id;
-            });
-            if (index !== -1) {
-                $scope.formulario.tiposMotor.splice(index, 1);
-            }
-        }
-
-        if ($scope.formulario.agregarMotores && Array.isArray($scope.formulario.agregarMotores)) {
-
-            var index = $scope.formulario.agregarMotores.findIndex(function (elemento) {
-                return elemento.id === tipoMotor.id;
-            });
-            if (index !== -1) {
-                $scope.formulario.agregarMotores.splice(index, 1);
-            }
-        }
-
-        if (!Array.isArray($scope.formulario.eliminarMotores)) {
-            $scope.formulario.eliminarMotores = [];
-        }
-        $scope.formulario.eliminarMotores.push(tipoMotor)
-
-        $scope.ver($scope.formulario, 'equipo', $scope.metodo)
-    }
-    $scope.eliminarTipoCompresor = function (tipoCompresor) {
-        if ($scope.formulario.tiposCompresor && Array.isArray($scope.formulario.tiposCompresor)) {
-
-            var index = $scope.formulario.tiposCompresor.findIndex(function (elemento) {
-                return elemento.id === tipoCompresor.id;
-            });
-            if (index !== -1) {
-                $scope.formulario.tiposCompresor.splice(index, 1);
-            }
-        }
-        $scope.ver($scope.formulario, 'equipo', $scope.metodo)
     }
 
-    $scope.mostrarModalTipoCompresor = function () {
-        $('#modal-tipoCompresor').modal('show');
-    }
-    $scope.agregarTipoCompresor = function () {
-        $scope.esAgregarTipoCompresor = !$scope.esAgregarTipoCompresor
-    }
-    $scope.existeTipoCompresor = function (tipoCompresor) {
-        if ($scope.formulario.tiposCompresor && Array.isArray($scope.formulario.tiposCompresor)) {
-            var index = $scope.formulario.tiposCompresor.findIndex(function (elemento) {
-                return elemento.id === tipoCompresor.id;
-            });
-            if (index !== -1) {
-                return false
-            }
-        }
-        return true
-    }
-    $scope.seleccionarTipoCompresor = function (tipoCompresor) {
-        if (!Array.isArray($scope.formulario.tiposCompresor)) {
-            $scope.formulario.tiposCompresor = [];
-        }
-        $scope.formulario.tiposCompresor.push(tipoCompresor);
-        $scope.ver($scope.formulario, 'equipo', $scope.metodo)
-    }
-    $scope.guardarTipoCompresor = function () {
-        if (!Array.isArray($scope.formulario.tiposCompresor)) {
-            $scope.formulario.tiposCompresor = [];
-        }
-        $scope.formulario.tiposCompresor.push($scope.formulario.tipoCompresor);
-        $scope.formulario.tipoCompresor = {}
-        $scope.ver($scope.formulario, 'equipo', $scope.metodo)
-    }
-    $scope.eliminarBateria = function (bateria) {
-        if ($scope.formulario.baterias && Array.isArray($scope.formulario.baterias)) {
 
-            var index = $scope.formulario.baterias.findIndex(function (elemento) {
-                return elemento.id === bateria.id;
-            });
-            if (index !== -1) {
-                $scope.formulario.baterias.splice(index, 1);
-            }
-        }
-        $scope.ver($scope.formulario, 'equipo', $scope.metodo)
-    }
-    $scope.mostrarModalBateria = function () {
-        $('#modal-bateria').modal('show');
-    }
-    $scope.agregarBateria = function () {
-        $scope.esAgregarBateria = !$scope.esAgregarBateria
-    }
-    $scope.existeBateria = function (bateria) {
-        if ($scope.formulario.baterias && Array.isArray($scope.formulario.baterias)) {
-            var index = $scope.formulario.baterias.findIndex(function (elemento) {
-                return elemento.id === bateria.id;
-            });
-            if (index !== -1) {
-                return false
-            }
-        }
-        return true
-    }
-    $scope.seleccionarBateria = function (bateria) {
-        if (!Array.isArray($scope.formulario.baterias)) {
-            $scope.formulario.baterias = [];
-        }
-        $scope.formulario.baterias.push(bateria);
-        $scope.ver($scope.formulario, 'equipo', $scope.metodo)
-    }
-    $scope.guardarBateria = function () {
-        if (!Array.isArray($scope.formulario.baterias)) {
-            $scope.formulario.baterias = [];
-        }
-        $scope.formulario.baterias.push($scope.formulario.bateria);
-        $scope.formulario.bateria = {}
-        $scope.ver($scope.formulario, 'equipo', $scope.metodo)
-    }
-    $scope.eliminarTag = function (tag) {
-        if ($scope.formulario.tags && Array.isArray($scope.formulario.tags)) {
+    // $scope.agregarRangoPresion = function (rangoPresion, tipo) {
+    //     $('#modal-rangoPresion').modal('show');
+    //     if (!$scope.formulario.rangoPresion || typeof $scope.formulario.rangoPresion !== 'object') {
+    //         $scope.formulario.rangoPresion = {};
+    //     }
+    //     if (!rangoPresion || typeof rangoPresion !== 'object') {
+    //         rangoPresion = {};
+    //     }
 
-            var index = $scope.formulario.tags.findIndex(function (elemento) {
-                return elemento.id === tag.id;
-            });
-            if (index !== -1) {
-                $scope.formulario.tags.splice(index, 1);
-            }
-        }
-        $scope.ver($scope.formulario, 'equipo', $scope.metodo)
-    }
-    $scope.mostrarModalTag = function () {
-        $('#modal-tag').modal('show');
-    }
-    $scope.agregarTag = function () {
-        $scope.esAgregarTag = !$scope.esAgregarTag
-    }
-    $scope.existeTag = function (tag) {
-        if ($scope.formulario.tags && Array.isArray($scope.formulario.tags)) {
-            var index = $scope.formulario.tags.findIndex(function (elemento) {
-                return elemento.id === tag.id;
-            });
-            if (index !== -1) {
-                return false
-            }
-        }
-        return true
-    }
-    $scope.seleccionarTag = function (tag) {
-        if (!Array.isArray($scope.formulario.tags)) {
-            $scope.formulario.tags = [];
-        }
-        $scope.formulario.tags.push(tag);
-        $scope.ver($scope.formulario, 'equipo', $scope.metodo)
-    }
-    $scope.guardarTag = function () {
-        if (!Array.isArray($scope.formulario.tags)) {
-            $scope.formulario.tags = [];
-        }
-        $scope.formulario.tags.push($scope.formulario.tag);
-        $scope.formulario.tag = {}
-        $scope.ver($scope.formulario, 'equipo', $scope.metodo)
-    }
+    //     $scope.formulario.rangoPresion = rangoPresion;
+    //     if (tipo == 'rangoPresionAlta') {
+    //         $scope.formulario.rangoPresion.id = -1
+    //         $scope.formulario.rangoPresionAlta = rangoPresion;
+    //         $scope.formulario.rangoPresion.tipo = 'alta';
+    //     } else {
+    //         $scope.formulario.rangoPresion.id = -2
+    //         $scope.formulario.rangoPresionBaja = rangoPresion;
+    //         $scope.formulario.rangoPresion.tipo = 'baja';
+    //     }
+    // }
+    // $scope.guardarRangoPresion = function () {
+    //     var nuevoRango = $scope.formulario.rangoPresion;
+    //     if ($scope.formulario.rangoPresion.id == -1) {
+    //         $scope.formulario.rangoPresionAlta = nuevoRango;
+    //     }
+    //     if ($scope.formulario.rangoPresion.id == -2) {
+    //         $scope.formulario.rangoPresionAlta = nuevoRango;
+    //     }
+    //     $scope.rangosPresion.push(nuevoRango)
+    //     $scope.ver($scope.formulario, 'equipo', $scope.metodo)
+    // }
+    // $scope.agregarTipoMotor = function () {
+    //     $scope.esAgregarTipoMotor = !$scope.esAgregarTipoMotor
+    // }
+    // $scope.guardarTipoMotor = function () {
+    //     if (!Array.isArray($scope.formulario.tiposMotor)) {
+    //         $scope.formulario.tiposMotor = [];
+    //     }
+
+    //     if (!Array.isArray($scope.formulario.agregarMotores)) {
+    //         $scope.formulario.agregarMotores = [];
+    //     }
+
+    //     $scope.formulario.agregarMotores.push($scope.formulario.tipoMotor);
+    //     $scope.formulario.tiposMotor.push($scope.formulario.tipoMotor);
+    //     $scope.formulario.tipoMotor = {}
+    //     $scope.ver($scope.formulario, 'equipo', $scope.metodo)
+    // }
+
+
+    // $scope.eliminarTipoMotor = function (tipoMotor) {
+    //     if ($scope.formulario.tiposMotor && Array.isArray($scope.formulario.tiposMotor)) {
+
+    //         var index = $scope.formulario.tiposMotor.findIndex(function (elemento) {
+    //             return elemento.id === tipoMotor.id;
+    //         });
+    //         if (index !== -1) {
+    //             $scope.formulario.tiposMotor.splice(index, 1);
+    //         }
+    //     }
+
+    //     if ($scope.formulario.agregarMotores && Array.isArray($scope.formulario.agregarMotores)) {
+
+    //         var index = $scope.formulario.agregarMotores.findIndex(function (elemento) {
+    //             return elemento.id === tipoMotor.id;
+    //         });
+    //         if (index !== -1) {
+    //             $scope.formulario.agregarMotores.splice(index, 1);
+    //         }
+    //     }
+
+    //     if (!Array.isArray($scope.formulario.eliminarMotores)) {
+    //         $scope.formulario.eliminarMotores = [];
+    //     }
+    //     $scope.formulario.eliminarMotores.push(tipoMotor)
+
+    //     $scope.ver($scope.formulario, 'equipo', $scope.metodo)
+    // }
+    // $scope.eliminarTipoCompresor = function (tipoCompresor) {
+    //     if ($scope.formulario.tiposCompresor && Array.isArray($scope.formulario.tiposCompresor)) {
+
+    //         var index = $scope.formulario.tiposCompresor.findIndex(function (elemento) {
+    //             return elemento.id === tipoCompresor.id;
+    //         });
+    //         if (index !== -1) {
+    //             $scope.formulario.tiposCompresor.splice(index, 1);
+    //         }
+    //     }
+    //     $scope.ver($scope.formulario, 'equipo', $scope.metodo)
+    // }
+
+    // $scope.mostrarModalTipoCompresor = function () {
+    //     $('#modal-tipoCompresor').modal('show');
+    // }
+    // $scope.agregarTipoCompresor = function () {
+    //     $scope.esAgregarTipoCompresor = !$scope.esAgregarTipoCompresor
+    // }
+    // $scope.existeTipoCompresor = function (tipoCompresor) {
+    //     if ($scope.formulario.tiposCompresor && Array.isArray($scope.formulario.tiposCompresor)) {
+    //         var index = $scope.formulario.tiposCompresor.findIndex(function (elemento) {
+    //             return elemento.id === tipoCompresor.id;
+    //         });
+    //         if (index !== -1) {
+    //             return false
+    //         }
+    //     }
+    //     return true
+    // }
+    // $scope.seleccionarTipoCompresor = function (tipoCompresor) {
+    //     if (!Array.isArray($scope.formulario.tiposCompresor)) {
+    //         $scope.formulario.tiposCompresor = [];
+    //     }
+    //     $scope.formulario.tiposCompresor.push(tipoCompresor);
+    //     $scope.ver($scope.formulario, 'equipo', $scope.metodo)
+    // }
+    // $scope.guardarTipoCompresor = function () {
+    //     if (!Array.isArray($scope.formulario.tiposCompresor)) {
+    //         $scope.formulario.tiposCompresor = [];
+    //     }
+    //     $scope.formulario.tiposCompresor.push($scope.formulario.tipoCompresor);
+    //     $scope.formulario.tipoCompresor = {}
+    //     $scope.ver($scope.formulario, 'equipo', $scope.metodo)
+    // }
+    // $scope.eliminarBateria = function (bateria) {
+    //     if ($scope.formulario.baterias && Array.isArray($scope.formulario.baterias)) {
+
+    //         var index = $scope.formulario.baterias.findIndex(function (elemento) {
+    //             return elemento.id === bateria.id;
+    //         });
+    //         if (index !== -1) {
+    //             $scope.formulario.baterias.splice(index, 1);
+    //         }
+    //     }
+    //     $scope.ver($scope.formulario, 'equipo', $scope.metodo)
+    // }
+    // $scope.mostrarModalBateria = function () {
+    //     $('#modal-bateria').modal('show');
+    // }
+    // $scope.agregarBateria = function () {
+    //     $scope.esAgregarBateria = !$scope.esAgregarBateria
+    // }
+    // $scope.existeBateria = function (bateria) {
+    //     if ($scope.formulario.baterias && Array.isArray($scope.formulario.baterias)) {
+    //         var index = $scope.formulario.baterias.findIndex(function (elemento) {
+    //             return elemento.id === bateria.id;
+    //         });
+    //         if (index !== -1) {
+    //             return false
+    //         }
+    //     }
+    //     return true
+    // }
+    // $scope.seleccionarBateria = function (bateria) {
+    //     if (!Array.isArray($scope.formulario.baterias)) {
+    //         $scope.formulario.baterias = [];
+    //     }
+    //     $scope.formulario.baterias.push(bateria);
+    //     $scope.ver($scope.formulario, 'equipo', $scope.metodo)
+    // }
+    // $scope.guardarBateria = function () {
+    //     if (!Array.isArray($scope.formulario.baterias)) {
+    //         $scope.formulario.baterias = [];
+    //     }
+    //     $scope.formulario.baterias.push($scope.formulario.bateria);
+    //     $scope.formulario.bateria = {}
+    //     $scope.ver($scope.formulario, 'equipo', $scope.metodo)
+    // }
+    // $scope.eliminarTag = function (tag) {
+    //     if ($scope.formulario.tags && Array.isArray($scope.formulario.tags)) {
+
+    //         var index = $scope.formulario.tags.findIndex(function (elemento) {
+    //             return elemento.id === tag.id;
+    //         });
+    //         if (index !== -1) {
+    //             $scope.formulario.tags.splice(index, 1);
+    //         }
+    //     }
+    //     $scope.ver($scope.formulario, 'equipo', $scope.metodo)
+    // }
+    // $scope.mostrarModalTag = function () {
+    //     $('#modal-tag').modal('show');
+    // }
+    // $scope.agregarTag = function () {
+    //     $scope.esAgregarTag = !$scope.esAgregarTag
+    // }
+    // $scope.existeTag = function (tag) {
+    //     if ($scope.formulario.tags && Array.isArray($scope.formulario.tags)) {
+    //         var index = $scope.formulario.tags.findIndex(function (elemento) {
+    //             return elemento.id === tag.id;
+    //         });
+    //         if (index !== -1) {
+    //             return false
+    //         }
+    //     }
+    //     return true
+    // }
+    // $scope.seleccionarTag = function (tag) {
+    //     if (!Array.isArray($scope.formulario.tags)) {
+    //         $scope.formulario.tags = [];
+    //     }
+    //     $scope.formulario.tags.push(tag);
+    //     $scope.ver($scope.formulario, 'equipo', $scope.metodo)
+    // }
+    // $scope.guardarTag = function () {
+    //     if (!Array.isArray($scope.formulario.tags)) {
+    //         $scope.formulario.tags = [];
+    //     }
+    //     $scope.formulario.tags.push($scope.formulario.tag);
+    //     $scope.formulario.tag = {}
+    //     $scope.ver($scope.formulario, 'equipo', $scope.metodo)
+    // }
+
     $scope._error = function (response) {
         alert(response.data.message || response.statusText);
     }
@@ -1886,4 +2236,5 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
         $scope.pattern = '';
         _actualizarDatos();
     }
+
 }]);

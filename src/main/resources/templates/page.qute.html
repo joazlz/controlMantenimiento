@@ -41,15 +41,15 @@
         {! MENU !}
         <div class="ui large top menu">
             <div class="ui container">
-                <a class="header item" ng-click="verInicio()">
+                <a class="header item" ng-click="ver('inicio','contenido','')">
                     <img class="logo" src="img/logo.png" alt="Quarkus logo" style="width:80px;">
                     Control de Equipos
                 </a>
                 <div class="right menu">
-                    <div class="item" ng-click="verConfiguracion()">
+                    <div class="item" ng-click="ver('configuracion','contenido','')">
                         <i class="user circle icon"></i>
                     </div>
-                    <div class="item" ng-click="verNotificacion()">
+                    <div class="item" ng-click="ver('notificacion','contenido','')">
                         <i class="bell icon"></i>
                     </div>
                 </div>
@@ -71,6 +71,650 @@
             </div>
         </div>
 
+        {! configuraciones !}
+        <div class="ui modal" id="contenidoConfiguracion">
+            <i class="close icon"></i>
+            <div class="header">
+                Configuraciones
+            </div>
+            <div class="content">
+                <a class="ui teal image label"> Roles: </a>
+                {#for item in identity.roles}
+                <div class="ui label">
+                    {item}
+                </div>
+                {/for}
+                <br>
+                <a class="ui teal image label"> Credenciales: </a>
+                {#for item in identity.credentials}
+                {item}
+                <br>
+                {/for}
+                <br>
+                <a class="ui teal image label"> Atributos: </a>
+                {#for item in identity.getAttributes}
+
+                {item}
+                <br>
+                {/for}
+                <br>
+
+            </div>
+            <div class="actions">
+            </div>
+        </div>
+
+        {! EQUIPOS !}
+        <div id="contenidoEquipos" class="ui segment" style="width: 100%; height: 85vh; overflow-y: auto;">
+            <h2 class="ui left floated header">Equipos</h2>
+
+            <button class="ui blue right floated  segment labeled icon button"
+                ng-click="ver('agregar','equipo','agregar')"><i class="plus circle icon"></i>
+                Agregar equipo</button>
+
+            <div class="ui clearing divider">
+                <table class="ui celled table">
+                    <thead>
+                        <tr>
+                            <th>Modelo</th>
+                            <th>Area</th>
+                            <th>Estado</th>
+                            <th>Marca</th>
+                            <th>Tipo Equipo</th>
+                            <th>Tags</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="equipo in equipos">
+                            <td>{{equipo.modelo}}</td>
+                            <td>{{equipo.area.nombre}}</td>
+                            <td class="error"><i class="attention icon"></i>{{equipo.estado.nombre}}</td>
+                            <td>{{equipo.marca.nombre}}</td>
+                            <td>{{equipo.tipoEquipo.nombre}}</td>
+                            <td>
+                                <div ng-repeat="tag in equipo.tags" class="ui label"> {{tag.nombre}} </div>
+                            </td>
+                            <td>
+                                <button class="ui basic green button" ng-click="ver(equipo,'equipo','editar')"><i
+                                        class="pencil alternate icon"></i>
+                                    Editar</button>
+                                <button ng-if="{identity.roles.contains('admin')}" class="ui basic red button"
+                                    ng-click="eliminar('equipo', equipo)"><i class="trash alternate outline icon"></i>
+                                    Eliminar</button>
+                                <button class="ui basic blue button" ng-click="ver(equipo,'equipo','ver')">
+                                    <i class="eye icon"></i> Ver</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="ui modal" id="modal-agregar">
+            <i class="close icon"></i>
+            <div id="modalHeaderAgregar" class="header"></div>
+            <div class="content">
+                <div class="description">
+                    <h4 class="ui horizontal divider header"><i class="bar chart icon"></i> Especificaciones </h4>
+                    <form class="ui form" id="equipo-formulario-agregar">
+                        <table class="ui definition table">
+                            <tbody>
+                                <tr>
+                                    <td class="four wide column"><b>Modelo:</b></td>
+                                    <td><input type="text" name="modelo" placeholder="modelo"
+                                            ng-model="formulario.modelo" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Voltaje:</b></td>
+                                    <td><input type="text" name="voltaje" placeholder="Voltaje"
+                                            ng-model="formulario.voltaje" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Amperaje:</b></td>
+                                    <td><input type="text" name="amperaje" placeholder="Amperaje"
+                                            ng-model="formulario.amperaje" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Flipon:</b></td>
+                                    <td><input type="text" name="flipon" placeholder="Flipon"
+                                            ng-model="formulario.flipon" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Cable Alimentacion:</b></td>
+                                    <td><input type="text" name="cableAlimentacion" placeholder="Cable Alimentacion"
+                                            ng-model="formulario.cableAlimentacion" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Tranformador:</b></td>
+                                    <td><input type="text" name="tranformador" placeholder="Tranformador"
+                                            ng-model="formulario.tranformador" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Contactor:</b></td>
+                                    <td><input type="text" name="Contactor" placeholder="Contactor"
+                                            ng-model="formulario.contactor" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Termostato:</b></td>
+                                    <td><input type="text" name="termostato" placeholder="Termostato"
+                                            ng-model="formulario.termostato" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>TarjetaElectronica:</b></td>
+                                    <td><input type="text" name="modelo" placeholder="modelo"
+                                            ng-model="formulario.tarjetaElectronica" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Selector:</b></td>
+                                    <td><input type="text" name="selector" placeholder="Selector"
+                                            ng-model="formulario.selector" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Retardor:</b></td>
+                                    <td><input type="text" name="retardor" placeholder="Retardor"
+                                            ng-model="formulario.retardor" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Area: </b></td>
+                                    <td><select class="ui dropdown" ng-model="formulario.area"
+                                            ng-options="area as area.nombre for area in areas  track by area.id">
+                                            <option value="" selected>Selecciona una area</option>
+                                        </select></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Tipo Gas: </b></td>
+                                    <td><select class="ui dropdown" ng-model="formulario.tipoGas"
+                                            ng-options="tipoGas as tipoGas.nombre for tipoGas in tiposGas  track by tipoGas.id">
+                                            <option value="" selected>Selecciona un Tipo Gas</option>
+                                        </select></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Capacidad BTU: </b></td>
+                                    <td><select class="ui dropdown" ng-model="formulario.capacidadBTU"
+                                            ng-options="capacidadBTU as capacidadBTU.nombre for capacidadBTU in capacidadesBTU  track by capacidadBTU.id">
+                                            <option value="" selected>Selecciona una Capacidad BTU</option>
+                                        </select></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Tipo Filtro Deshidratador: </b></td>
+                                    <td><select class="ui dropdown" ng-model="formulario.tipoFiltroDeshidratador"
+                                            ng-options="tipoFiltroDeshidratador as tipoFiltroDeshidratador.nombre for tipoFiltroDeshidratador in tiposFiltroDeshidratador  track by tipoFiltroDeshidratador.id">
+                                            <option value="" selected>Selecciona un Tipo Filtro Deshidratador</option>
+                                        </select></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Rango Presion Alta :</b></td>
+                                    <td>
+                                        <table class="ui definition table">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <select class="ui dropdown"
+                                                            ng-model="formulario.rangoPresionAlta"
+                                                            ng-options="rangoPresionAlta as 'Min: ' + rangoPresionAlta.minimo + ', Max: ' + rangoPresionAlta.maximo for rangoPresionAlta in rangosPresion track by rangoPresionAlta.id">
+                                                            <option value="" selected>Seleccione un Rango Presion Alta
+                                                            </option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Rango Presion Baja :</b></td>
+                                    <td>
+                                        <table class="ui definition table">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <select class="ui dropdown"
+                                                            ng-model="formulario.rangoPresionBaja"
+                                                            ng-options="rangoPresionBaja as 'Min: ' + rangoPresionBaja.minimo + ', Max: ' + rangoPresionBaja.maximo for rangoPresionBaja in rangosPresion track by rangoPresionBaja.id">
+                                                            <option value="" selected>Seleccione un Rango Presion Baja
+                                                            </option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Marca: </b></td>
+                                    <td><select class="ui dropdown" ng-model="formulario.marca"
+                                            ng-options="marca as marca.nombre for marca in marcas  track by marca.id">
+                                            <option value="" selected>Selecciona una Marca</option>
+                                        </select></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>PH: </b></td>
+                                    <td><select class="ui dropdown" ng-model="formulario.pH"
+                                            ng-options="pH as pH.nombre for pH in pHs  track by pH.id">
+                                            <option value="" selected>Selecciona un PH</option>
+                                        </select></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Tipo Equipo: </b></td>
+                                    <td><select class="ui dropdown" ng-model="formulario.tipoEquipo"
+                                            ng-options="tipoEquipo as tipoEquipo.nombre for tipoEquipo in tiposEquipo  track by tipoEquipo.id">
+                                            <option value="" selected>Selecciona un Tipo Equipo</option>
+                                        </select></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Presostato Alta: </b></td>
+                                    <td><select class="ui dropdown" ng-model="formulario.presostatoAlta"
+                                            ng-options="presostatoAlta as presostatoAlta.nombre for presostatoAlta in presostatos  track by presostatoAlta.id">
+                                            <option value="" selected>Selecciona un Presostato</option>
+                                        </select></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Presostato Baja: </b></td>
+                                    <td><select class="ui dropdown" ng-model="formulario.presostatoBaja"
+                                            ng-options="presostatoBaja as presostatoBaja.nombre for presostatoBaja in presostatos  track by presostatoBaja.id">
+                                            <option value="" selected>Selecciona un Presostato</option>
+                                        </select></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <div class="actions">
+                <button type="submit" class="ui positive right labeled icon button" form="author-form"
+                    ng-click="guardar('equipo',formulario)">
+                    <i class="checkmark icon"></i>
+                    Guardar
+                </button>
+            </div>
+        </div>
+        <div class="ui modal" id="modal-ver">
+            <i class="close icon"></i>
+            <div id="modalHeaderVer" class="header"></div>
+            <div class="content">
+                <div class="description">
+                    <h4 class="ui horizontal divider header"><i class="bar chart icon"></i> Especificaciones </h4>
+                    <form class="ui form" id="equipo-formulario-ver">
+                        <table class="ui definition table">
+                            <tbody>
+                                <tr>
+                                    <td class="four wide column"><b>Modelo :</b></td>
+                                    <td>{{formulario.modelo}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Voltaje :</b></td>
+                                    <td>{{formulario.voltaje}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Amperaje :</b></td>
+                                    <td>{{formulario.amperaje}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Flipon :</b></td>
+                                    <td>{{formulario.flipon}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Cable Alimentacion :</b></td>
+                                    <td>{{formulario.cableAlimentacion}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Tranformador :</b></td>
+                                    <td>{{formulario.tranformador}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Contactor :</b></td>
+                                    <td>{{formulario.contactor}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Termostato :</b></td>
+                                    <td>{{formulario.termostato}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Tarjeta Electronica :</b></td>
+                                    <td>{{formulario.tarjetaElectronica}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Selector :</b></td>
+                                    <td>{{formulario.selector}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Retardor :</b></td>
+                                    <td>{{formulario.retardor}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Area :</b></td>
+                                    <td>{{formulario.area.nombre}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Estado :</b></td>
+                                    <td>{{formulario.estado.nombre}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Tipo Gas :</b></td>
+                                    <td>{{formulario.tipoGas.nombre}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Capacidad BTU :</b></td>
+                                    <td>{{formulario.capacidadBTU.nombre}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Tipo Filtro Deshidratador :</b></td>
+                                    <td>{{formulario.tipoFiltroDeshidratador.nombre}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Rango Presion Alta :</b></td>
+                                    <td>
+                                        <table class="ui definition table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="three wide column"><b>minimo :</b></td>
+                                                    <td>{{formulario.rangoPresionAlta.minimo}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="three wide column"><b>maximo :</b></td>
+                                                    <td>{{formulario.rangoPresionAlta.maximo}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Rango Presion Baja :</b></td>
+                                    <td>
+                                        <table class="ui definition table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="three wide column"><b>minimo :</b></td>
+                                                    <td>{{formulario.rangoPresionBaja.minimo}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="three wide column"><b>maximo :</b></td>
+                                                    <td>{{formulario.rangoPresionBaja.maximo}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>PH :</b></td>
+                                    <td>{{formulario.pH.nombre}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Tipo Equipo :</b></td>
+                                    <td>{{formulario.tipoEquipo.nombre}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Presostato Alta :</b></td>
+                                    <td>{{formulario.presostatoAlta.nombre}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Presostato Baja :</b></td>
+                                    <td>{{formulario.presostatoBaja.nombre}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Tipos Motor :</b></td>
+                                    <td>
+                                        <div ng-repeat="tipoMotor in formulario.tiposMotor" class="ui label">
+                                            {{tipoMotor.nombre}}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Tipos Compresor :</b></td>
+                                    <td>
+                                        <div ng-repeat="tipoCompresor in formulario.tiposCompresor" class="ui label">
+                                            {{tipoCompresor.nombre}} </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Baterias :</b></td>
+                                    <td>
+                                        <div ng-repeat="bateria in formulario.baterias" class="ui label">
+                                            {{bateria.nombre}}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Tags :</b></td>
+                                    <td>
+                                        <div ng-repeat="tag in formulario.tags" class="ui label"> {{tag.nombre}} </div>
+                                        <br>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="ui modal" id="modal-editar">
+            <i class="close icon"></i>
+            <div id="modalHeaderEditar" class="header"></div>
+            <div class="content">
+                <div class="description">
+                    <h4 class="ui horizontal divider header"><i class="bar chart icon"></i> Especificaciones </h4>
+                    <form class="ui form" id="equipo-formulario-editar">
+                        <table class="ui definition table">
+                            <tbody>
+                                <tr>
+                                    <td class="four wide column"><b>Modelo:</b></td>
+                                    <td><input type="text" name="modelo" placeholder="modelo"
+                                            ng-model="formulario.modelo" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Voltaje:</b></td>
+                                    <td><input type="text" name="modelo" placeholder="modelo"
+                                            ng-model="formulario.voltaje" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Amperaje:</b></td>
+                                    <td><input type="text" name="modelo" placeholder="modelo"
+                                            ng-model="formulario.amperaje" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Flipon:</b></td>
+                                    <td><input type="text" name="modelo" placeholder="modelo"
+                                            ng-model="formulario.flipon" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>CableAlimentacion:</b></td>
+                                    <td><input type="text" name="modelo" placeholder="modelo"
+                                            ng-model="formulario.cableAlimentacion" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Tranformador:</b></td>
+                                    <td><input type="text" name="modelo" placeholder="modelo"
+                                            ng-model="formulario.tranformador" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Contactor:</b></td>
+                                    <td><input type="text" name="modelo" placeholder="modelo"
+                                            ng-model="formulario.contactor" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Termostato:</b></td>
+                                    <td><input type="text" name="modelo" placeholder="modelo"
+                                            ng-model="formulario.termostato" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>TarjetaElectronica:</b></td>
+                                    <td><input type="text" name="modelo" placeholder="modelo"
+                                            ng-model="formulario.tarjetaElectronica" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Selector:</b></td>
+                                    <td><input type="text" name="modelo" placeholder="modelo"
+                                            ng-model="formulario.selector" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Retardor:</b></td>
+                                    <td><input type="text" name="modelo" placeholder="modelo"
+                                            ng-model="formulario.retardor" required></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Area :*</b></td>
+                                    <td>
+                                        <select class="ui dropdown" ng-model="formulario.area"
+                                            ng-options="area as area.nombre for area in areas track by area.id">
+                                        </select>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Tipo Gas :*</b></td>
+                                    <td>
+                                        <select class="ui dropdown" ng-model="formulario.tipoGas"
+                                            ng-options="tipoGas as tipoGas.nombre for tipoGas in tiposGas track by tipoGas.id">
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Capacidad BTU :*</b></td>
+                                    <td>
+                                        <select class="ui dropdown" ng-model="formulario.capacidadBTU"
+                                            ng-options="capacidadBTU as capacidadBTU.nombre for capacidadBTU in capacidadesBTU track by capacidadBTU.id">
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Tipo Filtro Deshidratador :*</b></td>
+                                    <td>
+                                        <select class="ui dropdown" ng-model="formulario.tipoFiltroDeshidratador"
+                                            ng-options="tipoFiltroDeshidratador as tipoFiltroDeshidratador.nombre for tipoFiltroDeshidratador in tiposFiltroDeshidratador track by tipoFiltroDeshidratador.id">
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Marca: </b></td>
+                                    <td><select class="ui dropdown" ng-model="formulario.marca"
+                                            ng-options="marca as marca.nombre for marca in marcas  track by marca.id">
+                                            <option value="" selected>Selecciona una Marca</option>
+                                        </select></td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>PH :*</b></td>
+                                    <td>
+                                        <select class="ui dropdown" ng-model="formulario.pH"
+                                            ng-options="pH as pH.nombre for pH in pHs track by pH.id">
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Tipo Equipo :*</b></td>
+                                    <td>
+                                        <select class="ui dropdown" ng-model="formulario.tipoEquipo"
+                                            ng-options="tipoEquipo as tipoEquipo.nombre for tipoEquipo in tiposEquipo track by tipoEquipo.id">
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Presostato Alta :*</b></td>
+                                    <td>
+                                        <select class="ui dropdown" ng-model="formulario.presostatoAlta"
+                                            ng-options="presostatoAlta as presostatoAlta.nombre for presostatoAlta in presostatos track by presostatoAlta.id">
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Presostato Baja :*</b></td>
+                                    <td>
+                                        <select class="ui dropdown" ng-model="formulario.presostatoBaja"
+                                            ng-options="presostatoBaja as presostatoBaja.nombre for presostatoBaja in presostatos track by presostatoBaja.id">
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Rango Presion Alta :</b></td>
+                                    <td>
+                                        <table class="ui definition table">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <select class="ui dropdown"
+                                                            ng-model="formulario.rangoPresionAlta"
+                                                            ng-options="rangoPresionAlta as 'Min: ' + rangoPresionAlta.minimo + ', Max: ' + rangoPresionAlta.maximo for rangoPresionAlta in rangosPresion track by rangoPresionAlta.id">
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Rango Presion Baja :</b></td>
+                                    <td>
+                                        <table class="ui definition table">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <select class="ui dropdown"
+                                                            ng-model="formulario.rangoPresionBaja"
+                                                            ng-options="rangoPresionBaja as 'Min: ' + rangoPresionBaja.minimo + ', Max: ' + rangoPresionBaja.maximo for rangoPresionBaja in rangosPresion track by rangoPresionBaja.id">
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Tipos Motor :</b></td>
+                                    <td>
+                                        <div ng-repeat="tipoMotor in formulario.tiposMotor" class="ui label">
+                                            {{tipoMotor.nombre}} <i class="close icon"
+                                                ng-click="eliminarTipoMotor(tipoMotor)"></i>
+                                        </div>
+                                        <div class="ui label" ng-click="ver('modal-tipoMotor','contenido','')"><i
+                                                class="plus square icon"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Tipos Compresor :</b></td>
+                                    <td>
+                                        <div ng-repeat="tipoCompresor in formulario.tiposCompresor" class="ui label">
+                                            {{tipoCompresor.nombre}} <i class="close icon"
+                                                ng-click="eliminarTipoCompresor(tipoCompresor)"></i></div>
+                                        <div class="ui label" ng-click="ver('modal-tipoCompresor','contenido','')"><i
+                                                class="plus square icon"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Baterias :</b></td>
+                                    <td>
+                                        <div ng-repeat="bateria in formulario.baterias" class="ui label">
+                                            {{bateria.nombre}} <i class="close icon"
+                                                ng-click="eliminarBateria(bateria)"></i></div>
+                                        <div class="ui label" ng-click="ver('modal-bateria','contenido','')"><i
+                                                class="plus square icon"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="four wide column"><b>Tags :</b></td>
+                                    <td>
+                                        <div ng-repeat="tag in formulario.tags" class="ui label">
+                                            {{tag.nombre}} <i class="close icon" ng-click="eliminarTag(tag)"></i></div>
+                                        <div class="ui label" ng-click="ver('modal-tag','contenido','')"><i
+                                                class="plus square icon"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <div class="actions">
+                <button type="submit" class="ui positive right labeled icon button" form="author-form"
+                    ng-click="editar('equipo',formulario)">
+                    <i class="checkmark icon"></i>
+                    Guardar
+                </button>
+            </div>
+        </div>
+
         {! CATALOGOS !}
         <div id="contenidoCatalogos">
             <div class="ui segment" style="width: 100%; height: 80vh; overflow-y: auto;">
@@ -79,6 +723,7 @@
                     <div class="item">
                         <div class="header">Equipo</div>
                         <div class="menu">
+                            <a id="itemTag" class="item" ng-click="ver('','tag','ver')">Tag</a>
                             <a id="itemArea" class="item" ng-click="ver('','area','ver')">Area</a>
                             <a id="itemBateria" class="item" ng-click="ver('','bateria','ver')">Bateria</a>
                             <a id="itemCapacidadBtu" class="item" ng-click="ver('','capacidadbtu','ver')">Capacidad
@@ -115,12 +760,10 @@
                         </div>
                     </div>
                 </div>
-
                 <button class="ui right floated  segment labeled icon button"
                     ng-click="ver('agregar',catalogoSeleccionado,'agregar')"><i class="plus square icon"></i> Agrear
                 </button>
                 <h1 class="ui header">{{catalogoSeleccionado}}</h1>
-
                 <div id="areas" class="ui right floated segment" style="width: 157vh;  height: 60vh">
                     <table class="ui very basic collapsing celled table">
                         <thead>
@@ -176,7 +819,6 @@
                         </tbody>
                     </table>
                 </div>
-
                 <div id="capacidadBtu" class="ui right floated segment" style="width: 157vh;  height: 60vh">
                     <table class="ui very basic collapsing celled table">
                         <thead>
@@ -206,7 +848,6 @@
                         </tbody>
                     </table>
                 </div>
-
                 <div id="estado" class="ui right floated segment" style="width: 157vh;  height: 60vh">
                     <table class="ui very basic collapsing celled table">
                         <thead>
@@ -351,7 +992,6 @@
                         </tbody>
                     </table>
                 </div>
-
                 <div id="tipoCompresor" class="ui right floated segment" style="width: 157vh;  height: 60vh">
                     <table class="ui very basic collapsing celled table">
                         <thead>
@@ -472,14 +1112,18 @@
                         <thead>
                             <tr>
                                 <th>Nombre</th>
+                                <th>Capacidad</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="tipoMotor in tiposMotor">
                                 <td>
-
                                     <div class="content">{{tipoMotor.nombre}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="content">{{tipoMotor.capacidad}}
                                     </div>
                                 </td>
                                 <td>
@@ -583,6 +1227,35 @@
                         </tbody>
                     </table>
                 </div>
+                <div id="tag" class="ui right floated segment" style="width: 157vh;  height: 60vh">
+                    <table class="ui very basic collapsing celled table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="tag in tags">
+                                <td>
+
+                                    <div class="content">{{tag.nombre}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="ui small basic green button"
+                                        ng-click="ver(tag,'tag','editar')"><i
+                                            class="pencil alternate icon"></i>
+                                        Editar</button>
+                                    <button ng-if="{identity.roles.contains('admin')}" class="ui small basic red button"
+                                        ng-click="eliminar('tag', tag)"><i
+                                            class="trash alternate outline icon"></i>
+                                        Eliminar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -608,7 +1281,6 @@
                 </button>
             </div>
         </div>
-
         <div class="ui modal" id="editar_agregar_bateria">
             <h4 id="tituloModal_editar_agregar_bateria" class="ui horizontal divider header"><i
                     class="bar chart icon"></i></h4>
@@ -626,7 +1298,6 @@
             <div class="actions"><button type="submit" class="ui positive right labeled icon button" form="author-form"
                     ng-click="guardar('bateria',formulario)"><i class="checkmark icon"></i>Guardar</button></div>
         </div>
-
         <div class="ui modal" id="editar_agregar_capacidadBtu">
             <h4 id="tituloModal_editar_agregar_capacidadBtu" class="ui horizontal divider header"><i
                     class="bar chart icon"></i></h4>
@@ -644,7 +1315,6 @@
             <div class="actions"><button type="submit" class="ui positive right labeled icon button" form="author-form"
                     ng-click="guardar('capacidadbtu',formulario)"><i class="checkmark icon"></i>Guardar</button></div>
         </div>
-
         <div class="ui modal" id="editar_agregar_estado">
             <h4 id="tituloModal_editar_agregar_estado" class="ui horizontal divider header"><i
                     class="bar chart icon"></i></h4>
@@ -662,7 +1332,6 @@
             <div class="actions"><button type="submit" class="ui positive right labeled icon button" form="author-form"
                     ng-click="guardar('estado',formulario)"><i class="checkmark icon"></i>Guardar</button></div>
         </div>
-
         <div class="ui modal" id="editar_agregar_marca">
             <h4 id="tituloModal_editar_agregar_marca" class="ui horizontal divider header"><i
                     class="bar chart icon"></i></h4>
@@ -680,7 +1349,6 @@
             <div class="actions"><button type="submit" class="ui positive right labeled icon button" form="author-form"
                     ng-click="guardar('marca',formulario)"><i class="checkmark icon"></i>Guardar</button></div>
         </div>
-
         <div class="ui modal" id="editar_agregar_ph">
             <h4 id="tituloModal_editar_agregar_ph" class="ui horizontal divider header"><i class="bar chart icon"></i>
             </h4>
@@ -698,7 +1366,6 @@
             <div class="actions"><button type="submit" class="ui positive right labeled icon button" form="author-form"
                     ng-click="guardar('ph',formulario)"><i class="checkmark icon"></i>Guardar</button></div>
         </div>
-
         <div class="ui modal" id="editar_agregar_presostato">
             <h4 id="tituloModal_editar_agregar_presostato" class="ui horizontal divider header"><i
                     class="bar chart icon"></i></h4>
@@ -716,7 +1383,6 @@
             <div class="actions"><button type="submit" class="ui positive right labeled icon button" form="author-form"
                     ng-click="guardar('presostato',formulario)"><i class="checkmark icon"></i>Guardar</button></div>
         </div>
-
         <div class="ui modal" id="editar_agregar_rangoPresion">
             <h4 id="tituloModal_editar_agregar_rangoPresion" class="ui horizontal divider header"><i
                     class="bar chart icon"></i></h4>
@@ -837,6 +1503,8 @@
                             <td class="four wide column"><b>Tipo Motor :</b></td>
                             <td><input type="text" name="nombre" placeholder="nombre"
                                     ng-model="formulario.tipoMotor.nombre" required></td>
+                            <td><input type="text" name="capacidad" placeholder="capacidad"
+                                    ng-model="formulario.tipoMotor.capacidad" required></td>
                         </tr>
                     </tbody>
                 </table>
@@ -879,40 +1547,156 @@
                     ng-click="guardar('tipomantenimiento',formulario)"><i class="checkmark icon"></i>Guardar</button>
             </div>
         </div>
-
-    </div>
-    {! configuraciones !}
-    {! <div class="ui modal" id="contenidoConfiguracion">
-        <i class="close icon"></i>
-        <div class="header">
-            Configuraciones
-        </div>
-        <div class="content">
-            <a class="ui teal image label"> Roles: </a>
-            {#for item in identity.roles}
-            <div class="ui label">
-                {item}
+        <div class="ui modal" id="editar_agregar_tag">
+            <h4 id="tituloModal_editar_agregar_tag" class="ui horizontal divider header"><i
+                    class="bar chart icon"></i></h4>
+            <form class="ui form" id="tag-formulario-ver">
+                <table class="ui definition table">
+                    <tbody>
+                        <tr>
+                            <td class="four wide column"><b>Tag :</b></td>
+                            <td><input type="text" name="nombre" placeholder="nombre"
+                                    ng-model="formulario.tag.nombre" required></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            <div class="actions"><button type="submit" class="ui positive right labeled icon button" form="author-form"
+                    ng-click="guardar('tag',formulario)"><i class="checkmark icon"></i>Guardar</button>
             </div>
-            {/for}
-            <br>
-            <a class="ui teal image label"> Credenciales: </a>
-            {#for item in identity.credentials}
-            {item}
-            <br>
-            {/for}
-            <br>
-            <a class="ui teal image label"> Atributos: </a>
-            {#for item in identity.getAttributes}
-
-            {item}
-            <br>
-            {/for}
-            <br>
-
         </div>
-        <div class="actions">
+        <div class="ui modal" id="modal-tipoMotor">
+            <i class="close icon" ng-click="ver(formulario, 'equipo', metodo)"></i>
+            <div class="content">
+                <div class="description">
+                    <h4 class="ui horizontal divider header"><i class="bar chart icon"></i> Nuevo Tipo de Motor </h4>
+                    <div id="contenidoTiposMotor" class="ui container contenido">
+                        <div class="content">
+                            <table class="ui celled table">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Capacidad</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="tipoMotor in tiposMotor">
+                                        <td>{{tipoMotor.nombre}}</td>
+                                        <td>{{tipoMotor.capacidad}}</td>
+                                        <td>
+                                            <button ng-if="existe('tipomotor',tipoMotor)" class="ui basic green button"
+                                                ng-click="seleccionar('tipomotor',tipoMotor)"><i
+                                                    class="pencil alternate icon"></i>
+                                                Seleccionar</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div> !}
+        <div class="ui modal" id="modal-tipoCompresor">
+            <i class="close icon" ng-click="ver(formulario, 'equipo', metodo)"></i>
+            <div class="content">
+                <div class="description">
+                    <h4 class="ui horizontal divider header"><i class="bar chart icon"></i> Nuevo Tipo de Compresor </h4>
+                    <div id="contenidoTiposCompresor" class="ui container contenido">
+                        <div class="content">
+                            <table class="ui celled table">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="tipoCompresor in tiposCompresor">
+                                        <td>{{tipoCompresor.nombre}}</td>
+                                        <td>
+                                            <button ng-if="existe('tipocompresor',tipoCompresor)" class="ui basic green button"
+                                                ng-click="seleccionar('tipocompresor',tipoCompresor)"><i
+                                                    class="pencil alternate icon"></i>
+                                                Seleccionar</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui modal" id="modal-bateria">
+            <i class="close icon" ng-click="ver(formulario, 'equipo', metodo)"></i>
+            <div class="content">
+                <div class="description">
+                    <h4 class="ui horizontal divider header"><i class="bar chart icon"></i> agrear Bateria </h4>
+                    <div id="contenidoBaterias" class="ui container contenido">
+                        <div class="content">
+                            <table class="ui celled table">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="bateria in baterias">
+                                        <td>{{bateria.nombre}}</td>
+                                        <td>
+                                            <button ng-if="existe('bateria',bateria)" class="ui basic green button"
+                                                ng-click="seleccionar('bateria',bateria)"><i
+                                                    class="pencil alternate icon"></i>
+                                                Seleccionar</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui modal" id="modal-tag">
+            <i class="close icon" ng-click="ver(formulario, 'equipo', metodo)"></i>
+            <div class="content">
+                <div class="description">
+                    <h4 class="ui horizontal divider header"><i class="bar chart icon"></i> agrear Tag </h4>
+                    <div id="contenidoTags" class="ui container contenido">
+                        <div class="content">
+                            <table class="ui celled table">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Capacidad</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="tag in tags">
+                                        <td>{{tag.nombre}}</td>
+                                        <td>{{tag.capacidad}}</td>
+                                        <td>
+                                            <button ng-if="existe('tag',tag)" class="ui basic green button"
+                                                ng-click="seleccionar('tag',tag)"><i
+                                                    class="pencil alternate icon"></i>
+                                                Seleccionar</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 
     {! INICIO !}
     {! <div id="contenidoInicio" class="ui container contenido">
@@ -935,631 +1719,11 @@
         </div>
     </div> !}
 
-    {! EQUIPOS !}
-    {! <div id="contenidoEquipos" class="ui container contenido">
-        <div class="content">
-            <button class="ui blue labeled icon button" ng-click="ver('agregar','equipo','agregar')"><i
-                    class="plus circle icon"></i>
-                Agregar equipo</button>
-            <button class="ui grey labeled icon button" ng-click="verInicio()"><i class="redo icon"></i>
-                Resumenes</button>
-        </div>
-        <h2 class="ui right floated header">Equipos</h2>
-        <div class="ui clearing divider">
-            <table class="ui celled table">
-                <thead>
-                    <tr>
-                        <th>Modelo</th>
-                        <th>Area</th>
-                        <th>Estado</th>
-                        <th>Marca</th>
-                        <th>Tipo Equipo</th>
-                        <th>Tags</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="equipo in equipos">
-                        <td>{{equipo.modelo}}</td>
-                        <td>{{equipo.area.nombre}}</td>
-                        <td class="error"><i class="attention icon"></i>{{equipo.estado.nombre}}</td>
-                        <td>{{equipo.marca.nombre}}</td>
-                        <td>{{equipo.tipoEquipo.nombre}}</td>
-                        <td>
-                            <div ng-repeat="tag in equipo.tags" class="ui label"> {{tag.nombre}} </div>
-                        </td>
-                        <td>
-                            <button class="ui basic green button" ng-click="ver(equipo,'equipo','editar')"><i
-                                    class="pencil alternate icon"></i>
-                                Editar</button>
-                            <button ng-if="{identity.roles.contains('admin')}" class="ui basic red button"
-                                ng-click="eliminar('equipo', equipo)"><i class="trash alternate outline icon"></i>
-                                Eliminar</button>
-                            <button class="ui basic blue button" ng-click="ver(equipo,'equipo','ver')">
-                                <i class="eye icon"></i> Ver</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div> !}
 
     {! MODALES !}
-    {! <div class="ui modal" id="modal-ver">
-        <i class="close icon"></i>
-        <div id="modalHeaderVer" class="header"></div>
-        <div class="content">
-            <div class="description">
-                <h4 class="ui horizontal divider header"><i class="bar chart icon"></i> Especificaciones </h4>
-                <form class="ui form" id="equipo-formulario-ver">
-                    <table class="ui definition table">
-                        <tbody>
-                            <tr>
-                                <td class="four wide column"><b>Modelo :</b></td>
-                                <td>{{formulario.modelo}}</td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Voltaje :</b></td>
-                                <td>{{formulario.voltaje}}</td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Amperaje :</b></td>
-                                <td>{{formulario.amperaje}}</td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Flipon :</b></td>
-                                <td>{{formulario.flipon}}</td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Cable Alimentacion :</b></td>
-                                <td>{{formulario.cableAlimentacion}}</td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Tranformador :</b></td>
-                                <td>{{formulario.tranformador}}</td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Contactor :</b></td>
-                                <td>{{formulario.contactor}}</td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Termostato :</b></td>
-                                <td>{{formulario.termostato}}</td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Tarjeta Electronica :</b></td>
-                                <td>{{formulario.tarjetaElectronica}}</td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Selector :</b></td>
-                                <td>{{formulario.selector}}</td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Retardor :</b></td>
-                                <td>{{formulario.retardor}}</td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Area :</b></td>
-                                <td>{{formulario.area.nombre}}</td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Estado :</b></td>
-                                <td>{{formulario.estado.nombre}}</td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Tipo Gas :</b></td>
-                                <td>{{formulario.tipoGas.nombre}}</td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Capacidad BTU :</b></td>
-                                <td>{{formulario.capacidadBTU.nombre}}</td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Tipo Filtro Deshidratador :</b></td>
-                                <td>{{formulario.tipoFiltroDeshidratador.nombre}}</td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Rango Presion Alta :</b></td>
-                                <td>
-                                    <table class="ui definition table">
-                                        <tbody>
-                                            <tr>
-                                                <td class="three wide column"><b>minimo :</b></td>
-                                                <td>{{formulario.rangoPresionAlta.minimo}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="three wide column"><b>maximo :</b></td>
-                                                <td>{{formulario.rangoPresionAlta.maximo}}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Rango Presion Baja :</b></td>
-                                <td>
-                                    <table class="ui definition table">
-                                        <tbody>
-                                            <tr>
-                                                <td class="three wide column"><b>minimo :</b></td>
-                                                <td>{{formulario.rangoPresionBaja.minimo}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="three wide column"><b>maximo :</b></td>
-                                                <td>{{formulario.rangoPresionBaja.maximo}}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>PH :</b></td>
-                                <td>{{formulario.pH.nombre}}</td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Tipo Equipo :</b></td>
-                                <td>{{formulario.tipoEquipo.nombre}}</td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Presostato Alta :</b></td>
-                                <td>{{formulario.presostatoAlta.nombre}}</td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Presostato Baja :</b></td>
-                                <td>{{formulario.presostatoBaja.nombre}}</td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Tipos Motor :</b></td>
-                                <td>
-                                    <div ng-repeat="tipoMotor in formulario.tiposMotor" class="ui label">
-                                        {{tipoMotor.nombre}}
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Tipos Compresor :</b></td>
-                                <td>
-                                    <div ng-repeat="tipoCompresor in formulario.tiposCompresor" class="ui label">
-                                        {{tipoCompresor.nombre}} </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Baterias :</b></td>
-                                <td>
-                                    <div ng-repeat="bateria in formulario.baterias" class="ui label">
-                                        {{bateria.nombre}}
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Tags :</b></td>
-                                <td>
-                                    <div ng-repeat="tag in formulario.tags" class="ui label"> {{tag.nombre}} </div>
-                                    <br>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </form>
-            </div>
-        </div>
-    </div> !}
 
-    {! <div class="ui modal" id="modal-editar">
-        <i class="close icon"></i>
-        <div id="modalHeaderEditar" class="header"></div>
-        <div class="content">
-            <div class="description">
-                <h4 class="ui horizontal divider header"><i class="bar chart icon"></i> Especificaciones </h4>
-                <form class="ui form" id="equipo-formulario-editar">
-                    <table class="ui definition table">
-                        <tbody>
-                            <tr>
-                                <td class="four wide column"><b>Modelo:</b></td>
-                                <td><input type="text" name="modelo" placeholder="modelo" ng-model="formulario.modelo"
-                                        required></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Voltaje:</b></td>
-                                <td><input type="text" name="modelo" placeholder="modelo" ng-model="formulario.voltaje"
-                                        required></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Amperaje:</b></td>
-                                <td><input type="text" name="modelo" placeholder="modelo" ng-model="formulario.amperaje"
-                                        required></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Flipon:</b></td>
-                                <td><input type="text" name="modelo" placeholder="modelo" ng-model="formulario.flipon"
-                                        required></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>CableAlimentacion:</b></td>
-                                <td><input type="text" name="modelo" placeholder="modelo"
-                                        ng-model="formulario.cableAlimentacion" required></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Tranformador:</b></td>
-                                <td><input type="text" name="modelo" placeholder="modelo"
-                                        ng-model="formulario.tranformador" required></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Contactor:</b></td>
-                                <td><input type="text" name="modelo" placeholder="modelo"
-                                        ng-model="formulario.contactor" required></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Termostato:</b></td>
-                                <td><input type="text" name="modelo" placeholder="modelo"
-                                        ng-model="formulario.termostato" required></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>TarjetaElectronica:</b></td>
-                                <td><input type="text" name="modelo" placeholder="modelo"
-                                        ng-model="formulario.tarjetaElectronica" required></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Selector:</b></td>
-                                <td><input type="text" name="modelo" placeholder="modelo" ng-model="formulario.selector"
-                                        required></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Retardor:</b></td>
-                                <td><input type="text" name="modelo" placeholder="modelo" ng-model="formulario.retardor"
-                                        required></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Area :*</b></td>
-                                <td>
-                                    <select class="ui dropdown" ng-model="formulario.area"
-                                        ng-options="area as area.nombre for area in areas track by area.id">
-                                    </select>
 
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Tipo Gas :*</b></td>
-                                <td>
-                                    <select class="ui dropdown" ng-model="formulario.tipoGas"
-                                        ng-options="tipoGas as tipoGas.nombre for tipoGas in tiposGas track by tipoGas.id">
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Capacidad BTU :*</b></td>
-                                <td>
-                                    <select class="ui dropdown" ng-model="formulario.capacidadBTU"
-                                        ng-options="capacidadBTU as capacidadBTU.nombre for capacidadBTU in capacidadesBTU track by capacidadBTU.id">
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Tipo Filtro Deshidratador :*</b></td>
-                                <td>
-                                    <select class="ui dropdown" ng-model="formulario.tipoFiltroDeshidratador"
-                                        ng-options="tipoFiltroDeshidratador as tipoFiltroDeshidratador.nombre for tipoFiltroDeshidratador in tiposFiltroDeshidratador track by tipoFiltroDeshidratador.id">
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Marca: </b></td>
-                                <td><select class="ui dropdown" ng-model="formulario.marca"
-                                        ng-options="marca as marca.nombre for marca in marcas  track by marca.id">
-                                        <option value="" selected>Selecciona una Marca</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>PH :*</b></td>
-                                <td>
-                                    <select class="ui dropdown" ng-model="formulario.pH"
-                                        ng-options="pH as pH.nombre for pH in pHs track by pH.id">
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Tipo Equipo :*</b></td>
-                                <td>
-                                    <select class="ui dropdown" ng-model="formulario.tipoEquipo"
-                                        ng-options="tipoEquipo as tipoEquipo.nombre for tipoEquipo in tiposEquipo track by tipoEquipo.id">
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Presostato Alta :*</b></td>
-                                <td>
-                                    <select class="ui dropdown" ng-model="formulario.presostatoAlta"
-                                        ng-options="presostatoAlta as presostatoAlta.nombre for presostatoAlta in presostatos track by presostatoAlta.id">
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Presostato Baja :*</b></td>
-                                <td>
-                                    <select class="ui dropdown" ng-model="formulario.presostatoBaja"
-                                        ng-options="presostatoBaja as presostatoBaja.nombre for presostatoBaja in presostatos track by presostatoBaja.id">
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Rango Presion Alta :</b></td>
-                                <td>
-                                    <table class="ui definition table">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <select class="ui dropdown" ng-model="formulario.rangoPresionAlta"
-                                                        ng-options="rangoPresionAlta as 'Min: ' + rangoPresionAlta.minimo + ', Max: ' + rangoPresionAlta.maximo for rangoPresionAlta in rangosPresion track by rangoPresionAlta.id">
-                                                    </select>
-                                                </td>
-                                            </tr>
 
-                                            <tr>
-                                                <div
-                                                    ng-click="agregarRangoPresion(formulario.rangoPresionAlta,'rangoPresionAlta')">
-                                                    <i class="plus square icon"></i>
-                                                </div>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Rango Presion Baja :</b></td>
-                                <td>
-                                    <table class="ui definition table">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <select class="ui dropdown" ng-model="formulario.rangoPresionBaja"
-                                                        ng-options="rangoPresionBaja as 'Min: ' + rangoPresionBaja.minimo + ', Max: ' + rangoPresionBaja.maximo for rangoPresionBaja in rangosPresion track by rangoPresionBaja.id">
-                                                    </select>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <div
-                                                    ng-click="agregarRangoPresion(formulario.rangoPresionBaja,'rangoPresionBaja')">
-                                                    <i class="plus square icon"></i>
-                                                </div>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Tipos Motor :</b></td>
-                                <td>
-                                    <div ng-repeat="tipoMotor in formulario.tiposMotor" class="ui label">
-                                        {{tipoMotor.nombre}} <i class="close icon"
-                                            ng-click="eliminarTipoMotor(tipoMotor)"></i>
-                                    </div>
-                                    <div class="ui label" ng-click="mostrarModalTipoMotor()"><i
-                                            class="plus square icon"></i>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Tipos Compresor :</b></td>
-                                <td>
-                                    <div ng-repeat="tipoCompresor in formulario.tiposCompresor" class="ui label">
-                                        {{tipoCompresor.nombre}} <i class="close icon"
-                                            ng-click="eliminarTipoCompresor(tipoCompresor)"></i></div>
-                                    <div class="ui label" ng-click="mostrarModalTipoCompresor()"><i
-                                            class="plus square icon"></i>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Baterias :</b></td>
-                                <td>
-                                    <div ng-repeat="bateria in formulario.baterias" class="ui label">
-                                        {{bateria.nombre}} <i class="close icon"
-                                            ng-click="eliminarBateria(bateria)"></i></div>
-                                    <div class="ui label" ng-click="mostrarModalBateria()"><i
-                                            class="plus square icon"></i>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Tags :</b></td>
-                                <td>
-                                    <div ng-repeat="tag in formulario.tags" class="ui label">
-                                        {{tag.nombre}} <i class="close icon" ng-click="eliminarTag(tag)"></i></div>
-                                    <div class="ui label" ng-click="mostrarModalTag()"><i class="plus square icon"></i>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </form>
-            </div>
-        </div>
-        <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="author-form"
-                ng-click="editar('equipo',formulario)">
-                <i class="checkmark icon"></i>
-                Guardar
-            </button>
-        </div>
-    </div> !}
-
-    {! <div class="ui modal" id="modal-agregar">
-        <i class="close icon"></i>
-        <div id="modalHeaderAgregar" class="header"></div>
-        <div class="content">
-            <div class="description">
-                <h4 class="ui horizontal divider header"><i class="bar chart icon"></i> Especificaciones </h4>
-                <form class="ui form" id="equipo-formulario-agregar">
-                    <table class="ui definition table">
-                        <tbody>
-                            <tr>
-                                <td class="four wide column"><b>Modelo:</b></td>
-                                <td><input type="text" name="modelo" placeholder="modelo" ng-model="formulario.modelo"
-                                        required></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Voltaje:</b></td>
-                                <td><input type="text" name="voltaje" placeholder="Voltaje"
-                                        ng-model="formulario.voltaje" required></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Amperaje:</b></td>
-                                <td><input type="text" name="amperaje" placeholder="Amperaje"
-                                        ng-model="formulario.amperaje" required></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Flipon:</b></td>
-                                <td><input type="text" name="flipon" placeholder="Flipon" ng-model="formulario.flipon"
-                                        required></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Cable Alimentacion:</b></td>
-                                <td><input type="text" name="cableAlimentacion" placeholder="Cable Alimentacion"
-                                        ng-model="formulario.cableAlimentacion" required></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Tranformador:</b></td>
-                                <td><input type="text" name="tranformador" placeholder="Tranformador"
-                                        ng-model="formulario.tranformador" required></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Contactor:</b></td>
-                                <td><input type="text" name="Contactor" placeholder="Contactor"
-                                        ng-model="formulario.contactor" required></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Termostato:</b></td>
-                                <td><input type="text" name="termostato" placeholder="Termostato"
-                                        ng-model="formulario.termostato" required></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>TarjetaElectronica:</b></td>
-                                <td><input type="text" name="modelo" placeholder="modelo"
-                                        ng-model="formulario.tarjetaElectronica" required></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Selector:</b></td>
-                                <td><input type="text" name="selector" placeholder="Selector"
-                                        ng-model="formulario.selector" required></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Retardor:</b></td>
-                                <td><input type="text" name="retardor" placeholder="Retardor"
-                                        ng-model="formulario.retardor" required></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Area: </b></td>
-                                <td><select class="ui dropdown" ng-model="formulario.area"
-                                        ng-options="area as area.nombre for area in areas  track by area.id">
-                                        <option value="" selected>Selecciona una area</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Tipo Gas: </b></td>
-                                <td><select class="ui dropdown" ng-model="formulario.tipoGas"
-                                        ng-options="tipoGas as tipoGas.nombre for tipoGas in tiposGas  track by tipoGas.id">
-                                        <option value="" selected>Selecciona un Tipo Gas</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Capacidad BTU: </b></td>
-                                <td><select class="ui dropdown" ng-model="formulario.capacidadBTU"
-                                        ng-options="capacidadBTU as capacidadBTU.nombre for capacidadBTU in capacidadesBTU  track by capacidadBTU.id">
-                                        <option value="" selected>Selecciona una Capacidad BTU</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Tipo Filtro Deshidratador: </b></td>
-                                <td><select class="ui dropdown" ng-model="formulario.tipoFiltroDeshidratador"
-                                        ng-options="tipoFiltroDeshidratador as tipoFiltroDeshidratador.nombre for tipoFiltroDeshidratador in tiposFiltroDeshidratador  track by tipoFiltroDeshidratador.id">
-                                        <option value="" selected>Selecciona un Tipo Filtro Deshidratador</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Rango Presion Alta :</b></td>
-                                <td>
-                                    <table class="ui definition table">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <select class="ui dropdown" ng-model="formulario.rangoPresionAlta"
-                                                        ng-options="rangoPresionAlta as 'Min: ' + rangoPresionAlta.minimo + ', Max: ' + rangoPresionAlta.maximo for rangoPresionAlta in rangosPresion track by rangoPresionAlta.id">
-                                                        <option value="" selected>Seleccione un Rango Presion Alta
-                                                        </option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Rango Presion Baja :</b></td>
-                                <td>
-                                    <table class="ui definition table">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <select class="ui dropdown" ng-model="formulario.rangoPresionBaja"
-                                                        ng-options="rangoPresionBaja as 'Min: ' + rangoPresionBaja.minimo + ', Max: ' + rangoPresionBaja.maximo for rangoPresionBaja in rangosPresion track by rangoPresionBaja.id">
-                                                        <option value="" selected>Seleccione un Rango Presion Baja
-                                                        </option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Marca: </b></td>
-                                <td><select class="ui dropdown" ng-model="formulario.marca"
-                                        ng-options="marca as marca.nombre for marca in marcas  track by marca.id">
-                                        <option value="" selected>Selecciona una Marca</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>PH: </b></td>
-                                <td><select class="ui dropdown" ng-model="formulario.pH"
-                                        ng-options="pH as pH.nombre for pH in pHs  track by pH.id">
-                                        <option value="" selected>Selecciona un PH</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Tipo Equipo: </b></td>
-                                <td><select class="ui dropdown" ng-model="formulario.tipoEquipo"
-                                        ng-options="tipoEquipo as tipoEquipo.nombre for tipoEquipo in tiposEquipo  track by tipoEquipo.id">
-                                        <option value="" selected>Selecciona un Tipo Equipo</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Presostato Alta: </b></td>
-                                <td><select class="ui dropdown" ng-model="formulario.presostatoAlta"
-                                        ng-options="presostatoAlta as presostatoAlta.nombre for presostatoAlta in presostatos  track by presostatoAlta.id">
-                                        <option value="" selected>Selecciona un Presostato</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td class="four wide column"><b>Presostato Baja: </b></td>
-                                <td><select class="ui dropdown" ng-model="formulario.presostatoBaja"
-                                        ng-options="presostatoBaja as presostatoBaja.nombre for presostatoBaja in presostatos  track by presostatoBaja.id">
-                                        <option value="" selected>Selecciona un Presostato</option>
-                                    </select></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </form>
-            </div>
-        </div>
-        <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="author-form"
-                ng-click="guardar('equipo',formulario)">
-                <i class="checkmark icon"></i>
-                Guardar
-            </button>
-        </div>
-    </div> !}
 
     {! <div class="ui modal" id="modal-rangoPresion">
         <i class="close icon"></i>
@@ -1603,67 +1767,7 @@
         </div>
     </div> !}
 
-    {! <div class="ui modal" id="modal-tipoMotor">
-        <i class="close icon"></i>
-        <div class="content">
-            <div class="description">
-                <h4 class="ui horizontal divider header"><i class="bar chart icon"></i> Nuevo Tipo de Motor </h4>
-                <div id="contenidoEquipos" class="ui container contenido">
-                    <div class="content">
-                        <button class="ui blue labeled icon button" ng-click="agregarTipoMotor()"><i
-                                class="plus circle icon"></i>
-                            Agregar Tipo de Motor</button>
-                        <table class="ui celled table">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Capacidad</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="tipoMotor in tiposMotor">
-                                    <td>{{tipoMotor.nombre}}</td>
-                                    <td>{{tipoMotor.capacidad}}</td>
-                                    <td>
-                                        <button ng-if="existeTipoMotor(tipoMotor)" class="ui basic green button"
-                                            ng-click="seleccionarTipoMotor(tipoMotor)"><i
-                                                class="pencil alternate icon"></i>
-                                            Seleccionar</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="ui horizontal divider"></div>
-                        <form ng-if="esAgregarTipoMotor" class="ui form" id="tipoMotor-formulario-editar">
-                            <input type="hidden" name="tipoMotorId" ng-model="formulario.tipoMotor.id" />
-                            <table class="ui definition table">
-                                <tbody>
-                                    <tr>
-                                        <td class="four wide column"><b>Nombre :</b></td>
-                                        <td><input type="text" name="nombre" placeholder="nombre"
-                                                ng-model="formulario.tipoMotor.nombre" required></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="four wide column"><b>Capacidad :</b></td>
-                                        <td><input type="text" name="capacidad" placeholder="capacidad"
-                                                ng-model="formulario.tipoMotor.capacidad" required></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="author-form"
-                ng-click="guardarTipoMotor()">
-                <i class="checkmark icon"></i>
-                Guardar
-            </button>
-        </div>
-    </div> !}
+
 
     {! <div class="ui modal" id="modal-tipoCompresor">
         <i class="close icon"></i>

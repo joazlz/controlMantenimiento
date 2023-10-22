@@ -1055,8 +1055,59 @@ public class EquipoResource {
             equipo.tiposMotor.add(tipoMotor);
             equipo.persist();
         }
-
     }
+    @POST
+    @Path("actualizar/{id}/tiposcompresores")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void actualizarEquipoTiposCompresores(
+            Long id,
+            @RestForm Long tipoCompresor_id) {
+        
+        Equipo equipo = Equipo.findById(id);
+        TipoCompresor tipoCompresor =  TipoCompresor.findById(tipoCompresor_id);
+
+        if (!equipo.equals(null) &
+            !tipoCompresor.equals(null)) {
+            equipo.tiposCompresor.add(tipoCompresor);
+            equipo.persist();
+        }
+    }
+    @POST
+    @Path("actualizar/{id}/baterias")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void actualizarEquipoBaterias(
+            Long id,
+            @RestForm Long bateria_id) {
+        
+        Equipo equipo = Equipo.findById(id);
+        Bateria bateria =  Bateria.findById(bateria_id);
+
+        if (!equipo.equals(null) &
+            !bateria.equals(null)) {
+            equipo.baterias.add(bateria);
+            equipo.persist();
+        }
+    }
+    @POST
+    @Path("actualizar/{id}/tags")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void actualizarEquipoTags(
+            Long id,
+            @RestForm Long tag_id) {
+        
+        Equipo equipo = Equipo.findById(id);
+        Tag tag =  Tag.findById(tag_id);
+
+        if (!equipo.equals(null) &
+            !tag.equals(null)) {
+            equipo.tags.add(tag);
+            equipo.persist();
+        }
+    }
+
 
     @DELETE
     @Path("actualizar/{id}/tiposmotores")
