@@ -1127,5 +1127,55 @@ public class EquipoResource {
         }
 
     }
+    @DELETE
+    @Path("actualizar/{id}/tiposcompresores")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void eliminarEquipoTiposCompresores(
+            Long id,
+            @RestForm Long tipoCompresor_id) {
+        
+        Equipo equipo = Equipo.findById(id);
+        TipoCompresor tipoCompresor =  TipoCompresor.findById(tipoCompresor_id);
+        if (!equipo.equals(null) &
+            !tipoCompresor.equals(null)) {
+            equipo.tiposCompresor.remove(tipoCompresor);
+            equipo.persist();
+        }
+    }
+    @DELETE
+    @Path("actualizar/{id}/baterias")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void eliminarEquipoBaterias(
+            Long id,
+            @RestForm Long bateria_id) {
+        
+        Equipo equipo = Equipo.findById(id);
+        Bateria bateria =  Bateria.findById(bateria_id);
+
+        if (!equipo.equals(null) & !bateria.equals(null)) {
+            equipo.baterias.remove(bateria);
+            equipo.persist();
+        }
+
+    }
+    @DELETE
+    @Path("actualizar/{id}/tags")
+    @Transactional
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void eliminarEquipoTags(
+            Long id,
+            @RestForm Long tag_id) {
+        
+        Equipo equipo = Equipo.findById(id);
+        Tag tag =  Tag.findById(tag_id);
+
+        if (!equipo.equals(null) & !tag.equals(null)) {
+            equipo.tags.remove(tag);
+            equipo.persist();
+        }
+
+    }
 
 }

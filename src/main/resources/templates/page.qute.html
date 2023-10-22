@@ -662,7 +662,7 @@
                                     <td>
                                         <div ng-repeat="tipoMotor in formulario.tiposMotor" class="ui label">
                                             {{tipoMotor.nombre}} <i class="close icon"
-                                                ng-click="eliminarTipoMotor(tipoMotor)"></i>
+                                                ng-click="unSeleccionar('tipomotor',tipoMotor)"></i>
                                         </div>
                                         <div class="ui label" ng-click="ver('modal-tipoMotor','contenido','')"><i
                                                 class="plus square icon"></i>
@@ -674,7 +674,7 @@
                                     <td>
                                         <div ng-repeat="tipoCompresor in formulario.tiposCompresor" class="ui label">
                                             {{tipoCompresor.nombre}} <i class="close icon"
-                                                ng-click="eliminarTipoCompresor(tipoCompresor)"></i></div>
+                                                ng-click="unSeleccionar('tipocompresor',tipoCompresor)"></i></div>
                                         <div class="ui label" ng-click="ver('modal-tipoCompresor','contenido','')"><i
                                                 class="plus square icon"></i>
                                         </div>
@@ -685,7 +685,7 @@
                                     <td>
                                         <div ng-repeat="bateria in formulario.baterias" class="ui label">
                                             {{bateria.nombre}} <i class="close icon"
-                                                ng-click="eliminarBateria(bateria)"></i></div>
+                                                ng-click="unSeleccionar('bateria',bateria)"></i></div>
                                         <div class="ui label" ng-click="ver('modal-bateria','contenido','')"><i
                                                 class="plus square icon"></i>
                                         </div>
@@ -695,7 +695,7 @@
                                     <td class="four wide column"><b>Tags :</b></td>
                                     <td>
                                         <div ng-repeat="tag in formulario.tags" class="ui label">
-                                            {{tag.nombre}} <i class="close icon" ng-click="eliminarTag(tag)"></i></div>
+                                            {{tag.nombre}} <i class="close icon" ng-click="unSeleccionar('tag',tag)"></i></div>
                                         <div class="ui label" ng-click="ver('modal-tag','contenido','')"><i
                                                 class="plus square icon"></i>
                                         </div>
@@ -1671,14 +1671,12 @@
                                 <thead>
                                     <tr>
                                         <th>Nombre</th>
-                                        <th>Capacidad</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="tag in tags">
                                         <td>{{tag.nombre}}</td>
-                                        <td>{{tag.capacidad}}</td>
                                         <td>
                                             <button ng-if="existe('tag',tag)" class="ui basic green button"
                                                 ng-click="seleccionar('tag',tag)"><i

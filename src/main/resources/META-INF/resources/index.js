@@ -381,6 +381,44 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                 }).then($scope._correcto, $scope._error)
             }
         });
+        if (!Array.isArray(formulario.eliminarBaterias)) {
+            formulario.eliminarBaterias = [];
+        }
+        formulario.eliminarBaterias.forEach(function (bateria) {
+            if (bateria.id > 0) {
+                data = {};
+                method = 'DELETE';
+                url = 'equipo/actualizar/' + formulario.id + '/baterias';
+                data.bateria_id = bateria.id;
+                $http({
+                    method: method,
+                    url: url,
+                    data: $httpParamSerializerJQLike(data),
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                }).then($scope._correcto, $scope._error)
+            }
+        });
+        if (!Array.isArray(formulario.eliminarTags)) {
+            formulario.eliminarTags = [];
+        }
+        formulario.eliminarTags.forEach(function (tag) {
+            if (tag.id > 0) {
+                data = {};
+                method = 'DELETE';
+                url = 'equipo/actualizar/' + formulario.id + '/tags';
+                data.tag_id = tag.id;
+                $http({
+                    method: method,
+                    url: url,
+                    data: $httpParamSerializerJQLike(data),
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                }).then($scope._correcto, $scope._error)
+            }
+        });
 
         // AGREGAR
         if (!Array.isArray(formulario.agregarMotores)) {
@@ -1990,25 +2028,107 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                 break;
         }
     }
-    $scope.unSeleccionar = function (tipo, elemento) {
+    $scope.unSeleccionar = function (tipo, clase) {
         switch (tipo) {
             case "tipomotor":
-                if (!Array.isArray($scope.formulario.tiposMotor)) {
-                    $scope.formulario.tiposMotor = [];
+                if ($scope.formulario.tiposMotor && Array.isArray($scope.formulario.tiposMotor)) {
+                    var index = $scope.formulario.tiposMotor.findIndex(function (elemento) {
+                        return elemento.id === clase.id;
+                    });
+                    if (index !== -1) {
+                        $scope.formulario.tiposMotor.splice(index, 1);
+                    }
                 }
+        
+                if ($scope.formulario.agregarMotores && Array.isArray($scope.formulario.agregarMotores)) {
+                    var index = $scope.formulario.agregarMotores.findIndex(function (elemento) {
+                        return elemento.id === clase.id;
+                    });
+                    if (index !== -1) {
+                        $scope.formulario.agregarMotores.splice(index, 1);
+                    }
+                }
+        
                 if (!Array.isArray($scope.formulario.eliminarMotores)) {
                     $scope.formulario.eliminarMotores = [];
                 }
-                $scope.formulario.eliminarMotores.push(elemento);
-                // eliminar
-                // $scope.formulario.tiposMotor.push(elemento);
+                $scope.formulario.eliminarMotores.push(clase)
                 $scope.ver($scope.formulario, 'equipo', $scope.metodo)
                 break;
             case "tipocompresor":
+                if ($scope.formulario.tiposCompresor && Array.isArray($scope.formulario.tiposCompresor)) {
+                    var index = $scope.formulario.tiposCompresor.findIndex(function (elemento) {
+                        return elemento.id === clase.id;
+                    });
+                    if (index !== -1) {
+                        $scope.formulario.tiposCompresor.splice(index, 1);
+                    }
+                }
+        
+                if ($scope.formulario.agregarCompresores && Array.isArray($scope.formulario.agregarCompresores)) {
+                    var index = $scope.formulario.agregarCompresores.findIndex(function (elemento) {
+                        return elemento.id === clase.id;
+                    });
+                    if (index !== -1) {
+                        $scope.formulario.agregarCompresores.splice(index, 1);
+                    }
+                }
+        
+                if (!Array.isArray($scope.formulario.eliminarCompresores)) {
+                    $scope.formulario.eliminarCompresores = [];
+                }
+                $scope.formulario.eliminarCompresores.push(clase)
+                $scope.ver($scope.formulario, 'equipo', $scope.metodo)
                 break;
             case "bateria":
+                if ($scope.formulario.baterias && Array.isArray($scope.formulario.baterias)) {
+                    var index = $scope.formulario.baterias.findIndex(function (elemento) {
+                        return elemento.id === clase.id;
+                    });
+                    if (index !== -1) {
+                        $scope.formulario.baterias.splice(index, 1);
+                    }
+                }
+        
+                if ($scope.formulario.agregarBaterias && Array.isArray($scope.formulario.agregarBaterias)) {
+                    var index = $scope.formulario.agregarBaterias.findIndex(function (elemento) {
+                        return elemento.id === clase.id;
+                    });
+                    if (index !== -1) {
+                        $scope.formulario.agregarBaterias.splice(index, 1);
+                    }
+                }
+        
+                if (!Array.isArray($scope.formulario.eliminarBaterias)) {
+                    $scope.formulario.eliminarBaterias = [];
+                }
+                $scope.formulario.eliminarBaterias.push(clase)
+                $scope.ver($scope.formulario, 'equipo', $scope.metodo)
                 break;
             case "tag":
+                if ($scope.formulario.tags && Array.isArray($scope.formulario.tags)) {
+                    var index = $scope.formulario.tags.findIndex(function (elemento) {
+                        return elemento.id === clase.id;
+                    });
+                    if (index !== -1) {
+                        $scope.formulario.tags.splice(index, 1);
+                    }
+                }
+        
+                if ($scope.formulario.agregarTags && Array.isArray($scope.formulario.agregarTags)) {
+                    var index = $scope.formulario.agregarTags.findIndex(function (elemento) {
+                        return elemento.id === clase.id;
+                    });
+                    if (index !== -1) {
+                        $scope.formulario.agregarTags.splice(index, 1);
+                    }
+                }
+        
+                if (!Array.isArray($scope.formulario.eliminarTags)) {
+                    $scope.formulario.eliminarTags = [];
+                }
+                $scope.formulario.eliminarTags.push(clase)
+                $scope.ver($scope.formulario, 'equipo', $scope.metodo)
                 break;
 
             default:
