@@ -265,6 +265,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
         $('#contenidoAreas').hide();
         $('#contenidoEquipos').hide();
         $('#contenidoCatalogos').hide();
+        $('#contenidoActividades').hide();
         $("#baterias").hide();
         $("#areas").hide();
         $("#capacidadBtu").hide();
@@ -528,6 +529,31 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#contenidoEquipos').hide();
                         $('#contenidoInicio').hide();
                         $('#contenidoCatalogos').show();
+                        $('#contenidoActividades').hide();
+                        $('#contenidoEquipos').hide();
+                        $("#areas").hide();
+                        $("#baterias").hide();
+                        $("#capacidadBtu").hide();
+                        $("#estado").hide()
+                        $("#marca").hide()
+                        $("#ph").hide()
+                        $("#presostato").hide()
+                        $("#rangoPresion").hide()
+                        $("#tipoCompresor").hide()
+                        $("#tipoEquipo").hide()
+                        $("#tipoFiltroDeshidratador").hide()
+                        $("#tipoGas").hide()
+                        $("#tipoMotor").hide()
+                        $("#tipoLimpieza").hide()
+                        $("#tipoMantenimiento").hide()
+                        $("#tipoNotificacion").hide()
+                                $("#tag").hide()
+                        break;
+                    case "actividades":
+                        $('#contenidoEquipos').hide();
+                        $('#contenidoInicio').hide();
+                        $('#contenidoCatalogos').hide();
+                        $('#contenidoActividades').show();
                         $('#contenidoEquipos').hide();
                         $("#areas").hide();
                         $("#baterias").hide();
@@ -554,6 +580,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                     case "inicio":
                         $('#contenidoInicio').show();
                         $('#contenidoCatalogos').hide();
+                        $('#contenidoActividades').hide();
                         $("#areas").hide();
                         $("#baterias").hide();
                         $("#capacidadBtu").hide();
@@ -640,7 +667,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoLimpieza").hide()
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
-                                $("#tag").hide()
+                        $("#tag").hide()
                         $scope.catalogoSeleccionado = 'area'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').addClass('active');
@@ -698,7 +725,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoLimpieza").hide()
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
-                                $("#tag").hide()
+                        $("#tag").hide()
                         $scope.catalogoSeleccionado = 'bateria'
                         $('#itemBateria').addClass('active');
                         $('#itemArea').removeClass('active');
@@ -1611,6 +1638,9 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
         switch (tipo) {
             case 'equipo':
                 getEquipos()
+                break;
+            case 'actividad':
+                getActividades()
                 break;
         
             default:
