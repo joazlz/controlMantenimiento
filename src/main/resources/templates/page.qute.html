@@ -104,17 +104,66 @@
             </div>
         </div>
 
+        {! ACTIVIDADES !}
+        <div id="contenidoACTIVIDADES" class="ui segment" style="width: 100%; height: 85vh; overflow-y: auto;">
+            <h2 class="ui left floated header">ACTIVIDADES</h2>
+            <div class="segment right">
+                <div class="ui icon input right floated labeled">
+                    <input type="text" placeholder="Buscar..." ng-model="pattern">
+                    <i class="circular search link icon" ng-click="buscar('actividad')"></i>
+                </div>
+                <button class="ui blue right floated labeled icon button"
+                    ng-click="ver('agregar','actividad','agregar')"><i class="plus circle icon"></i>
+                    Agregar actividad</button>
+            </div>
+            <div class="ui clearing divider">
+                <table class="ui celled table">
+                    <thead>
+                        <tr>
+                            <th>Modelo</th>
+                            <th>orden Trabajo</th>
+                            <th>tipo Mantenimiento</th>
+                            <th>fecha Inicio Programado</th>
+                            <th>fecha Fin Programado</th>
+                            <th>equipo</th>
+                            <th>estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="actividad in actividades">
+                            <td>{{actividad.ordenTrabajo}}</td>
+                            <td>{{actividad.tipoMantenimiento.nombre}}</td>
+                            <td>{{actividad.fechaInicioProgramado}}</td>
+                            <td>{{actividad.fechaFinProgramado}}</td>
+                            <td>{{actividad.equipo.modelos}} <button class="ui small basic blue button" ng-click="ver(actividad.equipo,'equipo','ver')">
+                                    <i class="eye icon"></i> Ver</button></td>
+                            <td class="warning"><i class="attention icon"></i>{{actividad.estado.nombre}}</td>
+                            <td>
+                                <button class="ui basic green button" ng-click="ver(actividad,'actividad','editar')"><i
+                                        class="pencil alternate icon"></i>
+                                    Editar</button>
+                                <button ng-if="{identity.roles.contains('admin')}" class="ui basic red button"
+                                    ng-click="eliminar('actividad', actividad)"><i class="trash alternate outline icon"></i>
+                                    Eliminar</button>
+                                <button class="ui basic blue button" ng-click="ver(actividad,'actividad','ver')">
+                                    <i class="eye icon"></i> Ver</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         {! EQUIPOS !}
         <div id="contenidoEquipos" class="ui segment" style="width: 100%; height: 85vh; overflow-y: auto;">
             <h2 class="ui left floated header">Equipos</h2>
-            <div class="segment">
-                <button class="ui blue right floated labeled icon button"
-                    ng-click="ver('agregar','equipo','agregar')"><i class="plus circle icon"></i>
-                    Agregar equipo</button>
-                <div class="ui icon input">
+            <div class="segment right">
+                <div class="ui icon input right floated labeled">
                     <input type="text" placeholder="Buscar..." ng-model="pattern">
                     <i class="circular search link icon" ng-click="buscar('equipo')"></i>
                 </div>
+                <button class="ui blue right floated labeled icon button"
+                    ng-click="ver('agregar','equipo','agregar')"><i class="plus circle icon"></i>
+                    Agregar equipo</button>
             </div>
             <div class="ui clearing divider">
                 <table class="ui celled table">
@@ -133,7 +182,7 @@
                         <tr ng-repeat="equipo in equipos">
                             <td>{{equipo.modelo}}</td>
                             <td>{{equipo.area.nombre}}</td>
-                            <td class="error"><i class="attention icon"></i>{{equipo.estado.nombre}}</td>
+                            <td class="warning"><i class="attention icon"></i>{{equipo.estado.nombre}}</td>
                             <td>{{equipo.marca.nombre}}</td>
                             <td>{{equipo.tipoEquipo.nombre}}</td>
                             <td>

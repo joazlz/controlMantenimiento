@@ -1612,6 +1612,9 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
             case 'equipo':
                 getEquipos()
                 break;
+            case 'actividad':
+                getActividades()
+                break;
         
             default:
                 break;
