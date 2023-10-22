@@ -8,7 +8,10 @@ INSERT INTO area(id, nombre) VALUES (7, 'ccm crudo lado B');
 INSERT INTO area(id, nombre) VALUES (8, 'ccm envasado del A');
 INSERT INTO area(id, nombre) VALUES (9, 'ccm continuas 2da crudo');
 INSERT INTO area(id, nombre) VALUES (10, 'ccm bba Cristal');
-ALTER SEQUENCE area_seq RESTART WITH 11;
+INSERT INTO area(id, nombre) VALUES (11, 'ccm sala variadores cald#09');
+INSERT INTO area(id, nombre) VALUES (12, 'ccm sala variadores cald#10');
+INSERT INTO area(id, nombre) VALUES (13, 'ccm sala variadores cald#11');
+ALTER SEQUENCE area_seq RESTART WITH 14;
 
 INSERT INTO bateria(id, nombre) VALUES (1, 'aaa');
 INSERT INTO bateria(id, nombre) VALUES (2, 'aa');
@@ -29,7 +32,8 @@ INSERT INTO estado(id, nombre) VALUES (5, 'asignado');
 INSERT INTO estado(id, nombre) VALUES (6, 'nuevo');
 INSERT INTO estado(id, nombre) VALUES (7, 'modificado');
 INSERT INTO estado(id, nombre) VALUES (8, 'desistalado');
-ALTER SEQUENCE estado_seq RESTART WITH 9;
+INSERT INTO estado(id, nombre) VALUES (9, 'activo');
+ALTER SEQUENCE estado_seq RESTART WITH 10;
 
 INSERT INTO marca(id, nombre) VALUES (1, 'GoddMan');
 INSERT INTO marca(id, nombre) VALUES (2, 'YORK');
@@ -95,7 +99,10 @@ INSERT INTO material(id, nombre,codigosap) VALUES (2, 'broca','75452popo');
 ALTER SEQUENCE material_seq RESTART WITH 3;
 
 INSERT INTO  equipo(id ,area_id,estado_id ,tipogas_id ,capacidadbtu_id ,tipofiltrodeshidratador_id ,rangopresionalta_id ,rangopresionbaja_id ,marca_id ,ph_id ,tipoequipo_id ,modelo ,voltaje ,amperaje ,flipon ,cableAlimentacion ,tranformador ,contactor ,termostato ,tarjetaElectronica ,selector ,retardor ,presostatoAlta_id ,presostatoBaja_id) VALUES (1,2,6,1,1,1,2,1,1,1,1,'ckl60-cm3','220','21.7','3 polos*40amp','tsj 3*10','220','3 polos* 24v','digital','N/A','N/A','0.3-10*24V',1,1);
-ALTER SEQUENCE equipo_seq RESTART WITH 2;
+INSERT INTO  equipo(id ,area_id,estado_id ,tipogas_id ,capacidadbtu_id ,tipofiltrodeshidratador_id ,rangopresionalta_id ,rangopresionbaja_id ,marca_id ,ph_id ,tipoequipo_id ,modelo ,voltaje ,amperaje ,flipon ,cableAlimentacion ,tranformador ,contactor ,termostato ,tarjetaElectronica ,selector ,retardor ,presostatoAlta_id ,presostatoBaja_id) VALUES (2,3,9,2,3,2,2,2,2,2,2,'GS3BA-60CH','230','20.1','3 polos*40amp','3 cable lineal calibre #10 ','220','3 polos* 24v','digital','realy','N/A','0.3-10*24V',2,2);
+INSERT INTO  equipo(id ,area_id,estado_id ,tipogas_id ,capacidadbtu_id ,tipofiltrodeshidratador_id ,rangopresionalta_id ,rangopresionbaja_id ,marca_id ,ph_id ,tipoequipo_id ,modelo ,voltaje ,amperaje ,flipon ,cableAlimentacion ,tranformador ,contactor ,termostato ,tarjetaElectronica ,selector ,retardor ,presostatoAlta_id ,presostatoBaja_id) VALUES (3,2,9,1,1,1,2,1,1,1,1,'YAU-60CR','230','29.9','3 polos*40amp','cable apantallado 4*10','220','3 polos* 24v','digital','relay','N/A','0.3-10*24V',2,2);
+INSERT INTO  equipo(id ,area_id,estado_id ,tipogas_id ,capacidadbtu_id ,tipofiltrodeshidratador_id ,rangopresionalta_id ,rangopresionbaja_id ,marca_id ,ph_id ,tipoequipo_id ,modelo ,voltaje ,amperaje ,flipon ,cableAlimentacion ,tranformador ,contactor ,termostato ,tarjetaElectronica ,selector ,retardor ,presostatoAlta_id ,presostatoBaja_id) VALUES (4,3,9,2,3,2,2,2,2,2,2,'GS3BA-60CH','230','20.1','3 polos*40amp','3 cable lineal calibre #10 ','220','3 polos* 24v','digital','realy','N/A','0.3-10*24V',2,2);
+ALTER SEQUENCE equipo_seq RESTART WITH 5;
 
 INSERT INTO equipo_tipo_motor(equipo_id, tipomotor_id)
 VALUES (1, 1),(1, 2);
