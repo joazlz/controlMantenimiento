@@ -30,10 +30,14 @@
             margin-bottom: 15px;
         }
     </style>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
     <!-- Load AngularJS -->
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
     <script src="index.js"></script>
-
 </head>
 
 <body ng-app="InventarioManagement" ng-controller="InventarioManagementController">
@@ -49,8 +53,1751 @@
                     <div class="item" ng-click="ver('configuracion','contenido','')">
                         <i class="user circle icon"></i>
                     </div>
-                    <div class="item" ng-click="ver('notificacion','contenido','')">
-                        <i class="bell icon"></i>
+                    <div class="item" ng-click="ver('notificaciones','contenido','')">
+                        <i class=" red bell icon">
+                            <div class="floating ui red label">22</div>
+                        </i>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="contenidoNotificacion" class="ui modal">
+            <div class="header">Notificaciones</div>
+            <div class="scrolling content">
+                <div class="comment">
+                    <div class="content">
+                        <div class="text">
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui card">
+                                <div class="content">
+                                    <div class="header">OT1385</div>
+                                    <a class="author">Antonio Martines</a>
+                                </div>
+                                <div class="content">
+                                    <div class="ui small feed">
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    <b>Descripcion:</b> tiempo sin mantenimiento
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event">
+                                            <div class="content">
+                                                <div class="summary">
+                                                    No leido
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -130,8 +1877,8 @@
                         <tr ng-repeat="actividad in actividades">
                             <td>{{actividad.ordenTrabajo}}</td>
                             <td>{{actividad.tipoMantenimiento.nombre}}</td>
-                            <td>{{actividad.fechaInicioProgramado}}</td>
-                            <td>{{actividad.fechaFinProgramado}}</td>
+                            <td>{{formulario.fechaInicioProgramado | date:'yyyy-MM-dd'}}</td>
+                            <td>{{formulario.fechaFinProgramado | date:'yyyy-MM-dd'}}</td>
                             <td>{{actividad.equipo.modelo}} <button class="ui small basic blue button"
                                     ng-click="ver(actividad.equipo,'equipo','ver')">
                                     <i class="eye icon"></i> Ver</button></td>
@@ -907,7 +2654,8 @@
                                     <td>
                                         <div ng-repeat="tag in formulario.tags" class="ui label">
                                             {{tag.nombre}} <i class="close icon"
-                                                ng-click="unSeleccionar('tag',tag)"></i></div>
+                                                ng-click="unSeleccionar('tag',tag)"></i>
+                                        </div>
                                         <div class="ui label" ng-click="ver('modal-tag','contenido','')"><i
                                                 class="plus square icon"></i>
                                         </div>
@@ -926,6 +2674,32 @@
                 </button>
             </div>
         </div>
+
+        {! REPORTES !}
+        <div id="contenidoReportes">
+            <div class="ui segment" style="width: 100%; height: 80vh; overflow-y: auto;">
+                <h2>Graficas:</h2>
+                <figure class="highcharts-figure">
+                    <div id="grafica"></div>
+                    <p class="highcharts-description">
+                        Tendencia de cantidad de desperfectos por equipo
+                    </p>
+                </figure>
+                <figure class="highcharts-figure">
+                    <div id="graficaEquiposEnMantenimiento"></div>
+                    <p class="highcharts-description">
+                        Cantidad de equipos en mantenimiento por mes.
+                    </p>
+                </figure>
+                <figure class="highcharts-figure">
+                    <div id="graficaInidiceMantenimientoArea"></div>
+                    <p class="highcharts-description">
+                        Indice de mantenimiento por area
+                    </p>
+                </figure>
+            </div>
+        </div>
+
         {! CATALOGOS !}
         <div id="contenidoCatalogos">
             <div class="ui segment" style="width: 100%; height: 80vh; overflow-y: auto;">
@@ -1527,7 +3301,8 @@
         </div>
         <div class="ui modal" id="editar_agregar_bateria">
             <h4 id="tituloModal_editar_agregar_bateria" class="ui horizontal divider header"><i
-                    class="bar chart icon"></i></h4>
+                    class="bar chart icon"></i>
+            </h4>
             <form class="ui form" id="bateria-formulario-ver">
                 <table class="ui definition table">
                     <tbody>
@@ -1561,7 +3336,8 @@
         </div>
         <div class="ui modal" id="editar_agregar_estado">
             <h4 id="tituloModal_editar_agregar_estado" class="ui horizontal divider header"><i
-                    class="bar chart icon"></i></h4>
+                    class="bar chart icon"></i>
+            </h4>
             <form class="ui form" id="estado-formulario-ver">
                 <table class="ui definition table">
                     <tbody>
@@ -1578,7 +3354,8 @@
         </div>
         <div class="ui modal" id="editar_agregar_marca">
             <h4 id="tituloModal_editar_agregar_marca" class="ui horizontal divider header"><i
-                    class="bar chart icon"></i></h4>
+                    class="bar chart icon"></i>
+            </h4>
             <form class="ui form" id="marca-formulario-ver">
                 <table class="ui definition table">
                     <tbody>
@@ -1718,11 +3495,13 @@
             </form>
             <div class="actions"><button type="submit" class="ui positive right labeled icon button" form="author-form"
                     ng-click="guardar('tipofiltrodeshidratador',formulario)"><i
-                        class="checkmark icon"></i>Guardar</button></div>
+                        class="checkmark icon"></i>Guardar</button>
+            </div>
         </div>
         <div class="ui modal" id="editar_agregar_tipogas">
             <h4 id="tituloModal_editar_agregar_tipogas" class="ui horizontal divider header"><i
-                    class="bar chart icon"></i></h4>
+                    class="bar chart icon"></i>
+            </h4>
             <form class="ui form" id="tipogas-formulario-ver">
                 <table class="ui definition table">
                     <tbody>
@@ -1758,7 +3537,8 @@
         </div>
         <div class="ui modal" id="editar_agregar_material">
             <h4 id="tituloModal_editar_agregar_material" class="ui horizontal divider header"><i
-                    class="bar chart icon"></i></h4>
+                    class="bar chart icon"></i>
+            </h4>
             <form class="ui form" id="material-formulario-ver">
                 <table class="ui definition table">
                     <tbody>
@@ -1956,244 +3736,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-    {! INICIO !}
-    {! <div id="contenidoInicio" class="ui container contenido">
-        <h2 class="ui center floated header">Resumenes</h2>
-        <div class="ui cards">
-            <div class="card" ng-repeat="item in lista">
-                <div class="content">
-                    <div class="header">{{ item.nombre }}</div>
-                    <div class="meta">
-                        {{item.cantidad}}
-                    </div>
-                    <div class="extra content">
-                        <div class="ui two buttons">
-                            <button class="ui basic blue button" ng-click="ver(item,'contenido','')">
-                                <i class="eye icon"></i> Ver</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> !}
-
-
-    {! MODALES !}
-
-
-
-
-    {! <div class="ui modal" id="modal-rangoPresion">
-        <i class="close icon"></i>
-        <div class="content">
-            <div class="description">
-                <h4 class="ui horizontal divider header"><i class="bar chart icon"></i> Nuevo Rango Presion </h4>
-                <form class="ui form" id="rangoPresion-formulario-editar">
-                    <input type="hidden" name="rangoPresionId" ng-model="formulario.rangoPresion.id" />
-                    <table class="ui definition table">
-                        <tbody>
-                            <tr>
-                                <td class="four wide column"><b>Rango Presion:</b></td>
-                                <td>
-                                    <table class="ui definition table">
-                                        <tbody>
-                                            <tr>
-                                                <td class="three wide column"><b>minimo :</b></td>
-                                                <td><input type="number" name="minimo" placeholder="minimo"
-                                                        ng-model="formulario.rangoPresion.minimo" required></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="three wide column"><b>maximo :</b></td>
-                                                <td><input type="number" name="maximo" placeholder="maximo"
-                                                        ng-model="formulario.rangoPresion.maximo" required></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </form>
-            </div>
-        </div>
-        <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="author-form"
-                ng-click="guardarRangoPresion()">
-                <i class="checkmark icon"></i>
-                Guardar
-            </button>
-        </div>
-    </div> !}
-
-
-
-    {! <div class="ui modal" id="modal-tipoCompresor">
-        <i class="close icon"></i>
-        <div class="content">
-            <div class="description">
-                <h4 class="ui horizontal divider header"><i class="bar chart icon"></i> Nuevo Tipo de Compresor
-                </h4>
-                <div id="contenidoTipoCompresor" class="ui container contenido">
-                    <div class="content">
-                        <button class="ui blue labeled icon button" ng-click="agregarTipoCompresor()"><i
-                                class="plus circle icon"></i>
-                            Agregar Tipo de Compresor</button>
-                        <table class="ui celled table">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="tipoCompresor in tiposCompresor">
-                                    <td>{{tipoCompresor.nombre}}</td>
-                                    <td>
-                                        <button ng-if="existeTipoCompresor(tipoCompresor)" class="ui basic green button"
-                                            ng-click="seleccionarTipoCompresor(tipoCompresor)"><i
-                                                class="pencil alternate icon"></i>
-                                            Seleccionar</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="ui horizontal divider"></div>
-                        <form ng-if="esAgregarTipoCompresor" class="ui form" id="tipoCompresor-formulario-editar">
-                            <input type="hidden" name="tipoMotorId" ng-model="formulario.tipoCompresor.id" />
-                            <table class="ui definition table">
-                                <tbody>
-                                    <tr>
-                                        <td class="four wide column"><b>Nombre :</b></td>
-                                        <td><input type="text" name="nombre" placeholder="nombre"
-                                                ng-model="formulario.tipoCompresor.nombre" required></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="author-form"
-                ng-click="guardarTipoCompresor()">
-                <i class="checkmark icon"></i>
-                Guardar
-            </button>
-        </div>
-    </div> !}
-
-    {! <div class="ui modal" id="modal-bateria">
-        <i class="close icon"></i>
-        <div class="content">
-            <div class="description">
-                <h4 class="ui horizontal divider header"><i class="bar chart icon"></i> Nueva Bateria </h4>
-                <div id="contenidoBaterias" class="ui container contenido">
-                    <div class="content">
-                        <button class="ui blue labeled icon button" ng-click="agregarBateria()"><i
-                                class="plus circle icon"></i>
-                            Agregar Bateria</button>
-                        <table class="ui celled table">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="bateria in baterias">
-                                    <td>{{bateria.nombre}}</td>
-                                    <td>
-                                        <button ng-if="existeBateria(bateria)" class="ui basic green button"
-                                            ng-click="seleccionarBateria(bateria)"><i class="pencil alternate icon"></i>
-                                            Seleccionar</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="ui horizontal divider"></div>
-                        <form ng-if="esAgregarBateria" class="ui form" id="bateria-formulario-editar">
-                            <input type="hidden" name="bateriaId" ng-model="formulario.bateria.id" />
-                            <table class="ui definition table">
-                                <tbody>
-                                    <tr>
-                                        <td class="four wide column"><b>Nombre :</b></td>
-                                        <td><input type="text" name="nombre" placeholder="nombre"
-                                                ng-model="formulario.bateria.nombre" required></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="author-form"
-                ng-click="guardarBateria()">
-                <i class="checkmark icon"></i>
-                Guardar
-            </button>
-        </div>
-    </div> !}
-
-    {! <div class="ui modal" id="modal-tag">
-        <i class="close icon"></i>
-        <div class="content">
-            <div class="description">
-                <h4 class="ui horizontal divider header"><i class="bar chart icon"></i> Nuevo Tag </h4>
-                <div id="contenidoTag" class="ui container contenido">
-                    <div class="content">
-                        <button class="ui blue labeled icon button" ng-click="agregarTag()"><i
-                                class="plus circle icon"></i>
-                            Agregar Tag</button>
-                        <table class="ui celled table">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="tag in tags">
-                                    <td>{{tag.nombre}}</td>
-                                    <td>
-                                        <button ng-if="existeTag(tag)" class="ui basic green button"
-                                            ng-click="seleccionarTag(tag)"><i class="pencil alternate icon"></i>
-                                            Seleccionar</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="ui horizontal divider"></div>
-                        <form ng-if="esAgregarTag" class="ui form" id="tag-formulario-editar">
-                            <input type="hidden" name="tagId" ng-model="formulario.tag.id" />
-                            <table class="ui definition table">
-                                <tbody>
-                                    <tr>
-                                        <td class="four wide column"><b>Nombre :</b></td>
-                                        <td><input type="text" name="nombre" placeholder="nombre"
-                                                ng-model="formulario.tag.nombre" required></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="actions">
-            <button type="submit" class="ui positive right labeled icon button" form="author-form"
-                ng-click="guardarTag()">
-                <i class="checkmark icon"></i>
-                Guardar
-            </button>
-        </div>
-    </div> !}
 </body>
 
 </html>
