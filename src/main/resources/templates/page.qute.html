@@ -936,6 +936,7 @@
                         <div class="menu">
                             <a id="itemTag" class="item" ng-click="ver('','tag','ver')">Tag</a>
                             <a id="itemArea" class="item" ng-click="ver('','area','ver')">Area</a>
+                            <a id="itemMaterial" class="item" ng-click="ver('','material','ver')">Material</a>
                             <a id="itemBateria" class="item" ng-click="ver('','bateria','ver')">Bateria</a>
                             <a id="itemCapacidadBtu" class="item" ng-click="ver('','capacidadbtu','ver')">Capacidad
                                 Btu</a>
@@ -1002,6 +1003,41 @@
                         </tbody>
                     </table>
                 </div>
+                <div id="materiales" class="ui right floated segment"
+                    style="width: 157vh; height: 60vh; overflow: auto;">
+                    <table class="ui very basic collapsing celled table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>CodigoSap</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody style="overflow-y: scroll; max-height: 50vh;">
+                            <tr ng-repeat="material in materiales">
+                                <td>
+                                    <div class="content">{{material.nombre}}</div>
+                                </td>
+                                <td>
+                                    <div class="content">{{material.codigoSap}}</div>
+                                </td>
+                                <td>
+                                    <button class="ui small basic green button"
+                                        ng-click="ver(material,'material','editar')">
+                                        <i class="pencil alternate icon"></i> Editar
+                                    </button>
+                                    <button ng-if="{identity.roles.contains('admin')}" class="ui small basic red button"
+                                        ng-click="eliminar('material', material)">
+                                        <i class="trash alternate outline icon"></i> Eliminar
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
                 <div id="baterias" class="ui right floated segment" style="width: 157vh;  height: 60vh">
                     <table class="ui very basic collapsing celled table">
                         <thead>
@@ -1719,6 +1755,25 @@
             </form>
             <div class="actions"><button type="submit" class="ui positive right labeled icon button" form="author-form"
                     ng-click="guardar('tipomotor',formulario)"><i class="checkmark icon"></i>Guardar</button></div>
+        </div>
+        <div class="ui modal" id="editar_agregar_material">
+            <h4 id="tituloModal_editar_agregar_material" class="ui horizontal divider header"><i
+                    class="bar chart icon"></i></h4>
+            <form class="ui form" id="material-formulario-ver">
+                <table class="ui definition table">
+                    <tbody>
+                        <tr>
+                            <td class="four wide column"><b>Material :</b></td>
+                            <td><input type="text" name="nombre" placeholder="nombre"
+                                    ng-model="formulario.material.nombre" required></td>
+                            <td><input type="text" name="codigoSap" placeholder="codigoSap"
+                                    ng-model="formulario.material.codigoSap" required></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            <div class="actions"><button type="submit" class="ui positive right labeled icon button" form="author-form"
+                    ng-click="guardar('material',formulario)"><i class="checkmark icon"></i>Guardar</button></div>
         </div>
         <div class="ui modal" id="editar_agregar_tipolimpieza">
             <h4 id="tituloModal_editar_agregar_tipolimpieza" class="ui horizontal divider header"><i

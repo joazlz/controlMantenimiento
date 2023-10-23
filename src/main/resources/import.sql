@@ -108,19 +108,7 @@ INSERT INTO material(id, nombre,codigosap) VALUES (10, 'CILINDRO OXIGENO','11000
 INSERT INTO material(id, nombre,codigosap) VALUES (11, 'VALVULA BOLA SOLDABLE 3/8"OSD COD 01 690','14001225');
 INSERT INTO material(id, nombre,codigosap) VALUES (12, 'VALVULA BOLA SOLDABLE 7/8"OSD COD 01 695','14001226');
 INSERT INTO material(id, nombre,codigosap) VALUES (13, 'VALVULA PINCH SOLDABLE P/AIRE ACONDICIONADO','14006952');
-INSERT INTO material(id, nombre,codigosap) VALUES (14, '','');
-INSERT INTO material(id, nombre,codigosap) VALUES (15, '','');
-INSERT INTO material(id, nombre,codigosap) VALUES (16, '','');
-INSERT INTO material(id, nombre,codigosap) VALUES (17, '','');
-INSERT INTO material(id, nombre,codigosap) VALUES (18, '','');
-INSERT INTO material(id, nombre,codigosap) VALUES (19, '','');
-INSERT INTO material(id, nombre,codigosap) VALUES (20, '','');
-INSERT INTO material(id, nombre,codigosap) VALUES (21, '','');
-INSERT INTO material(id, nombre,codigosap) VALUES (22, '','');
-INSERT INTO material(id, nombre,codigosap) VALUES (23, '','');
-INSERT INTO material(id, nombre,codigosap) VALUES (24, '','');
-INSERT INTO material(id, nombre,codigosap) VALUES (25, '','');
-ALTER SEQUENCE material_seq RESTART WITH 26;
+ALTER SEQUENCE material_seq RESTART WITH 14;
 
 INSERT INTO  equipo(id ,area_id,estado_id ,tipogas_id ,capacidadbtu_id ,tipofiltrodeshidratador_id ,rangopresionalta_id ,rangopresionbaja_id ,marca_id ,ph_id ,tipoequipo_id ,modelo ,voltaje ,amperaje ,flipon ,cableAlimentacion ,tranformador ,contactor ,termostato ,tarjetaElectronica ,selector ,retardor ,presostatoAlta_id ,presostatoBaja_id) VALUES (1,2,6,1,1,1,2,1,1,1,1,'ckl60-cm3','220','21.7','3 polos*40amp','tsj 3*10','220','3 polos* 24v','digital','N/A','N/A','0.3-10*24V',1,1);
 INSERT INTO  equipo(id ,area_id,estado_id ,tipogas_id ,capacidadbtu_id ,tipofiltrodeshidratador_id ,rangopresionalta_id ,rangopresionbaja_id ,marca_id ,ph_id ,tipoequipo_id ,modelo ,voltaje ,amperaje ,flipon ,cableAlimentacion ,tranformador ,contactor ,termostato ,tarjetaElectronica ,selector ,retardor ,presostatoAlta_id ,presostatoBaja_id) VALUES (2,3,9,2,3,2,2,2,2,2,2,'GS3BA-60CH','230','20.1','3 polos*40amp','3 cable lineal calibre #10 ','220','3 polos* 24v','digital','realy','N/A','0.3-10*24V',2,2);

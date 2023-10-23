@@ -13,6 +13,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
     $scope.capacidadesBTU = [];
     $scope.tiposFiltroDeshidratador = [];
     $scope.marcas = [];
+    $scope.materiales = [];
     $scope.pHs = [];
     $scope.tiposEquipo = [];
     $scope.presostatos = [];
@@ -230,6 +231,16 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
             console.log(response.statusText);
         });
     }
+    function getMateriales() {
+        $http({
+            method: 'GET',
+            url: '/equipo/material/buscar?pattern=' + $scope.pattern
+        }).then(function successCallback(response) {
+            $scope.materiales = response.data;
+        }, function errorCallback(response) {
+            console.log(response.statusText);
+        });
+    }
     function getTiposNotificacion() {
         $http({
             method: 'GET',
@@ -244,6 +255,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
         getEquipos();
         getActividades();
         getTiposNotificacion();
+        getMateriales();
         getTiposLimpieza();
         getTiposMantenimiento();
         getArea();
@@ -267,6 +279,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
         $('#contenidoEquipos').hide();
         $('#contenidoCatalogos').hide();
         $('#contenidoActividades').hide();
+        $('#materiales').hide();
         $("#baterias").hide();
         $("#areas").hide();
         $("#capacidadBtu").hide();
@@ -288,6 +301,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
         $("#tipoMantenimiento").hide()
         $("#tipoNotificacion").hide()
         $("#tag").hide()
+        $("#materiales").hide()
         $('#contenidoInicio').show();
         $('#rangoPresion').dropdown();
         _actualizarDatos()
@@ -525,6 +539,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
                         $("#tag").hide()
+                        $("#materiales").hide()
                         break;
                     case "catalogos":
                         $('#contenidoEquipos').hide();
@@ -549,6 +564,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
                         $("#tag").hide()
+                        $("#materiales").hide()
                         break;
                     case "actividades":
                         $('#contenidoEquipos').hide();
@@ -573,6 +589,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
                         $("#tag").hide()
+                        $("#materiales").hide()
                         break;
                     default:
                         break;
@@ -599,6 +616,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
                         $("#tag").hide()
+                        $("#materiales").hide()
                         break;
                     case "configuracion":
                         $('#contenidoConfiguracion').modal('show');
@@ -701,6 +719,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
                         $("#tag").hide()
+                        $("#materiales").hide()
                         $scope.catalogoSeleccionado = 'area'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').addClass('active');
@@ -718,7 +737,8 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
-                        $('itemTag').removeClass('active')
+                        $('#itemTag').removeClass('active')
+                        $('#itemMaterial').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -739,6 +759,66 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         break;
                 }
                 break;
+                case "material":
+                    switch (metodo) {
+                        case "ver":
+                            $("#areas").hide();
+                            $("#baterias").hide();
+                            $("#capacidadBtu").hide();
+                            $("#estado").hide()
+                            $("#marca").hide()
+                            $("#ph").hide()
+                            $("#presostato").hide()
+                            $("#rangoPresion").hide()
+                            $("#tipoCompresor").hide()
+                            $("#tipoEquipo").hide()
+                            $("#tipoFiltroDeshidratador").hide()
+                            $("#tipoGas").hide()
+                            $("#tipoMotor").hide()
+                            $("#tipoLimpieza").hide()
+                            $("#tipoMantenimiento").hide()
+                            $("#tipoNotificacion").hide()
+                            $("#tag").hide()
+                            $("#materiales").show()
+                            $scope.catalogoSeleccionado = 'material'
+                            $('#itemBateria').removeClass('active');
+                            $('#itemArea').removeClass('active');
+                            $('#itemCapacidadBtu').removeClass('active')
+                            $('#itemEstado').removeClass('active')
+                            $('#itemMarca').removeClass('active')
+                            $('#itemPh').removeClass('active')
+                            $('#itemPresostato').removeClass('active')
+                            $('#itemRangoPresion').removeClass('active')
+                            $('#itemTipoCompresor').removeClass('active')
+                            $('#itemTipoEquipo').removeClass('active')
+                            $('#itemTipoFiltroDeshidratador').removeClass('active')
+                            $('#itemTipoGas').removeClass('active')
+                            $('#itemTipoMotor').removeClass('active')
+                            $('#itemTipoLimpieza').removeClass('active')
+                            $('#itemTipoMantenimiento').removeClass('active')
+                            $('#itemTipoNotificacion').removeClass('active')
+                            $('#itemTag').removeClass('active')
+                            $('#itemMaterial').addClass('active')
+                            break;
+                        case "agregar":
+                            $scope.metodo = metodo
+                            if (item === 'agregar') {
+                                $scope.formulario = {}
+                            } else {
+                                $scope.formulario = item
+                            }
+                            $("#tituloModal_editar_agregar_material").text("Agregar Material");
+                            $('#editar_agregar_material').modal('show');
+                            break;
+                        case "editar":
+                            $scope.formulario.material = item
+                            $("#tituloModal_editar_agregar_material").text("Editar Material");
+                            $('#editar_agregar_material').modal('show');
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
             case "bateria":
                 switch (metodo) {
                     case "ver":
@@ -759,6 +839,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
                         $("#tag").hide()
+                        $("#materiales").hide()
                         $scope.catalogoSeleccionado = 'bateria'
                         $('#itemBateria').addClass('active');
                         $('#itemArea').removeClass('active');
@@ -776,7 +857,8 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
-                        $('itemTag').removeClass('active')
+                        $('#itemTag').removeClass('active')
+                        $('#itemMaterial').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -817,6 +899,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
                         $("#tag").hide()
+                        $("#materiales").hide()
                         $scope.catalogoSeleccionado = 'capacidadbtu'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -834,7 +917,8 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
-                        $('itemTag').removeClass('active')
+                        $('#itemTag').removeClass('active')
+                        $('#itemMaterial').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -873,6 +957,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
                         $("#tag").hide()
+                        $("#materiales").hide()
                         $scope.catalogoSeleccionado = 'estado'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -890,7 +975,8 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
-                        $('itemTag').removeClass('active')
+                        $('#itemTag').removeClass('active')
+                        $('#itemMaterial').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -929,6 +1015,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
                         $("#tag").hide()
+                        $("#materiales").hide()
                         $scope.catalogoSeleccionado = 'marca'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -946,7 +1033,8 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
-                        $('itemTag').removeClass('active')
+                        $('#itemTag').removeClass('active')
+                        $('#itemMaterial').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -985,6 +1073,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
                         $("#tag").hide()
+                        $("#materiales").hide()
                         $scope.catalogoSeleccionado = 'ph'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -1002,7 +1091,8 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
-                        $('itemTag').removeClass('active')
+                        $('#itemTag').removeClass('active')
+                        $('#itemMaterial').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -1041,6 +1131,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
                         $("#tag").hide()
+                        $("#materiales").hide()
                         $scope.catalogoSeleccionado = 'presostato'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -1058,7 +1149,8 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
-                        $('itemTag').removeClass('active')
+                        $('#itemTag').removeClass('active')
+                        $('#itemMaterial').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -1097,6 +1189,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
                         $("#tag").hide()
+                        $("#materiales").hide()
                         $scope.catalogoSeleccionado = 'rangopresion'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -1114,7 +1207,8 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
-                        $('itemTag').removeClass('active')
+                        $('#itemTag').removeClass('active')
+                        $('#itemMaterial').removeClass('active')
                         break;
 
                     case "agregar":
@@ -1156,6 +1250,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
                         $("#tag").hide()
+                        $("#materiales").hide()
                         $scope.catalogoSeleccionado = 'tipocompresor'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -1173,7 +1268,8 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
-                        $('itemTag').removeClass('active')
+                        $('#itemTag').removeClass('active')
+                        $('#itemMaterial').removeClass('active')
                         break;
 
                     case "agregar":
@@ -1215,6 +1311,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
                         $("#tag").hide()
+                        $("#materiales").hide()
                         $scope.catalogoSeleccionado = 'tipoequipo'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -1232,7 +1329,8 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
-                        $('itemTag').removeClass('active')
+                        $('#itemTag').removeClass('active')
+                        $('#itemMaterial').removeClass('active')
                         break;
 
                     case "agregar":
@@ -1274,6 +1372,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
                         $("#tag").hide()
+                        $("#materiales").hide()
                         $scope.catalogoSeleccionado = 'tipofiltrodeshidratador'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -1291,7 +1390,8 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
-                        $('itemTag').removeClass('active')
+                        $('#itemTag').removeClass('active')
+                        $('#itemMaterial').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -1332,6 +1432,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
                         $("#tag").hide()
+                        $("#materiales").hide()
                         $scope.catalogoSeleccionado = 'tipogas'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -1349,7 +1450,8 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
-                        $('itemTag').removeClass('active')
+                        $('#itemTag').removeClass('active')
+                        $('#itemMaterial').removeClass('active')
                         break;
                     case "agregar":
                         $scope.metodo = metodo
@@ -1389,6 +1491,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
                         $("#tag").hide()
+                        $("#materiales").hide()
                         $scope.catalogoSeleccionado = 'tipomotor'
                         $('#itemBateria').removeClass('active');
                         $('#itemArea').removeClass('active');
@@ -1406,7 +1509,8 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
-                        $('itemTag').removeClass('active')
+                        $('#itemTag').removeClass('active')
+                        $('#itemMaterial').removeClass('active')
                         break
                     case "agregar":
                         $scope.metodo = metodo
@@ -1447,6 +1551,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
                         $("#tag").hide()
+                        $("#materiales").hide()
 
                         $scope.catalogoSeleccionado = 'tipolimpieza'
                         $('#itemBateria').removeClass('active');
@@ -1465,7 +1570,8 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').addClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
-                        $('itemTag').removeClass('active')
+                        $('#itemTag').removeClass('active')
+                        $('#itemMaterial').removeClass('active')
                         break
                     case "agregar":
                         $scope.metodo = metodo
@@ -1506,6 +1612,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoMantenimiento").show()
                         $("#tipoNotificacion").hide()
                         $("#tag").hide()
+                        $("#materiales").hide()
 
                         $scope.catalogoSeleccionado = 'tipomantenimiento'
                         $('#itemBateria').removeClass('active');
@@ -1524,7 +1631,8 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').addClass('active')
                         $('#itemTipoNotificacion').removeClass('active')
-                        $('itemTag').removeClass('active')
+                        $('#itemTag').removeClass('active')
+                        $('#itemMaterial').removeClass('active')
                         break
                     case "agregar":
                         $scope.metodo = metodo
@@ -1565,6 +1673,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").show()
                         $("#tag").hide()
+                        $("#materiales").hide()
 
                         $scope.catalogoSeleccionado = 'tiponotificacion'
                         $('#itemBateria').removeClass('active');
@@ -1583,7 +1692,8 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $('#itemTipoLimpieza').removeClass('active')
                         $('#itemTipoMantenimiento').removeClass('active')
                         $('#itemTipoNotificacion').addClass('active')
-                        $('itemTag').removeClass('active')
+                        $('#itemTag').removeClass('active')
+                        $('#itemMaterial').removeClass('active')
                         break
                     case "agregar":
                         $scope.metodo = metodo
@@ -1624,6 +1734,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                         $("#tipoMantenimiento").hide()
                         $("#tipoNotificacion").hide()
                         $("#tag").show()
+                        $("#materiales").hide()
 
                         $scope.catalogoSeleccionado = 'tag'
                         $('#itemBateria').removeClass('active');
@@ -1739,6 +1850,25 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
                     httpMetodo(method, url, data)
                 }
                 break;
+
+            case "material":
+                if ($scope.formulario.material.id == -1 || $scope.formulario.material.id === undefined) {
+                    data = {};
+                    method = 'PUT';
+                    url = '/equipo/' + tipo;
+                    data.nombre = formulario.material.nombre;
+                    data.codigoSap = formulario.material.codigoSap;
+                    httpMetodo(method, url, data)
+                } else {
+                    data = {};
+                    method = 'POST';
+                    url = '/equipo/' + tipo + '/' + formulario.material.id;
+                    data.nombre = formulario.material.nombre;
+                    data.codigoSap = formulario.material.codigoSap;
+                    httpMetodo(method, url, data)
+                }
+                break;
+                
             case "bateria":
                 if ($scope.formulario.bateria.id == -1 || $scope.formulario.bateria.id === undefined) {
                     data = {};
@@ -1990,7 +2120,7 @@ app.controller("InventarioManagementController", ['$scope', '$http', '$httpParam
     }
     $scope.eliminar = function (tipo, formulario) {
         switch (tipo) {
-            case "area", "bateria", "capacidadbtu", "estado", "marca", "ph", "presostato", "rangopresion", "tipocompresor", "tipoequipo", "tipofiltrodeshidratador", "tipogas", "tipomotor", "tipomantenimiento", "tag":
+            case "area","material", "bateria", "capacidadbtu", "estado", "marca", "ph", "presostato", "rangopresion", "tipocompresor", "tipoequipo", "tipofiltrodeshidratador", "tipogas", "tipomotor", "tipomantenimiento", "tag":
                 data = {};
                 method = 'DELETE';
                 url = '/equipo/' + tipo + '/' + formulario.id;
