@@ -133,30 +133,57 @@ VALUES (1, 1),(1, 2);
 
 
 INSERT INTO tag(id, nombre) VALUES (1, 'depaquete');
-INSERT INTO tag(id, nombre) VALUES (2, 'xxx');
-ALTER SEQUENCE tag_seq RESTART WITH 3;
+INSERT INTO tag(id, nombre) VALUES (2, 'Activo');
+INSERT INTO tag(id, nombre) VALUES (3, 'Inactivo');
+ALTER SEQUENCE tag_seq RESTART WITH 4;
 
 INSERT INTO equipo_tag(equipo_id, tag_id)
-VALUES (1, 1),(1, 2);
-
+VALUES (1, 1);
+INSERT INTO equipo_tag(equipo_id, tag_id)
+VALUES (2, 2);
+INSERT INTO equipo_tag(equipo_id, tag_id)
+VALUES (3, 2);
+INSERT INTO equipo_tag(equipo_id, tag_id)
+VALUES (4, 2);
 
 INSERT INTO duracion(id, horas,minutos) VALUES (1, 43,10);
+INSERT INTO duracion(id, horas,minutos) VALUES (2, 8,10);
+INSERT INTO duracion(id, horas,minutos) VALUES (3, 15,35);
+INSERT INTO duracion(id, horas,minutos) VALUES (4, 45,10);
 
 INSERT INTO actividad(id, descripcion, ordentrabajo,reserva,tipomantenimiento_id,fechainicioprogramado,fechaFinProgramado,equipo_id,
 fechaInicioActividad,fechaFinActividad,estado_id,duracion_id) VALUES (1,'tiempo sin mantenimiento', 'OT1385','0124957',2,'2023-09-07','2023-09-10',1,'2023-09-07','2023-09-12',1,1);
-ALTER SEQUENCE actividad_seq RESTART WITH 2;
+INSERT INTO actividad(id, descripcion, ordentrabajo,reserva,tipomantenimiento_id,fechainicioprogramado,fechaFinProgramado,equipo_id,
+fechaInicioActividad,fechaFinActividad,estado_id,duracion_id) VALUES (2,'No en fria', 'OT55123','1368456',1,'2023-09-07','2023-09-10',1,'2023-09-07','2023-09-12',2,2);
+INSERT INTO actividad(id, descripcion, ordentrabajo,reserva,tipomantenimiento_id,fechainicioprogramado,fechaFinProgramado,equipo_id,
+fechaInicioActividad,fechaFinActividad,estado_id,duracion_id) VALUES (3,'cOMPRESOR DAÑADO', 'OT123154','963258741',4,'2023-09-07','2023-09-10',1,'2023-09-07','2023-09-12',3,3);
+INSERT INTO actividad(id, descripcion, ordentrabajo,reserva,tipomantenimiento_id,fechainicioprogramado,fechaFinProgramado,equipo_id,
+fechaInicioActividad,fechaFinActividad,estado_id,duracion_id) VALUES (4,'SIN MANTINIMIENTO', 'OT789456123','167439',1,'2023-09-07','2023-09-10',1,'2023-09-07','2023-09-12',4,4);
+ALTER SEQUENCE actividad_seq RESTART WITH 5;
 
 INSERT INTO actividad_tipo_desperfecto(actividad_id, desperfecto_id)
 VALUES (1, 1),(1, 2);
+INSERT INTO actividad_tipo_desperfecto(actividad_id, desperfecto_id)
+VALUES (2, 2),(2, 3);
+INSERT INTO actividad_tipo_desperfecto(actividad_id, desperfecto_id)
+VALUES (3, 1),(3, 2);
+INSERT INTO actividad_tipo_desperfecto(actividad_id, desperfecto_id)
+VALUES (4, 1),(4, 3);
 
 INSERT INTO tipolimpieza(id, nombre) VALUES (1, 'condensador');
 INSERT INTO tipolimpieza(id, nombre) VALUES (2, 'evaporador');
 ALTER SEQUENCE tipolimpieza_seq RESTART WITH 3;
 
 INSERT INTO limpieza(id, realizada,tipolimpieza_id,actividad_id) VALUES (1, True,1,1),(2, False,1,1);
-ALTER SEQUENCE limpieza_seq RESTART WITH 3;
+INSERT INTO limpieza(id, realizada,tipolimpieza_id,actividad_id) VALUES (3, True,1,2),(4, False,2,2);
+INSERT INTO limpieza(id, realizada,tipolimpieza_id,actividad_id) VALUES (5, True,2,3),(6, True,2,3);
+INSERT INTO limpieza(id, realizada,tipolimpieza_id,actividad_id) VALUES (7, True,1,4),(8, False,1,4);
+ALTER SEQUENCE limpieza_seq RESTART WITH 9;
 
-INSERT INTO actividadmaterial(id,actividad_id,material_id,cantidad)VALUES(1,1,1,55);
+INSERT INTO actividadmaterial(id,actividad_id,material_id,cantidad)VALUES(1,1,1,2);
+INSERT INTO actividadmaterial(id,actividad_id,material_id,cantidad)VALUES(1,2,10,5);
+INSERT INTO actividadmaterial(id,actividad_id,material_id,cantidad)VALUES(1,3,17,6);
+INSERT INTO actividadmaterial(id,actividad_id,material_id,cantidad)VALUES(1,4,15,4);
 ALTER SEQUENCE actividadmaterial_seq RESTART WITH 2;
 
 INSERT INTO notificacion(id, estado_id,actividad_id, tiponotificacion_id ) VALUES (1, 1, 1, 1);
